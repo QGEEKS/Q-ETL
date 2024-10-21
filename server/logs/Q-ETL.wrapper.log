@@ -1,0 +1,93 @@
+2024-10-08 17:37:40,112 DEBUG - Starting WinSW in console mode
+2024-10-08 17:37:42,449 DEBUG - Starting WinSW in console mode
+2024-10-08 17:37:42,500 INFO  - Uninstalling service 'Q-ETL log server (Q-ETL)'...
+2024-10-08 17:37:42,510 INFO  - Service 'Q-ETL log server (Q-ETL)' was uninstalled successfully.
+2024-10-08 17:37:47,387 DEBUG - Starting WinSW in console mode
+2024-10-08 17:37:50,212 DEBUG - Starting WinSW in console mode
+2024-10-08 17:37:50,264 INFO  - Installing service 'Q-ETL log server (Q-ETL)'...
+2024-10-08 17:37:50,318 INFO  - Service 'Q-ETL log server (Q-ETL)' was installed successfully.
+2024-10-08 17:38:08,250 DEBUG - Starting WinSW in service mode
+2024-10-08 17:38:08,484 INFO  - Starting WinSW-x64.exe server.cmd 
+2024-10-08 17:38:08,585 ERROR - Failed to start service.
+System.ComponentModel.Win32Exception (2): An error occurred trying to start process 'WinSW-x64.exe' with working directory 'C:\Projects\QGIS_ETL_Python\server\app'. Den angivne fil blev ikke fundet.
+   at System.Diagnostics.Process.StartWithCreateProcess(ProcessStartInfo )
+   at System.Diagnostics.Process.StartCore(ProcessStartInfo )
+   at System.Diagnostics.Process.Start()
+   at WinSW.Util.ProcessHelper.StartProcessAndCallbackForExit(Process processToStart, String executable, String arguments, Dictionary`2 envVars, String workingDirectory, Nullable`1 priority, ProcessCompletionCallback callback, LogHandler logHandler, Boolean hideWindow)
+   at WinSW.WrapperService.StartProcess(Process processToStart, String arguments, String executable, LogHandler logHandler)
+   at WinSW.WrapperService.DoStart()
+   at WinSW.WrapperService.OnStart(String[] args)
+2024-10-08 18:29:53,665 DEBUG - Starting WinSW in console mode
+2024-10-08 18:29:56,297 DEBUG - Starting WinSW in console mode
+2024-10-08 18:29:56,333 INFO  - Uninstalling service 'Q-ETL log server (Q-ETL)'...
+2024-10-08 18:29:56,340 INFO  - Service 'Q-ETL log server (Q-ETL)' was uninstalled successfully.
+2024-10-08 19:01:23,086 DEBUG - Starting WinSW in console mode
+2024-10-08 19:01:25,756 DEBUG - Starting WinSW in console mode
+2024-10-08 19:01:25,793 INFO  - Uninstalling service 'Q-ETL log server (Q-ETL)'...
+2024-10-08 19:01:25,801 WARN  - Service 'Q-ETL log server (Q-ETL)' does not exist.
+2024-10-08 19:01:48,526 DEBUG - Starting WinSW in console mode
+2024-10-08 19:01:51,253 DEBUG - Starting WinSW in console mode
+2024-10-08 19:01:51,291 INFO  - Installing service 'Q-ETL log server (Q-ETL)'...
+2024-10-08 19:01:51,329 INFO  - Service 'Q-ETL log server (Q-ETL)' was installed successfully.
+2024-10-08 19:02:01,624 DEBUG - Starting WinSW in service mode
+2024-10-08 19:02:01,816 INFO  - Starting server.cmd 
+2024-10-08 19:02:01,891 INFO  - Started process 21792
+2024-10-08 19:02:01,912 DEBUG - Forwarding logs of the process System.Diagnostics.Process (cmd) to WinSW.RollingSizeTimeLogAppender
+2024-10-08 19:02:48,717 DEBUG - Starting WinSW in console mode
+2024-10-08 19:02:51,225 DEBUG - Starting WinSW in console mode
+2024-10-08 19:02:51,267 INFO  - Stopping service 'Q-ETL log server (Q-ETL)'...
+2024-10-08 19:02:51,277 INFO  - Service 'Q-ETL log server (Q-ETL)' stopped successfully.
+2024-10-08 19:02:51,279 INFO  - Stopping Q-ETL
+2024-10-08 19:02:51,279 DEBUG - ProcessKill 21792
+2024-10-08 19:02:51,283 DEBUG - Stopping process 21792...
+2024-10-08 19:03:05,744 DEBUG - Starting WinSW in console mode
+2024-10-08 19:03:06,290 DEBUG - Process 21792 terminated.
+2024-10-08 19:03:06,295 INFO  - Finished Q-ETL
+2024-10-08 19:03:08,265 DEBUG - Starting WinSW in console mode
+2024-10-08 19:03:08,303 INFO  - Uninstalling service 'Q-ETL log server (Q-ETL)'...
+2024-10-08 19:03:08,311 INFO  - Service 'Q-ETL log server (Q-ETL)' was uninstalled successfully.
+2024-10-21 18:23:56,006 DEBUG - Starting WinSW in console mode
+2024-10-21 18:23:59,740 DEBUG - Starting WinSW in console mode
+2024-10-21 18:23:59,783 INFO  - Installing service 'Q-ETL log server (Q-ETL)'...
+2024-10-21 18:23:59,824 INFO  - Service 'Q-ETL log server (Q-ETL)' was installed successfully.
+2024-10-21 18:24:51,156 DEBUG - Starting WinSW in service mode
+2024-10-21 18:24:51,377 INFO  - Starting server.cmd 
+2024-10-21 18:24:52,229 INFO  - Started process 16608
+2024-10-21 18:24:52,251 DEBUG - Forwarding logs of the process System.Diagnostics.Process (cmd) to WinSW.RollingSizeTimeLogAppender
+2024-10-21 18:25:22,747 DEBUG - Starting WinSW in service mode
+2024-10-21 18:25:22,892 INFO  - Starting server.cmd 
+2024-10-21 18:25:22,954 INFO  - Started process 22684
+2024-10-21 18:25:22,974 DEBUG - Forwarding logs of the process System.Diagnostics.Process (cmd) to WinSW.RollingSizeTimeLogAppender
+2024-10-21 18:25:53,441 DEBUG - Starting WinSW in service mode
+2024-10-21 18:25:53,599 INFO  - Starting server.cmd 
+2024-10-21 18:25:53,670 INFO  - Started process 9296
+2024-10-21 18:25:53,691 DEBUG - Forwarding logs of the process System.Diagnostics.Process (cmd) to WinSW.RollingSizeTimeLogAppender
+2024-10-21 18:26:24,382 DEBUG - Starting WinSW in service mode
+2024-10-21 18:26:24,619 INFO  - Starting server.cmd 
+2024-10-21 18:26:24,715 INFO  - Started process 26272
+2024-10-21 18:26:24,739 DEBUG - Forwarding logs of the process System.Diagnostics.Process (cmd) to WinSW.RollingSizeTimeLogAppender
+2024-10-21 18:26:55,439 DEBUG - Starting WinSW in service mode
+2024-10-21 18:26:55,661 INFO  - Starting server.cmd 
+2024-10-21 18:26:55,746 INFO  - Started process 2300
+2024-10-21 18:26:55,769 DEBUG - Forwarding logs of the process System.Diagnostics.Process (cmd) to WinSW.RollingSizeTimeLogAppender
+2024-10-21 18:27:20,021 DEBUG - Starting WinSW in console mode
+2024-10-21 18:27:22,620 DEBUG - Starting WinSW in console mode
+2024-10-21 18:27:22,668 INFO  - Uninstalling service 'Q-ETL log server (Q-ETL)'...
+2024-10-21 18:27:22,677 INFO  - Service 'Q-ETL log server (Q-ETL)' was uninstalled successfully.
+2024-10-21 18:27:57,530 DEBUG - Starting WinSW in console mode
+2024-10-21 18:28:00,947 DEBUG - Starting WinSW in console mode
+2024-10-21 18:28:00,983 INFO  - Installing service 'Q-ETL log server (Q-ETL)'...
+2024-10-21 18:28:01,027 INFO  - Service 'Q-ETL log server (Q-ETL)' was installed successfully.
+2024-10-21 18:28:17,410 DEBUG - Starting WinSW in service mode
+2024-10-21 18:28:17,655 INFO  - Starting server.cmd 
+2024-10-21 18:28:18,529 INFO  - Started process 13536
+2024-10-21 18:28:18,556 DEBUG - Forwarding logs of the process System.Diagnostics.Process (cmd) to WinSW.RollingSizeTimeLogAppender
+2024-10-21 18:30:37,345 INFO  - Stopping Q-ETL
+2024-10-21 18:30:37,345 DEBUG - ProcessKill 13536
+2024-10-21 18:30:37,354 DEBUG - Stopping process 13536...
+2024-10-21 18:30:52,375 DEBUG - Process 13536 terminated.
+2024-10-21 18:30:52,382 INFO  - Finished Q-ETL
+2024-10-21 18:31:07,891 DEBUG - Starting WinSW in console mode
+2024-10-21 18:31:38,797 DEBUG - Starting WinSW in console mode
+2024-10-21 18:31:38,843 INFO  - Uninstalling service 'Q-ETL log server (Q-ETL)'...
+2024-10-21 18:31:38,850 INFO  - Service 'Q-ETL log server (Q-ETL)' was uninstalled successfully.
