@@ -1,0 +1,18 @@
+site_name: Q-ETL Documentation
+theme: readthedocs
+Nav:
+  - Home: index.md
+  - Inputs: inputs.md
+  - Workers: workers.md
+  - Cosntructors: constructors.md
+  - Outputs: outputs.md
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          setup_commands:
+            - import sys
+            - sys.path.append('python')
+          selection:
+            docstring_style: numpy
