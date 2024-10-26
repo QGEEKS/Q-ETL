@@ -1226,3 +1226,36 @@ class Worker:
         else:    
             pass
         
+    def get_raster_description(rlayer):
+        """
+        A function that returns layer description object for a raster layer
+
+        Parameters
+        ----------
+        rlayer : 
+            QgsRasterLayer containing the raster image to get description for
+
+        Returns
+        -------
+        dict : 
+            Raster descritption object
+        """
+
+        logger.info(f"Getting raster descrtiption object for {rlayer}")
+        try:
+            descriptor = {
+                'llcorner' : (rlayer.extent().xMinimum(), rlayer.extent().yMinimum()),
+                'urcorner' : (rlayer.extent().xMaximum(), rlayer.extent().yMaximum()),
+                'celsize' : (rlayer.rasterUnitsPerPixelX(), rlayer.rasterUnitsPerPixelY()),
+                'rows' : rlayer.width(),
+                'columns' : rlayer.height(),
+                'crs' : rlayer.crs().authid()
+            }
+            logger.info(f"Raster description read")
+            return descriptor
+        except Exception as error:
+            logger.error("An error occured getting raster description")
+            logger.error(f'{type(error).__name__}  –  {str(error)}')
+            logger.critical("Program terminated" )
+            script_failed()
+
