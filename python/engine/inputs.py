@@ -1,7 +1,7 @@
 from core.logger import *
 from core.misc import layerHasFeatures
 import sys
-from qgis.core import QgsVectorLayer, QgsDataSourceUri
+from qgis.core import QgsVectorLayer, QgsDataSourceUri, QgsRasterLayer
 from random import randrange
 from core.misc import script_failed
 from pathlib import Path
@@ -10,6 +10,32 @@ from core.misc import get_config
 
 class Input_Reader:
     logger = get_logger()
+
+    def raster(path:str):
+        """ 
+        A function that reads araster layer.
+        Input must be a GDAL compatilbe raster format.
+
+        Parameters
+        ----------
+        path : Path to the raster file
+
+        Returns
+        -------
+        QgsRasterLayer containing the raster image from the input file.
+
+        """
+
+        try:
+            logger.info(f'Reading raster layer: {path}')
+            rlayer = QgsRasterLayer(path, "RasterLayer", "gdal")
+            logger.info("Finished raster layer")
+            return rlayer
+        except Exception as error:
+            logger.error(f'An error occured reading raster layer {path}')
+            logger.error(f'{type(error).__name__}  –  {str(error)}')
+            logger.critical("Program terminated")
+            script_failed()
 
     def wfs(uri):
         """

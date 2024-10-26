@@ -3,7 +3,7 @@ from core.misc import get_config, layerHasFeatures
 import sys, copy, os
 import subprocess
 from random import randrange
-from qgis.core import QgsVectorFileWriter, QgsVectorLayerExporter, QgsProject, QgsVectorLayer
+from qgis.core import QgsVectorFileWriter, QgsVectorLayerExporter, QgsProject, QgsVectorLayer,QgsRasterLayer, QgsRasterPipe, QgsRasterFileWriter
 from core.misc import script_failed, create_tempfile, delete_tempfile
 
 import processing
@@ -15,6 +15,48 @@ Processing.initialize()
 class Output_Writer:
 
     logger = get_logger()
+
+    def raster(layer:QgsRasterLayer, path :str):
+        """
+        A function that writes a reaster layer to a file.
+        Output must be a compatible GDAL format.
+
+        Parameters
+        ----------
+        layer : QgsRasterLayer
+            The QgsRasterLayer to be exported to file
+
+        path : str
+            The path where the raster is exported to
+        """
+
+        logger.info(f'Exporting to to raster')
+        try:
+            extent = layer.extent()
+            width, height = layer.width(), layer.height()
+            renderer = layer.renderer()
+            provider=layer.dataProvider()
+            crs = layer.crs().toWkt()
+            pipe = QgsRasterPipe()
+            pipe.set(provider.clone())
+            pipe.set(renderer.clone())
+            file_writer = QgsRasterFileWriter(path)
+            file_writer.writeRaster(pipe,
+                                    width,
+                                    height,
+                                    extent,
+                                    layer.crs())
+        
+            logger.info(f'Export to raster {path} completed')
+
+        except Exception as error:
+            logger.error("An error occured exporting to raster")
+            logger.error(f'{type(error).__name__}  –  {str(error)}')
+            logger.critical("Program terminated")
+            script_failed()
+
+
+
 
     def postgis(layer: QgsVectorLayer, connection : str, dbname: str, schema: str, tablename: str, overwrite: bool = True):
         """
