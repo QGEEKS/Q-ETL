@@ -1,11 +1,13 @@
 site_name: Q-ETL Documentation
-theme: readthedocs
-Nav:
+theme: material
+nav:
   - Home: index.md
-  - Inputs: inputs.md
-  - Workers: workers.md
-  - Cosntructors: constructors.md
-  - Outputs: outputs.md
+  - Getting started: getting_started.md
+  - API:
+    - Inputs: inputs.md
+    - Workers: workers.md
+    - Constructors: constructors.md
+    - Outputs: outputs.md
 plugins:
   - search
   - mkdocstrings:
