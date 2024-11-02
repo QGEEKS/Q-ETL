@@ -1249,7 +1249,7 @@ class Worker:
                 'celsize' : (rlayer.rasterUnitsPerPixelX(), rlayer.rasterUnitsPerPixelY()),
                 'rows' : rlayer.width(),
                 'columns' : rlayer.height(),
-                'crs' : rlayer.crs().authid()
+                'crs' : rlayer.crs()
             }
             logger.info(f"Raster description read")
             return descriptor
@@ -1258,4 +1258,84 @@ class Worker:
             logger.error(f'{type(error).__name__}  –  {str(error)}')
             logger.critical("Program terminated" )
             script_failed()
+
+    def create_raster_descriptor(llcorner: tuple, urcorner: tuple, cellsize: int, crs: str):
+        logger.info(f"Building  raster descrtiption object from inputs")
+        try:
+            descriptor = {
+                'llcorner' : '',
+                'urcorner' : '',
+                'celsize' : '',
+                'rows' : '',
+                'columns' : '',
+                'crs' : ''
+            }
+            logger.info(f"Raster descriptor created")
+            return descriptor
+        except Exception as error:
+            logger.error("An error occured creating raster description")
+            logger.error(f'{type(error).__name__}  –  {str(error)}')
+            logger.critical("Program terminated" )
+            script_failed()
+
+    def constant_raster_by_descriptor(raster_descriptor, datatype):
+        pass
+
+    def constant_raster_by_values(extent: str, crs: str, pixel_size : int, raster_value : int, output : str):
+        """
+        Create a constant raster, with a fixed value 
+
+        Parameters
+        ----------
+        extent : str
+            Extent object (xmin,ymin,xmax,ymax)    
+        
+        crs : str
+            Crs to be used. Format 'EPSG:xxxx'
+
+        pixel_size : int
+            Pixel size for the raster
+
+        raster_value : int
+            Fixed value to be added to all raster cells    
+        
+        output : str
+            Data format of the output. one of ['integer', 'float']. Default integer.
+
+        Returns
+        -------
+        _type_
+            QgsRasterLayer
+        """
+        logger.info(f"Creating constant raster")
+
+        if output == 'integer':
+            format = 3
+        elif output == 'float':
+            format = 6
+        else:
+            format = 3
+
+        input_crs = QgsCoordinateReferenceSystem(crs)
+
+        try:
+            parameter = {
+                'EXTENT': f'{extent} [{crs.authid()}]',
+                'TARGET_CRS': input_crs,
+                'PIXEL_SIZE':pixel_size,
+                'NUMBER':raster_value,
+                'OUTPUT_TYPE':format,
+                'OUTPUT': 'memory:constraster'
+            }
+
+            result = processing.run("native:createconstantrasterlayer", parameter)
+            logger.info(f"{parameter}")
+            logger.info(f"Constant raster created")
+            return result
+
+        except Exception as error:
+            logger.error("An error occured creating constant raster")
+            logger.error(f'{type(error).__name__}  –  {str(error)}')
+            logger.critical("Program terminated" )
+            script_failed()      
 
