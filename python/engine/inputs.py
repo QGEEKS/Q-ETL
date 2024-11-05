@@ -1,6 +1,6 @@
 from core.logger import *
 from core.misc import layerHasFeatures
-import sys
+import sys, json
 from qgis.core import QgsVectorLayer, QgsDataSourceUri, QgsRasterLayer
 from random import randrange
 from core.misc import script_failed
@@ -10,6 +10,7 @@ from core.misc import get_config
 
 class Input_Reader:
     logger = get_logger()
+
 
     def raster(path:str):
         """ 
@@ -33,6 +34,40 @@ class Input_Reader:
             return rlayer
         except Exception as error:
             logger.error(f'An error occured reading raster layer {path}')
+            logger.error(f'{type(error).__name__}  –  {str(error)}')
+            logger.critical("Program terminated")
+            script_failed()
+
+    def rasterDescriptor(path: str):
+        """
+        Reads a raster descriptor from file
+
+        Parameters
+        ----------
+        path : str
+            The path to the raster descriptor file
+
+        Returns
+        -------
+        dict
+            Raster descriptor object
+
+        """
+        logger.info(f'Reading raster descriptor: {path}')
+
+        if os.path.exists(path) == False:
+            logger.info(f'Descriptor file does not exist')
+            logger.critical("Program terminated")
+            script_failed()
+
+        try:
+            with open(path) as f:
+                descriptor = json.load(f)
+            logger.info(f'Finished reading raster descriptor')
+            return descriptor
+        
+        except Exception as error:
+            logger.error(f'An error occured reading raster descriptor')
             logger.error(f'{type(error).__name__}  –  {str(error)}')
             logger.critical("Program terminated")
             script_failed()

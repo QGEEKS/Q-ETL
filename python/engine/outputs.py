@@ -1,6 +1,6 @@
 from core.logger import *
 from core.misc import get_config, layerHasFeatures
-import sys, copy, os
+import sys, copy, os, json
 import subprocess
 from random import randrange
 from qgis.core import QgsVectorFileWriter, QgsVectorLayerExporter, QgsProject, QgsVectorLayer,QgsRasterLayer, QgsRasterPipe, QgsRasterFileWriter
@@ -55,7 +55,33 @@ class Output_Writer:
             logger.critical("Program terminated")
             script_failed()
 
+    def rasterDescriptor(descriptor: dict, path: str):
+        """
+        Saves a raster descriptor to file
 
+        Parameters
+        ----------
+        descriptor : dict
+            Raster descriptor dict    
+        
+        path : str
+            The path where the descriptor file is written.
+            
+        """
+        logger.info(f'Saving raster descriptor to file {path}')
+
+        if os.path.exists(path):
+            logger.info(f'Descriptor file exists, deleting it')
+            os.remove(path)
+        try:
+            with open(path, 'w') as file:
+                file.write(json.dumps(descriptor)) 
+            logger.info(f'Raster descriptor saved to file')
+        except Exception as error:
+            logger.error("An error occured exporting raster descriptor")
+            logger.error(f'{type(error).__name__}  –  {str(error)}')
+            logger.critical("Program terminated")
+            script_failed()
 
 
     def postgis(layer: QgsVectorLayer, connection : str, dbname: str, schema: str, tablename: str, overwrite: bool = True):

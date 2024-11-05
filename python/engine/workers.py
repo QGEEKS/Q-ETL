@@ -1249,7 +1249,7 @@ class Worker:
                 'celsize' : (rlayer.rasterUnitsPerPixelX(), rlayer.rasterUnitsPerPixelY()),
                 'rows' : rlayer.width(),
                 'columns' : rlayer.height(),
-                'crs' : rlayer.crs()
+                'crs' : rlayer.crs().authid()
             }
             logger.info(f"Raster description read")
             return descriptor
