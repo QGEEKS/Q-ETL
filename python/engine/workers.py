@@ -1278,9 +1278,46 @@ class Worker:
             logger.critical("Program terminated" )
             script_failed()
 
-    def constant_raster_by_descriptor(raster_descriptor, datatype):
-        pass
+    def constant_raster_by_descriptor(raster_descriptor : dict, value: str, output : str):
+        logger.info(f"Creating constant raster")
+        try:
+            crs = QgsCoordinateReferenceSystem(raster_descriptor['crs'])
+            extent = f'{raster_descriptor['llcorner'][0]},{raster_descriptor['llcorner'][1]},{raster_descriptor['urcorner'][0]},{raster_descriptor['urcorner'][1]},[{raster_descriptor['crs']}]'
+            
+            if output in ['Float', 'float']:
+                value = float(value)
+            else:
+                value = int(value)
 
+            if output in ['integer', 'Integer']:
+                format = 3
+            elif output == ['float', 'Float']:
+                format = 6
+            else:
+                format = 3
+
+            params = {
+                'EXTENT':extent,
+                'TARGET_CRS': crs,
+                'PIXEL_SIZE':raster_descriptor['celsize'],
+                'NUMBER':value,
+                'OUTPUT_TYPE':format,
+                'OUTPUT':'TEMPORARY_OUTPUT'
+                }
+            
+            result = processing.run("native:createconstantrasterlayer", params)
+
+
+            logger.info(f"{params}")
+            logger.info(f"Constant raster created")
+            return result
+
+        except Exception as error:
+            logger.error("An error occured creating constant raster")
+            logger.error(f'{type(error).__name__}  –  {str(error)}')
+            logger.critical("Program terminated" )
+            script_failed()     
+    
     def constant_raster_by_values(extent: str, crs: str, pixel_size : int, raster_value : int, output : str):
         """
         Create a constant raster, with a fixed value 
@@ -1309,9 +1346,9 @@ class Worker:
         """
         logger.info(f"Creating constant raster")
 
-        if output == 'integer':
+        if output in ['integer', 'Integer']:
             format = 3
-        elif output == 'float':
+        elif output == ['float', 'Float']:
             format = 6
         else:
             format = 3
