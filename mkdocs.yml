@@ -4,7 +4,7 @@ nav:
   - Home: index.md
   - Getting started: getting_started.md
   - API:
-    - Inputs: inputs.md
+    - Inputs: Inputs.md
     - Workers: workers.md
     - Constructors: constructors.md
     - Outputs: outputs.md
