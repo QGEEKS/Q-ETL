@@ -7,6 +7,7 @@ from core.misc import get_config, layerHasFeatures
 from qgis.analysis import QgsNativeAlgorithms
 from qgis.core import QgsCoordinateReferenceSystem, QgsVectorLayer, QgsProcessingFeedback
 from qgis import processing
+import requests
 
 
 class Worker:
@@ -1225,4 +1226,68 @@ class Worker:
                 script_failed()
         else:    
             pass
+
+    def download_file(url, local_filename):
+        """
+        Downloads a file from the given URL and saves it locally.
+
+        Parameters
+        ----------
+        url : str
+            The URL of the file to download
+        local_filename : str
+            The local path where the file should be saved.
+
+        Returns
+        -------
+        Boolean
+            True if download is succesful, otherwise False.
+        """
+
+        logger.info(f'Downloading file from {url}')
+        try:
+            with requests.get(url, stream=True) as response:
+                response.raise_for_status()
+                with open(local_filename, 'wb') as file:
+                    for chunk in response.iter_content(chunk_size=8192):
+                        file.write(chunk)
+            
+            logger.info(f'Download completed: {local_filename}')
+            return True
         
+        except Exception as error:
+            logger.error('An error occurred when downloading the file')
+            logger.error(f'{type(error).__name__}  –  {str(error)}')
+            logger.critical("Program terminated" )
+            script_failed()
+        
+        return False
+
+    def assign_projection(layer: QgsVectorLayer, targetEPSG: int):
+        """
+        Assign a new projection on a layer. The returned layer is precisely the same layer but assigned a new CRS.
+
+        Parameters
+        ----------
+        layer : QgsVectorLayer
+            The layer to be assigned a new CRS.
+        
+        targetEPSG : int
+            The EPSG code og the target coordinate system.
+        """
+        logger.info(f'Assigning CRS EPSG:{targetEPSG} to {layer.name()}')
+        try:
+            parameter = {
+                'INPUT': layer,
+                'CRS': QgsCoordinateReferenceSystem(targetEPSG),
+                'OUTPUT': 'TEMPORARY_OUTPUT'
+            }
+            logger.info(f'Parameters: {str(parameter)}')
+            result = processing.run('native:assignprojection', parameter, feedback=Worker.progress)['OUTPUT']
+            logger.info('Assigning projection finished')
+            return result
+        except Exception as error:
+            logger.error("An error occured assigning a new crs to layer")
+            logger.error(f'{type(error).__name__}  –  {str(error)}')
+            logger.critical("Program terminated" )
+            sys.exit()
