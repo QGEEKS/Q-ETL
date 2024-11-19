@@ -16,6 +16,37 @@ class Output_Writer:
 
     logger = get_logger()
 
+    def excel(layer: QgsVectorLayer, path : str):
+        """
+        A function that exports a QgsVectorLayer into an excel spredsheet.
+
+        Parameters
+        ----------
+        layer : QgsVectorLayer
+            The QgsVectorLayer to be exported into an excel spredsheet.
+
+        path : str
+            the ouput file to be created.
+        
+        """
+
+        if layerHasFeatures(layer):
+            logger.info(f'Writing {str(layer.featureCount())} features to Excel : {path}')
+        try:
+            parameter = {'LAYERS': [layer],
+                    'USE_ALIAS': True,
+                    'FORMATTED_VALUES': False,
+                    'OUTPUT': path}
+            processing.run("native:exporttospreadsheet", parameter)
+            logger.info(f'Parameters: {str(parameter)}')
+            logger.info("Export to Excel completed")
+        except Exception as error:
+            logger.error("An error occured exporting layer to Excel")
+            logger.error(f'{type(error).__name__}  –  {str(error)}')
+            logger.critical("Program terminated")
+            script_failed()
+
+
     def postgis(layer: QgsVectorLayer, connection : str, dbname: str, schema: str, tablename: str, overwrite: bool = True):
         """
         A function that exports a QgsVectorLayer into a Postgis database.
