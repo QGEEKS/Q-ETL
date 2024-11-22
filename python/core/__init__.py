@@ -1,25 +1,26 @@
 import sys, os
 from qgis.core import QgsApplication, Qgis
 from core.logger import *
-from core.misc import get_config
+from core.misc import get_config, createJobRun
+from core.db import *
 import atexit
 import tracemalloc
+import random
+
 
 tracemalloc.start()
+now = datetime.now()
 
 #settings = _local_configuration.loadConfig()
 settings = get_config()
 logger = initialize_logger(settings)
-start_logfile()
-
+start_logfile(now)
 
 from core.misc import validateEnvironment, describeEngine, get_postgres_connections, get_bin_folder, script_finished
 settings['bin_path'] = get_bin_folder(settings)
 validateEnvironment(settings)
 
-
 settings['Postgres_Ponnections'] = get_postgres_connections(settings)
-
 
 QgsApplication.setPrefixPath(settings["Qgs_PrefixPath"], True)
 qgs = QgsApplication([], False)
@@ -44,5 +45,16 @@ except Exception as e :
     sys.exit()
 
 describeEngine(ScriptUtils.scriptsFolders(), QgsApplication.processingRegistry().providerById("script").algorithms(), Qgis.QGIS_VERSION)
+
+#Creating job run 
+jobrun = random.getrandbits(36)
+createJobRun(jobrun)
+
+#Internal DB startup
+initdb()
+
+##Write job to db
+startjob(jobrun, argv[0], now)
+
 
 atexit.register(script_finished)

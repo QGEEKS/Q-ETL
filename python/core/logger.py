@@ -33,8 +33,8 @@ def initialize_logger(settings):
 def exc_handler(exctype, value, tb):
     logger.exception(''.join(traceback.format_exception(exctype, value, tb)))
 
-def start_logfile():
-    now = datetime.now()
+def start_logfile(now):
+
     logger.info('##################################################')
     logger.info('Q-ETL JOB LOG')
     logger.info('JOB: ' + argv[0])
