@@ -16,6 +16,16 @@ settings = get_config()
 logger = initialize_logger(settings)
 start_logfile(now)
 
+#Creating job run 
+jobrun = random.getrandbits(36)
+createJobRun(jobrun)
+
+#Internal DB startup
+initdb()
+
+##Write job to db
+startjob(jobrun, argv[0], now, get_logfile())
+
 from core.misc import validateEnvironment, describeEngine, get_postgres_connections, get_bin_folder, script_finished
 settings['bin_path'] = get_bin_folder(settings)
 validateEnvironment(settings)
@@ -46,15 +56,7 @@ except Exception as e :
 
 describeEngine(ScriptUtils.scriptsFolders(), QgsApplication.processingRegistry().providerById("script").algorithms(), Qgis.QGIS_VERSION)
 
-#Creating job run 
-jobrun = random.getrandbits(36)
-createJobRun(jobrun)
 
-#Internal DB startup
-initdb()
-
-##Write job to db
-startjob(jobrun, argv[0], now)
 
 
 atexit.register(script_finished)

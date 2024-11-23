@@ -26,7 +26,8 @@ def populatedb(conn):
             jobname text NOT NULL, 
             start_time TEXT, 
             end_time TEXT,
-            status TEXT
+            status TEXT,
+            logfile TEXT 
         );"""
     
     cursor = conn.cursor()
@@ -43,12 +44,12 @@ def is_db_populated (conn):
     else:
         return False
 
-def startjob(jobrun, name, time):
+def startjob(jobrun, name, time, logfile):
     db_dir = os.getcwd() + '/db'
     db_file = db_dir + '/internal.db'
     conn = sqlite3.connect(db_file) 
     cursor = conn.cursor()
-    sql_insert =  f"""INSERT INTO jobs (run_id, jobname, start_time, end_time, status) VALUES ('{jobrun}', '{name}', '{time}', NULL, 'Running')"""
+    sql_insert =  f"""INSERT INTO jobs (run_id, jobname, start_time, end_time, status, logfile) VALUES ('{jobrun}', '{name}', '{time}', NULL, 'Running', '{logfile}')"""
     cursor.execute(sql_insert)
     conn.commit()
     conn.close() 

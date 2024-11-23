@@ -47,4 +47,7 @@ def start_logfile(now):
 def get_logger():
     return logger
 
+def get_logfile():
+    return logfile
+
 

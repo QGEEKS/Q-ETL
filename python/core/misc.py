@@ -15,6 +15,7 @@ import tracemalloc
 
 def createJobRun(id):
     config = get_config()
+    logfile = get_logfile()
     jobrun_path = config['TempFolder'] + 'job_run.json'
     try:
         os.remove(jobrun_path)
@@ -22,7 +23,8 @@ def createJobRun(id):
         pass
 
     element = {
-        'id' : str(id)
+        'id' : str(id),
+        'logfile' : logfile
     }
 
     with open(jobrun_path, 'w') as f:
