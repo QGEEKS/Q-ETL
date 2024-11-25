@@ -1,4 +1,5 @@
 from core.logger import *
+from core.db import *
 import sys
 import platform,socket,re,uuid,json
 import pip._internal as pip
@@ -11,6 +12,39 @@ from email.mime.text import MIMEText
 from qgis.core import QgsVectorFileWriter, QgsProject
 from random import randrange
 import tracemalloc
+
+def createJobRun(id):
+    config = get_config()
+    logfile = get_logfile()
+    jobrun_path = config['TempFolder'] + 'job_run.json'
+    try:
+        os.remove(jobrun_path)
+    except OSError:
+        pass
+
+    element = {
+        'id' : str(id),
+        'logfile' : logfile
+    }
+
+    with open(jobrun_path, 'w') as f:
+        json.dump(element, f)
+
+def remove_jobrun():
+    config = get_config()
+    jobrun_path = config['TempFolder'] + 'job_run.json'
+    try:
+        os.remove(jobrun_path)
+    except OSError:
+        pass
+
+def read_jobrun():
+    config = get_config()
+    jobrun_path = config['TempFolder'] + 'job_run.json'
+    with open(jobrun_path) as f:
+        data = json.load(f)
+    return data
+
 
 def layerHasFeatures(layer: str):
     if layer.featureCount() == 0:
@@ -226,6 +260,8 @@ def script_finished():
     logger = get_logger()
     now = datetime.now()
     current, peak = tracemalloc.get_traced_memory()
+    jobrun = read_jobrun()
+    update_job(jobrun['id'], 'Finished', now)
     logger.info('')
     logger.info('')
     logger.info('##################################################')
@@ -240,6 +276,8 @@ def script_failed():
     logger = get_logger()
     now = datetime.now()
     config = get_config()
+    jobrun = read_jobrun()
+    update_job(jobrun['id'], 'Failed', now)
 
     email = bool(config["emailConfiguration"]["emailOnError"])
 
