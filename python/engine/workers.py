@@ -1088,36 +1088,6 @@ class Worker:
             logger.critical("Program terminated" )
             sys.exit()
 
-    def fileDeleter(file: str):
-        """
-        Delete a specific file.
-
-        Parameters
-        ----------
-        file : str
-            The full path to the file to be deleted
-
-        Returns
-        -------
-        None
-        
-        """
-
-        logger.info(f'Deleting file {file}')
-        try:
-
-            if os.path.exists(file):
-                os.remove(file)
-                logger.info(f'File {file} deleted')
-            else:
-                logger.info(f'File {file} does not exist')
-            return None
-        except Exception as error:
-            logger.error("An error occured deleting file")
-            logger.error(f'{type(error).__name__}  –  {str(error)}')
-            logger.critical("Program terminated" )
-            script_failed()
-
     def folderTruncator(folder: str):
         """
         Deletes all contents of a folder (files and directories), but not the folder it self.
@@ -1292,116 +1262,118 @@ class Worker:
             logger.critical("Program terminated" )
             sys.exit()
 
-    def file_deleter(filepath : str):
-        """
-        A worker that deletes a specific file.
+    class File:
 
-        Parameters
-        ----------
-            filepath (str): The full path to the file to delete
+        def deleter(filepath : str):
+            """
+            A worker that deletes a specific file.
 
-        """
-        logger.info(f'Deleting file {filepath}')
-        try:
-            if os.path.exists(filepath):
-                os.remove(filepath)
-                logger.info(f'File found and deleted')
-            else:
-                logger.info(f'File does not exist, skipping delete.')
+            Parameters
+            ----------
+                filepath (str): The full path to the file to delete
+
+            """
+            logger.info(f'Deleting file {filepath}')
+            try:
+                if os.path.exists(filepath):
+                    os.remove(filepath)
+                    logger.info(f'File found and deleted')
+                else:
+                    logger.info(f'File does not exist, skipping delete.')
+            
+            except Exception as error:
+                logger.error(f"An error occured deleting file {filepath}")
+                logger.error(f'{type(error).__name__}  –  {str(error)}')
+                logger.critical("Program terminated" )
+                sys.exit()
         
-        except Exception as error:
-            logger.error(f"An error occured deleting file {filepath}")
-            logger.error(f'{type(error).__name__}  –  {str(error)}')
-            logger.critical("Program terminated" )
-            sys.exit()
-    
-    def file_mover(input_filepath : str, output_filepath : str):
-        """
-        Moves a file from one location to another.
-        Can also be used for renaming.
+        def mover(input_filepath : str, output_filepath : str):
+            """
+            Moves a file from one location to another.
+            Can also be used for renaming.
 
-        Parameters
-        ----------
+            Parameters
+            ----------
 
-            input_filepath (str): The full path to the file to move 
+                input_filepath (str): The full path to the file to move 
 
-            output_filepath (str): The full path to the target file
-        """
-        logger.info(f'Moving file {input_filepath} to {output_filepath}')
-        try:
-            if os.path.exists(input_filepath):
-                shutil.copyfile(input_filepath, output_filepath)
-                logger.info(f'File moved')
-            else:
-                logger.info(f'Input file does not exist, skipping move.')
-        
-        except Exception as error:
-            logger.error(f"An error occured moving file {input_filepath}")
-            logger.error(f'{type(error).__name__}  –  {str(error)}')
-            logger.critical("Program terminated" )
-            sys.exit()
+                output_filepath (str): The full path to the target file
+            """
+            logger.info(f'Moving file {input_filepath} to {output_filepath}')
+            try:
+                if os.path.exists(input_filepath):
+                    shutil.copyfile(input_filepath, output_filepath)
+                    logger.info(f'File moved')
+                else:
+                    logger.info(f'Input file does not exist, skipping move.')
+            
+            except Exception as error:
+                logger.error(f"An error occured moving file {input_filepath}")
+                logger.error(f'{type(error).__name__}  –  {str(error)}')
+                logger.critical("Program terminated" )
+                sys.exit()
 
-    def file_lister(input_folder : str, file_extension : str):
-        """
-        Creates a python list of files with a specific extension, from an input location.
-        Returns the full path to the files. 
+        def lister(input_folder : str, file_extension : str):
+            """
+            Creates a python list of files with a specific extension, from an input location.
+            Returns the full path to the files. 
 
-        Parameters
-        ----------
+            Parameters
+            ----------
 
-            input_folder (str): The full path to teh input folder.
+                input_folder (str): The full path to teh input folder.
 
-            file_extension (str): The file extension to search for.
+                file_extension (str): The file extension to search for.
 
-        Returns
-        -------
-        List
-            A list of file paths derived from the input directory of the specified file type
-        """
-        filelist = []
-        logger.info(f'Building filelist of {file_extension}-files from directory {input_folder}')
-        try:
-            for root, dirs, files in os.walk(input_folder):          
-                for file in files:
-                    if file.endswith(file_extension):
-                        filelist.append(os.path.join(root, file))
-            if len(filelist) > 0:
-                logger.info(f'Filelist returning {len(filelist)} elements')
-                return filelist
-            else:
-                logger.info(f'Returning empty filelist for destinateion {input_folder}')
-                return []
-        except Exception as error:
-            logger.error(f"An error occured listing files from folder {input_folder}")
-            logger.error(f'{type(error).__name__}  –  {str(error)}')
-            logger.critical("Program terminated" )
-            sys.exit()
+            Returns
+            -------
+            List
+                A list of file paths derived from the input directory of the specified file type
+            """
+            filelist = []
+            logger.info(f'Building filelist of {file_extension}-files from directory {input_folder}')
+            try:
+                for root, dirs, files in os.walk(input_folder):          
+                    for file in files:
+                        if file.endswith(file_extension):
+                            filelist.append(os.path.join(root, file))
+                if len(filelist) > 0:
+                    logger.info(f'Filelist returning {len(filelist)} elements')
+                    return filelist
+                else:
+                    logger.info(f'Returning empty filelist for destinateion {input_folder}')
+                    return []
+            except Exception as error:
+                logger.error(f"An error occured listing files from folder {input_folder}")
+                logger.error(f'{type(error).__name__}  –  {str(error)}')
+                logger.critical("Program terminated" )
+                sys.exit()
 
-    def file_existence_checker(input_path : str):
-        """
-        Checks if a specific file exists. Returns True if file exists, False if not.
+        def existence_checker(input_path : str):
+            """
+            Checks if a specific file exists. Returns True if file exists, False if not.
 
-        Parameters
-        ----------
+            Parameters
+            ----------
 
-            input_folder (str): The full path to the input folder.
+                input_folder (str): The full path to the input folder.
 
 
-        Returns
-        -------
-        Boolean
-            True/False if file exists.
-        """
-        logger.info(f'Checking if file {input_path} exists')
-        try:
-            if os.path.exists(input_path):
-                logger.info(f'File exists, returning True')
-                return True
-            else:
-                logger.info(f'File does not exist, returning False')
-                return False
-        except Exception as error:
-            logger.error(f"An error occured checking if file {input_path} exists")
-            logger.error(f'{type(error).__name__}  –  {str(error)}')
-            logger.critical("Program terminated" )
-            sys.exit()
+            Returns
+            -------
+            Boolean
+                True/False if file exists.
+            """
+            logger.info(f'Checking if file {input_path} exists')
+            try:
+                if os.path.exists(input_path):
+                    logger.info(f'File exists, returning True')
+                    return True
+                else:
+                    logger.info(f'File does not exist, returning False')
+                    return False
+            except Exception as error:
+                logger.error(f"An error occured checking if file {input_path} exists")
+                logger.error(f'{type(error).__name__}  –  {str(error)}')
+                logger.critical("Program terminated" )
+                sys.exit()
