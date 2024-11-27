@@ -11,6 +11,9 @@ import requests
 
 
 class Worker:
+    '''
+    Base class for transforming data.
+    '''
 
     ## Method that draws the progress bar
     def printProgressBar(value,label):
@@ -37,6 +40,10 @@ class Worker:
 
 
     class Vector:
+        '''
+        A Worker subclass that contains methods to transform vector data or their attributes.
+        '''
+
         def attributeindex(layer: QgsVectorLayer, field: str):
             """
             Creates an index to speed up queries made against a field in a table.
@@ -1182,6 +1189,9 @@ class Worker:
                 sys.exit()
 
     class File:
+        '''
+        A Worker subclass that contains methods to work with the filesystem.
+        '''
 
         def download_file(url, local_filename):
             """
