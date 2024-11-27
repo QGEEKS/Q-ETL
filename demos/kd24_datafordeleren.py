@@ -12,5 +12,5 @@ layer = reader.wfs("""srsname='EPSG:25832'
                    version='auto' 
                    sql=SELECT * FROM Jordstykke_Gaeldende WHERE Jordstykke_Gaeldende.ejerlavskode = 21751""")
 
-reprojected = worker.reproject(layer, 3857)
-Output_Writer.geopackage(reprojected, 'ejerlav', 'c:/temp/output.gpkg', True)
+reprojected = worker.Vector.reproject(layer, 3857)
+output.geopackage(reprojected, 'ejerlav', 'c:/temp/output.gpkg', True)

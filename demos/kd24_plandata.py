@@ -9,8 +9,8 @@ input_tabeller = ['theme_pdk_zonekort_v', 'theme_pdk_lokalplan_vedtaget_v', 'the
 
 ## Database-klargøring
 
-worker.execute_sql('MyPostGIS', 'Postgres', """DROP SCHEMA IF exists plandata CASCADE""" , 'gis')
-worker.execute_sql('MyPostGIS', 'Postgres', """CREATE SCHEMA plandata""" , 'gis')
+worker.Vector.execute_sql('MyPostGIS', 'Postgres', """DROP SCHEMA IF exists plandata CASCADE""" , 'gis')
+worker.Vector.execute_sql('MyPostGIS', 'Postgres', """CREATE SCHEMA plandata""" , 'gis')
 
 ## Henter data, et lag af gangen
 

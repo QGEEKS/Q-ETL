@@ -32,7 +32,7 @@ except zipfile.BadZipFile:
 geoJson_filer = [file for file in Path(extract_path).rglob('*.geojson')]
 
 # Klargøring af database
-worker.execute_sql('MyPostGIS', 'Postgres', 'CREATE SCHEMA IF NOT EXISTS geojson_zip', 'gis')
+worker.Vector.execute_sql('MyPostGIS', 'Postgres', 'CREATE SCHEMA IF NOT EXISTS geojson_zip', 'gis')
 
 # Henter og gemmer data i database et datasæt ad gangen
 for geojson_filepath in geoJson_filer:
