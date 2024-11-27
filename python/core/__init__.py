@@ -41,11 +41,12 @@ try:
     sys.path.append(settings["QGIS_Plugin_Path"])
     import processing
     from processing.core.Processing import Processing
-    from processing.script.ScriptUtils import *
+
     from qgis.analysis import QgsNativeAlgorithms
     Processing.initialize()
     QgsApplication.processingRegistry().addProvider(QgsNativeAlgorithms())
     from processing.script import ScriptUtils
+    from processing.modeler.ModelerUtils import ModelerUtils
     logger.info('QGIS ressources loaded sucesfully')
 
 except Exception as e :
@@ -54,9 +55,7 @@ except Exception as e :
     logger.critical('Program terminated')
     sys.exit()
 
-describeEngine(ScriptUtils.scriptsFolders(), QgsApplication.processingRegistry().providerById("script").algorithms(), Qgis.QGIS_VERSION)
-
-
+describeEngine(ScriptUtils.scriptsFolders(), ModelerUtils.modelsFolders(), QgsApplication.processingRegistry().providerById("script").algorithms(), Qgis.QGIS_VERSION)
 
 
 atexit.register(script_finished)

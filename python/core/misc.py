@@ -157,7 +157,7 @@ def validateEnvironment(settings):
     logger.info('')  
     logger.info('Environement and settings OK !')     
 
-def describeEngine(scriptfolder, algorithms, version):
+def describeEngine(scriptfolder, modelfolder, algorithms, version):
     logger = get_logger()
     qgis_supported = get_qgis_support()
 
@@ -199,6 +199,7 @@ def describeEngine(scriptfolder, algorithms, version):
     logger.info("")
     logger.info("QGIS version: " + str(version) + "                ")
     logger.info("Q-ETL status: " + str(supported) + "                ")
+    logger.info("Model folder: " + str(modelfolder) + "")
     logger.info("Script folder: " + str(scriptfolder) + "")
     algs = []
     for s in algorithms:
