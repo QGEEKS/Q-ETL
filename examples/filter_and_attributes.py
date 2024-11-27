@@ -7,10 +7,10 @@ wfslayer = input_reader.wfs("srsname='EPSG:4326' typename='ms:continents' url='h
 
 # Selecting features with attribute NA2DESC = 'Denmark'
 worker = Worker
-denmarkLayer = worker.extractByExpression(wfslayer, '"NA2DESC" = \'Denmark\'')
+denmarkLayer = worker.Vector.extractByExpression(wfslayer, '"NA2DESC" = \'Denmark\'')
 
 ## Add incremental ID field
-fidLayer = worker.addAutoIncrementalField(denmarkLayer, 'FID', 0)
+fidLayer = worker.Vector.addAutoIncrementalField(denmarkLayer, 'FID', 0)
 
 ## Export to GeoJson
 output_writer = Output_Writer
