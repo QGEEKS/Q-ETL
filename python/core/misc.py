@@ -13,6 +13,12 @@ from qgis.core import QgsVectorFileWriter, QgsProject
 from random import randrange
 import tracemalloc
 
+def get_version():
+    with open('version.json') as f:
+        data = json.load(f)
+    return  data['version']
+
+
 def createJobRun(id):
     config = get_config()
     logfile = get_logfile()
@@ -157,7 +163,7 @@ def validateEnvironment(settings):
     logger.info('')  
     logger.info('Environement and settings OK !')     
 
-def describeEngine(scriptfolder, algorithms, version):
+def describeEngine(scriptfolder, algorithms, version, qetl_version):
     logger = get_logger()
     qgis_supported = get_qgis_support()
 
@@ -197,8 +203,9 @@ def describeEngine(scriptfolder, algorithms, version):
     logger.info("Available memory: " + info['ram'] + " ")
     logger.info("Memory-profiling : Active ")
     logger.info("")
+    logger.info("Q-ETL version: " + str(qetl_version) + "                ")
     logger.info("QGIS version: " + str(version) + "                ")
-    logger.info("Q-ETL status: " + str(supported) + "                ")
+    logger.info("Q-ETL / QGIS status: " + str(supported) + "                ")
     logger.info("Script folder: " + str(scriptfolder) + "")
     algs = []
     for s in algorithms:

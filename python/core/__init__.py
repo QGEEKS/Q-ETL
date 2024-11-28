@@ -1,7 +1,7 @@
 import sys, os
 from qgis.core import QgsApplication, Qgis
 from core.logger import *
-from core.misc import get_config, createJobRun
+from core.misc import get_config, createJobRun, get_version
 from core.db import *
 import atexit
 import tracemalloc
@@ -14,6 +14,7 @@ now = datetime.now()
 #settings = _local_configuration.loadConfig()
 settings = get_config()
 logger = initialize_logger(settings)
+version = get_version()
 start_logfile(now)
 
 #Creating job run 
@@ -54,7 +55,7 @@ except Exception as e :
     logger.critical('Program terminated')
     sys.exit()
 
-describeEngine(ScriptUtils.scriptsFolders(), QgsApplication.processingRegistry().providerById("script").algorithms(), Qgis.QGIS_VERSION)
+describeEngine(ScriptUtils.scriptsFolders(), QgsApplication.processingRegistry().providerById("script").algorithms(), Qgis.QGIS_VERSION, version)
 
 
 
