@@ -1,7 +1,7 @@
 import sys, os
 from qgis.core import QgsApplication, Qgis
 from core.logger import *
-from core.misc import get_config, createJobRun, get_version
+from core.misc import get_config, createJobRun, get_version, install_dependencies
 from core.db import *
 import atexit
 import tracemalloc
@@ -16,6 +16,9 @@ settings = get_config()
 logger = initialize_logger(settings)
 version = get_version()
 start_logfile(now)
+
+## installing dependencies
+install_dependencies()
 
 #Creating job run 
 jobrun = random.getrandbits(36)
