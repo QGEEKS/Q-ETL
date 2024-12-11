@@ -1,6 +1,7 @@
 from core.logger import *
 from core.db import *
 import sys
+import subprocess
 import platform,socket,re,uuid,json
 import pip._internal as pip
 from sys import argv
@@ -12,6 +13,33 @@ from email.mime.text import MIMEText
 from qgis.core import QgsVectorFileWriter, QgsProject
 from random import randrange
 import tracemalloc
+
+
+def install_dependencies():
+    logfile = get_logfile()
+    try:
+        import psutil
+    except:
+        logger.info(f'Missing dependency found: psutil')
+        try:
+            subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'psutil'])
+            import psutil
+        except:
+            logger.info(f'Unable to install dependencies - run the editor in admin mode on first run')
+            script_failed()
+        logger.info(f'Dependency: psutil - installed')
+
+    try:
+        import geopandas
+    except:
+        logger.info(f'Missing dependency found: geopandas')
+        try:
+            subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'geopandas'])
+            import geopandas
+        except:
+            logger.info(f'Unable to install dependencies - run the editor in admin mode on first run')
+            script_failed()
+        logger.info(f'Dependency: geopandas - installed')
 
 def get_version():
     with open('version.json') as f:
