@@ -1,9 +1,26 @@
-from fastapi import FastAPI
 import sqlite3
 from datetime import datetime
-import uvicorn
 from pathlib import Path
 import subprocess
+import sys
+
+try:
+    from fastapi import FastAPI
+except:
+    try:
+        subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'fastapi'])
+        from fastapi import FastAPI
+    except Exception as error:
+        print(error)
+
+try:
+    import uvicorn
+except:
+    try:
+        subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'uvicorn'])
+        import uvicorn
+    except Exception as error:
+        print(error)
 
 def get_db_dir():
     current_dir = Path(__file__).parent
@@ -29,8 +46,8 @@ def read_jobs():
     conn.close()
     return sorted_jobs_list
 
-@app.get('/run_code/{script_name}')
-def run_code(script_name: str):
+@app.get('/executor/{script_name}')
+def executor(script_name: str):
     allowed_scripts = ['development']
     if script_name in allowed_scripts:
         cmd_path = Path(__file__).parent.parent / f'{script_name}.cmd'
