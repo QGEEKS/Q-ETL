@@ -79,6 +79,211 @@ class Worker:
                 logger.critical("Program terminated" )
                 sys.exit()
 
+        def symmetricaldifference(inputlayer: QgsVectorLayer, overlay_layer: QgsVectorLayer):
+            """
+            Creates a layer containing features from both the input and overlay layers but with the overlapping areas between the two layers removed.
+            The attribute table of the symmetrical difference layer contains attributes and fields from both the input and overlay layers.
+
+            Parameters
+            ----------
+            inputlayer : QgsVectorLayer
+                First layer to extract (parts of) features from.
+
+            overlay_layer : QgsVectorLayer
+                Second layer to extract (parts of) features from. Ideally the geometry type should be the same as input layer.
+
+            Returns
+            -------
+            QgsVectorLayer
+                Specify the layer to contain (the parts of) the features from the input and overlay layers that do not overlap features from the other layer
+            """
+
+            logger.info('calcualting symetrical difference')
+            try:
+                parameters = {
+                    'INPUT': inputlayer,
+                    'OVERLAY' : overlay_layer,
+                    'OUTPUT': 'memory:symmetricaldifference'
+                }
+                logger.info(f'Parameters: {str(parameters)}')
+                result = processing.run('native:symmetricaldifference', parameters, feedback=Worker.progress)['OUTPUT']
+                logger.info('Symmetricaldifference finished')
+                return result
+            except Exception as error:
+                logger.error("An error occured in symmetricaldifference")
+                logger.error(f'{type(error).__name__}  –  {str(error)}')
+                logger.critical("Program terminated" )
+                script_failed()
+
+        def lineintersections(inputlayer: QgsVectorLayer, split_layer: QgsVectorLayer, input_fields: list, intersect_fields: list):
+            """
+            Splits the lines or polygons in one layer using the lines or polygon rings in another layer to define the breaking points. Intersection between geometries in both layers are considered as split points.
+            Output will contain multi geometries for split features.
+
+            Parameters
+            ----------
+            inputlayer : QgsVectorLayer
+                Input line layer.
+
+            split_layer : QgsVectorLayer
+                Layer to use to find line intersections.
+
+            input_fields : list
+                Field(s) of the input layer to keep in the output. If no fields are chosen all fields are taken.
+
+            intersect_fields : list
+                Field(s) of the intersect layer to keep in the output. If no fields are chosen all fields are taken. Duplicate field names will be appended a count suffix to avoid collision
+
+            Returns
+            -------
+            QgsVectorLayer
+                Specify the layer to contain the intersection points of the lines from the input and overlay layers.
+
+            """
+            logger.info('Performing line intersections')
+            try:
+                parameters = {
+                    'INPUT': inputlayer,
+                    'INTERSECT': split_layer,
+                    'INPUT_FIELDS' : input_fields, 
+                    'INTERSECT_FIELDS' : intersect_fields,
+                    'OUTPUT': 'memory:multipart'
+                }
+                logger.info(f'Parameters: {str(parameters)}')
+                result = processing.run('native:lineintersections', parameters, feedback=Worker.progress)['OUTPUT']
+                logger.info('Lineintersections finished')
+                return result
+            except Exception as error:
+                logger.error("An error occured in Lineintersections")
+                logger.error(f'{type(error).__name__}  –  {str(error)}')
+                logger.critical("Program terminated" )
+                script_failed()
+
+        def kmeansclustering(inputlayer: QgsVectorLayer, clusters: int):
+            """
+            Calculates the 2D distance based k-means cluster number for each input feature.
+            K-means clustering aims to partition the features into k clusters in which each feature belongs to the cluster with the nearest mean. The mean point is represented by the barycenter of the clustered features.
+            If input geometries are lines or polygons, the clustering is based on the centroid of the feature.
+
+            Parameters
+            ----------
+            inputlayer : QgsVectorLayer
+                Layer to analyze
+
+            clusters : int
+                Number of clusters to create with the features
+
+            Returns
+            -------
+            QgsVectorLayer
+                Specify the output vector layer for generated the clusters.
+            """
+
+            logger.info('Calculating clusters')
+            try:
+                parameters = {
+                    'INPUT': inputlayer,
+                    'CLUSTERS' : clusters,
+                    'OUTPUT': 'memory:kmeansclustering'
+                }
+                logger.info(f'Parameters: {str(parameters)}')
+                result = processing.run('native:kmeansclustering', parameters, feedback=Worker.progress)['OUTPUT']
+                logger.info('Kmeansclustering finished')
+                return result
+            except Exception as error:
+                logger.error("An error occured in Kmeansclustering")
+                logger.error(f'{type(error).__name__}  –  {str(error)}')
+                logger.critical("Program terminated" )
+                script_failed()
+
+        def dbscanclustering(inputlayer: QgsVectorLayer, min_clusters: int, max_dist: int ):
+            """
+            Clusters point features based on a 2D implementation of Density-based spatial clustering of applications with noise (DBSCAN) algorithm.
+            The algorithm requires two parameters, a minimum cluster size, and the maximum distance allowed between clustered points.
+
+            Parameters
+            ----------
+            inputlayer : QgsVectorLayer
+                Layer to analyze
+
+            min_clusters : int
+                Minimum number of features to generate a cluster
+
+            max_dist : int
+                Distance beyond which two features can not belong to the same cluster (eps)
+
+            Returns
+            -------
+            QgsVectorLayer
+                Specify the vector layer for the result of the clustering.
+            """
+            logger.info('Performing DBScan clustering')
+            try:
+                parameters = {
+                    'INPUT': inputlayer,
+                    'MIN_SIZE' : min_clusters,
+                    'EPS': max_dist,
+                    'OUTPUT': 'memory:dbscanclustering'
+                }
+                logger.info(f'Parameters: {str(parameters)}')
+                result = processing.run('native:dbscanclustering', parameters, feedback=Worker.progress)['OUTPUT']
+                logger.info('Dbscanclustering finished')
+                return result
+            except Exception as error:
+                logger.error("An error occured in Dbscanclustering")
+                logger.error(f'{type(error).__name__}  –  {str(error)}')
+                logger.critical("Program terminated" )
+                script_failed()
+
+        def countpointsinpolygon(polygons: QgsVectorLayer, points: QgsVectorLayer, weight : str, fieldname: str):
+            """
+            Takes a point and a polygon layer and counts the number of points from the point layer in each of the polygons of the polygon layer.
+            A new polygon layer is generated, with the exact same content as the input polygon layer, but containing an additional field with the points count corresponding to each polygon.
+
+            Parameters
+            ----------
+            polygons : QgsVectorLayer
+                Polygon layer whose features are associated with the count of points they contain
+
+            points : QgsVectorLayer
+                Point layer with features to count
+
+            weight : str
+                A field from the point layer. The count generated will be the sum of the weight field of the points contained by the polygon. 
+                If the weight field is not numeric, the count will be 0.
+            
+            fieldname : str
+                The name of the field to store the count of points
+
+            Returns
+            -------
+            QgsVectorLayer
+                Specification of the output layer.
+            """
+            logger.info('Conducting point in polygon')
+            try:
+                if isinstance(weight, int):
+                    value = weight
+                else:
+                    value = 0
+
+                parameters = {
+                    'POLYGONS': polygons,
+                    'POINTS': points,
+                    'WEIGHT': value,
+                    'FIELD' : fieldname,
+                    'OUTPUT': 'memory:countpointsinpolygon'
+                }
+                logger.info(f'Parameters: {str(parameters)}')
+                result = processing.run('native:Countpointsinpolygon', parameters, feedback=Worker.progress)['OUTPUT']
+                logger.info('Promote to multipart finished')
+                return result
+            except Exception as error:
+                logger.error("An error occured in Countpointsinpolygon")
+                logger.error(f'{type(error).__name__}  –  {str(error)}')
+                logger.critical("Program terminated" )
+                script_failed()  
+
         def promoteToMultipart(layer: QgsVectorLayer):
             """
             Generates a vectorlayer in which all geometries are multipart.
