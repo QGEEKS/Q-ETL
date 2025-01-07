@@ -5,7 +5,7 @@ import shutil
 import sqlite3
 from core.misc import get_config, layerHasFeatures
 from qgis.analysis import QgsNativeAlgorithms
-from qgis.core import QgsCoordinateReferenceSystem, QgsVectorLayer, QgsProcessingFeedback
+from qgis.core import QgsCoordinateReferenceSystem, QgsVectorLayer, QgsProcessingFeedback, QgsProperty
 from qgis import processing
 import requests
 
@@ -144,6 +144,163 @@ class Worker:
                 logger.critical("Program terminated" )
                 sys.exit()
 
+        def concavehull(inputlayer:QgsVectorLayer, alpha: float, holes: bool, multigeom: bool ):
+            """
+            Computes the concave hull of the features from an input point layer.
+
+            Parameters
+            ----------
+            inputlayer : QgsVectorLayer [point]
+                Input point vector layer
+
+            alpha : float
+                Number from 0 (maximum concave hull) to 1 (convex hull).
+
+            holes : bool
+                Choose whether to allow holes in the final concave hull
+
+            multigeom : bool
+                Check if you want to have singlepart geometries instead of multipart ones.
+
+            Returns
+            -------
+            QgsVectorLayer [polygon]
+                Specify the output vector layer
+            """
+            logger.info('calcualting concavehull')
+            try:
+                parameters = {
+                    'INPUT': inputlayer,
+                    'ALPHA' : alpha,
+                    'HOLES' : holes,
+                    'NO_MULTIGEOMETRY' : multigeom,
+                    'OUTPUT': 'memory:output_from_concavehull'
+                }
+                logger.info(f'Parameters: {str(parameters)}')
+                result = processing.run('native:concavehull', parameters, feedback=Worker.progress)['OUTPUT']
+                logger.info('concavehull finished')
+                return result
+            except Exception as error:
+                logger.error("An error occured in concavehull")
+                logger.error(f'{type(error).__name__}  –  {str(error)}')
+                logger.critical("Program terminated" )
+                script_failed()            
+
+        def extractvertices(inputlayer:QgsVectorLayer):
+            """
+            Takes a vector layer and generates a point layer with points representing the vertices in the input geometries.
+            The attributes associated to each point are the same ones associated to the feature that the vertex belongs to.
+            Additional fields are added to the vertices indicating the vertex index (beginning at 0), the feature’s part and its index within the part
+            (as well as its ring for polygons), distance along original geometry and bisector angle of vertex for original geometry.
+
+            Parameters
+            ----------
+            inputlayer : QgsVectorLayer
+                Input vector layer
+
+            Returns
+            -------
+            QgsVectorLayer [point]
+                Specify the output vector layer
+            """
+            logger.info('Extracting vertices')
+            try:
+                parameters = {
+                    'INPUT': inputlayer,
+                    'OUTPUT': 'memory:output_from_extractvertices'
+                }
+                logger.info(f'Parameters: {str(parameters)}')
+                result = processing.run('native:extractvertices', parameters, feedback=Worker.progress)['OUTPUT']
+                logger.info('extractvertices finished')
+                return result
+            except Exception as error:
+                logger.error("An error occured in extractvertices")
+                logger.error(f'{type(error).__name__}  –  {str(error)}')
+                logger.critical("Program terminated" )
+                script_failed()    
+
+        def multiringconstantbuffer(inputlayer:QgsVectorLayer, rings: int, distance : str):
+            """
+            Computes multi-ring (donut) buffer for the features of the input layer, using a fixed or dynamic distance and number of rings.
+
+            Parameters
+            ----------
+            inputlayer : QgsVectorLayer
+                Input vector layer
+
+            rings : int
+                The number of rings. It can be a unique value (same number of rings for all the features) or it can be taken from features data (the number of rings depends on feature values).
+
+            distance : str
+                Distance between the rings. It can be a unique value (same distance for all the features) or it can be taken from features data (a field in the input data layer).
+
+            Returns
+            -------
+            QgsVectorLayer [polygon]
+                Specify the output polygon vector layer
+
+            """
+            logger.info('Creating multiringconstantbuffer')
+            try:
+                dist = float(distance)
+                logger.info('Using distance value')
+            except:
+                dist = QgsProperty.fromExpression(f'"{distance}"')
+                logger.info('Using distance from field')
+            
+            try:
+                parameters = {
+                    'INPUT': inputlayer,
+                    'RINGS': rings,
+                    'DISTANCE': distance,
+                    'OUTPUT': 'memory:output_from_multiringconstantbuffer'
+                }
+                logger.info(f'Parameters: {str(parameters)}')
+                result = processing.run('native:multiringconstantbuffer', parameters, feedback=Worker.progress)['OUTPUT']
+                logger.info('multiringconstantbuffer finished')
+                return result
+            except Exception as error:
+                logger.error("An error occured in multiringconstantbuffer")
+                logger.error(f'{type(error).__name__}  –  {str(error)}')
+                logger.critical("Program terminated" )
+                script_failed() 
+
+        def poleofinaccessibility(inputlayer:QgsVectorLayer, tolerance: int):
+            """
+            Calculates the pole of inaccessibility for a polygon layer, which is the most distant internal point from the boundary of the surface. 
+            This algorithm uses the ‘polylabel’ algorithm (Vladimir Agafonkin, 2016), which is an iterative approach guaranteed to find the true pole of inaccessibility within
+            a specified tolerance. A more precise tolerance (lower value) requires more iterations and will take longer to calculate. 
+            The distance from the calculated pole to the polygon boundary will be stored as a new attribute in the output layer.
+
+            Parameters
+            ----------
+            inputlayer : QgsVectorLayer [polygon]
+                Input vector layer
+
+            tolerance : int
+                Set the tolerance for the calculation. Default 1
+
+            Returns
+            -------
+            QgsVectorLayer [point]
+                Specify the output polygon vector layer.
+            """
+            logger.info('calcualting poleofinaccessibility')
+            try:
+                parameters = {
+                    'INPUT': inputlayer,
+                    'TOLERANCE' : tolerance,
+                    'OUTPUT': 'memory:output_from_poleofinaccessibility'
+                }
+                logger.info(f'Parameters: {str(parameters)}')
+                result = processing.run('native:poleofinaccessibility', parameters, feedback=Worker.progress)['OUTPUT']
+                logger.info('poleofinaccessibility finished')
+                return result
+            except Exception as error:
+                logger.error("An error occured in poleofinaccessibility")
+                logger.error(f'{type(error).__name__}  –  {str(error)}')
+                logger.critical("Program terminated" )
+                script_failed()
 
 
         def symmetricaldifference(inputlayer: QgsVectorLayer, overlay_layer: QgsVectorLayer):
