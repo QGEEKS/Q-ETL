@@ -79,6 +79,73 @@ class Worker:
                 logger.critical("Program terminated" )
                 sys.exit()
 
+        def addxyfieldstolayer(layer: QgsVectorLayer, crs: str):
+            """
+            Adds X and Y (or latitude/longitude) fields to a point layer. The X/Y fields can be calculated in a different CRS to the layer (e.g. creating latitude/longitude fields for a layer in a projected CRS).
+
+            Parameters
+            ----------
+            layer : QgsVectorLayer
+                The input layer.
+
+            crs : str
+                Coordinate reference system to use for the generated x and y fields.
+
+            Returns
+            -------
+
+            QgsVectorLayer
+                Specify the output layer.
+            """
+            logger.info(f"Adding X/Y fields to {layer}" )
+            try:
+                parameter = {
+                    'INPUT': layer,
+                    'CRS': crs,
+                    'OUTPUT': 'memory:output_from_addxyfieldstolayer'
+                }
+                result = processing.run('native:addxyfieldstolayer', parameter, feedback=Worker.progress)['OUTPUT']
+                logger.info(f'Parameters: {str(parameter)}')
+                logger.info("addxyfieldstolayer  finished")
+                return result
+            except Exception as error:
+                logger.error("An error occured in addxyfieldstolayer")
+                logger.error(f'{type(error).__name__}  –  {str(error)}')
+                logger.critical("Program terminated" )
+                sys.exit()
+
+        def convexhull(layer: QgsVectorLayer):
+            """
+            Calculates the convex hull for each feature in an input layer.
+
+            Parameters
+            ----------
+            layer : QgsVectorLayer
+                Input vector layer
+
+            Returns
+            -------
+            QgsVectorLayer
+                Specify the output vector layer.
+            """
+            logger.info(f" Calculating convexhull for layer {layer}")
+            try:
+                parameter = {
+                    'INPUT': layer,
+                    'OUTPUT': 'memory:output_from_convexhull'
+                }
+                result = processing.run('native:convexhull', parameter, feedback=Worker.progress)['OUTPUT']
+                logger.info(f'Parameters: {str(parameter)}')
+                logger.info("convexhull  finished")
+                return result
+            except Exception as error:
+                logger.error("An error occured in convexhull")
+                logger.error(f'{type(error).__name__}  –  {str(error)}')
+                logger.critical("Program terminated" )
+                sys.exit()
+
+
+
         def symmetricaldifference(inputlayer: QgsVectorLayer, overlay_layer: QgsVectorLayer):
             """
             Creates a layer containing features from both the input and overlay layers but with the overlapping areas between the two layers removed.
@@ -103,7 +170,7 @@ class Worker:
                 parameters = {
                     'INPUT': inputlayer,
                     'OVERLAY' : overlay_layer,
-                    'OUTPUT': 'memory:symmetricaldifference'
+                    'OUTPUT': 'memory:output_from_symmetricaldifference'
                 }
                 logger.info(f'Parameters: {str(parameters)}')
                 result = processing.run('native:symmetricaldifference', parameters, feedback=Worker.progress)['OUTPUT']
@@ -147,7 +214,7 @@ class Worker:
                     'INTERSECT': split_layer,
                     'INPUT_FIELDS' : input_fields, 
                     'INTERSECT_FIELDS' : intersect_fields,
-                    'OUTPUT': 'memory:multipart'
+                    'OUTPUT': 'memory:output_from_lineintersections'
                 }
                 logger.info(f'Parameters: {str(parameters)}')
                 result = processing.run('native:lineintersections', parameters, feedback=Worker.progress)['OUTPUT']
@@ -184,7 +251,7 @@ class Worker:
                 parameters = {
                     'INPUT': inputlayer,
                     'CLUSTERS' : clusters,
-                    'OUTPUT': 'memory:kmeansclustering'
+                    'OUTPUT': 'memory:output_from_kmeansclustering'
                 }
                 logger.info(f'Parameters: {str(parameters)}')
                 result = processing.run('native:kmeansclustering', parameters, feedback=Worker.progress)['OUTPUT']
@@ -223,7 +290,7 @@ class Worker:
                     'INPUT': inputlayer,
                     'MIN_SIZE' : min_clusters,
                     'EPS': max_dist,
-                    'OUTPUT': 'memory:dbscanclustering'
+                    'OUTPUT': 'memory:output_from_dbscanclustering'
                 }
                 logger.info(f'Parameters: {str(parameters)}')
                 result = processing.run('native:dbscanclustering', parameters, feedback=Worker.progress)['OUTPUT']
@@ -272,7 +339,7 @@ class Worker:
                     'POINTS': points,
                     'WEIGHT': value,
                     'FIELD' : fieldname,
-                    'OUTPUT': 'memory:countpointsinpolygon'
+                    'OUTPUT': 'memory:output_from_countpointsinpolygon'
                 }
                 logger.info(f'Parameters: {str(parameters)}')
                 result = processing.run('native:Countpointsinpolygon', parameters, feedback=Worker.progress)['OUTPUT']
