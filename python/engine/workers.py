@@ -67,7 +67,7 @@ class Worker:
                 parameter = {
                     'INPUT': field,
                     'FIELD': field,
-                    'OUTPUT': 'memory:extracted'
+                    'OUTPUT': 'memory:output_from_attributeindex'
                 }
                 result = processing.run('native:createattributeindex', parameter, feedback=Worker.progress)['OUTPUT']
                 logger.info(f'Parameters: {str(parameter)}')
@@ -98,7 +98,7 @@ class Worker:
             try:
                 parameters = {
                     'INPUT': layer,
-                    'OUTPUT': 'memory:multipart'
+                    'OUTPUT': 'memory:output_from_promoteToMultipart'
                 }
                 logger.info(f'Parameters: {str(parameters)}')
                 result = processing.run('native:promotetomulti', parameters, feedback=Worker.progress)['OUTPUT']
@@ -133,7 +133,7 @@ class Worker:
                 parameter = {
                     'INPUT': layer,
                     'EXPRESSION': expression,
-                    'OUTPUT': 'memory:extracted'
+                    'OUTPUT': 'memory:output_from_extractbyexpression'
                 }
                 logger.info(f'Parameters: {str(parameter)}')
                 result = processing.run('native:extractbyexpression', parameter, feedback=Worker.progress)['OUTPUT']
@@ -174,7 +174,7 @@ class Worker:
                     'INPUT': layer,
                     'FIELD': field,
                     'NEW_NAME': newname,
-                    'OUTPUT': 'memory:extracted'
+                    'OUTPUT': 'memory:output_from_renametablefield'
                 }
                 result = processing.run('native:renametablefield', parameter, feedback=Worker.progress)['OUTPUT']
                 logger.info(f'Parameters: {str(parameter)}')
@@ -249,7 +249,7 @@ class Worker:
                     'FIELD_LENGTH': fieldlength,
                     'FIELD_PRECISION': fieldprecision,
                     'FORMULA': formula,
-                    'OUTPUT': 'memory:extracted'
+                    'OUTPUT': 'memory:output_from_fieldcalculator'
                 }
                 result = processing.run('native:fieldcalculator', parameter, feedback=Worker.progress)['OUTPUT']
                 logger.info(f'Parameters: {str(parameter)}')
@@ -284,7 +284,7 @@ class Worker:
                 parameter = {
                     'INPUT': layer,
                     'COLUMN':columns,
-                    'OUTPUT': 'memory:extracted'
+                    'OUTPUT': 'memory:output_from_deletecolumn'
                 }
                 result = processing.run('native:deletecolumn', parameter, feedback=Worker.progress)['OUTPUT']
                 logger.info(f'Parameters: {str(parameter)}')
@@ -330,7 +330,7 @@ class Worker:
                     'SORT_EXPRESSION':'',
                     'SORT_ASCENDING':True,
                     'SORT_NULLS_FIRST':False,
-                    'OUTPUT': 'memory:extracted'
+                    'OUTPUT': 'memory:output_from_addautoincrementalfield'
                 }
                 result = processing.run('native:addautoincrementalfield', parameter, feedback=Worker.progress)['OUTPUT']
                 logger.info(f'Parameters: {str(parameter)}')
@@ -362,7 +362,7 @@ class Worker:
             try:
                 parameter = {
                     'INPUT': layer,
-                    'OUTPUT': 'memory:extracted'
+                    'OUTPUT': 'memory:output_from_createspatialindex'
                 }
                 result = processing.run('native:createspatialindex', parameter, feedback=Worker.progress)['OUTPUT']
                 logger.info(f'Parameters: {str(parameter)}')
@@ -398,7 +398,7 @@ class Worker:
                 parameter = {
                     'INPUT': layer,
                     'OVERLAY': overlay,
-                    'OUTPUT': 'memory:extracted'
+                    'OUTPUT': 'memory:output_from_clip'
                 }
                 logger.info(f'Parameters: {str(parameter)}')
                 result = processing.run('native:clip', parameter, feedback=Worker.progress)['OUTPUT']
@@ -465,7 +465,7 @@ class Worker:
                     'METHOD':method,
                     'DISCARD_NONMATCHING':discard_nomatching,
                     'PREFIX':prefix,
-                    'OUTPUT': 'memory:extracted'
+                    'OUTPUT': 'memory:output_from_joinattributesbylocation'
                 }
                 logger.info(f'Parameters: {str(parameter)}')
                 result = processing.run('native:joinattributesbylocation', parameter, feedback=Worker.progress)['OUTPUT']
@@ -503,7 +503,7 @@ class Worker:
                     'INPUT': layer,
                     'PREDICATE':predicate,
                     'INTERSECT':intersect,
-                    'OUTPUT': 'memory:extracted'
+                    'OUTPUT': 'memory:output_from_extractbylocation'
                 }
                 logger.info(f'Parameters: {str(parameter)}')
                 result = processing.run('native:extractbylocation', parameter, feedback=Worker.progress)['OUTPUT']
@@ -543,7 +543,7 @@ class Worker:
                     'INPUT': layer,
                     'METHOD':method,
                     'NUMBER':number,
-                    'OUTPUT': 'memory:extracted'
+                    'OUTPUT': 'memory:output_from_randomextract'
                 }
                 logger.info(f'Parameters: {str(parameter)}')
                 result = processing.run('native:randomextract', parameter, feedback=Worker.progress)['OUTPUT']
@@ -579,7 +579,7 @@ class Worker:
                 parameter = {
                     'INPUT': layer,
                     'OVERLAY': overlay,
-                    'OUTPUT': 'memory:extracted'
+                    'OUTPUT': 'memory:output_from_difference'
                 }
                 logger.info(f'Parameters: {str(parameter)}')
                 result = processing.run('native:difference', parameter, feedback=Worker.progress)['OUTPUT']
