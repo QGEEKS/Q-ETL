@@ -5,7 +5,7 @@ import shutil
 import sqlite3
 from core.misc import get_config, layerHasFeatures
 from qgis.analysis import QgsNativeAlgorithms
-from qgis.core import QgsCoordinateReferenceSystem, QgsVectorLayer, QgsProcessingFeedback
+from qgis.core import QgsCoordinateReferenceSystem, QgsVectorLayer, QgsProcessingFeedback, QgsProperty
 from qgis import processing
 import requests
 
@@ -78,6 +78,435 @@ class Worker:
                 logger.error(f'{type(error).__name__}  –  {str(error)}')
                 logger.critical("Program terminated" )
                 sys.exit()
+
+        def addxyfieldstolayer(layer: QgsVectorLayer, crs: str):
+            """
+            Adds X and Y (or latitude/longitude) fields to a point layer. The X/Y fields can be calculated in a different CRS to the layer (e.g. creating latitude/longitude fields for a layer in a projected CRS).
+
+            Parameters
+            ----------
+            layer : QgsVectorLayer
+                The input layer.
+
+            crs : str
+                Coordinate reference system to use for the generated x and y fields.
+
+            Returns
+            -------
+
+            QgsVectorLayer
+                Specify the output layer.
+            """
+            logger.info(f"Adding X/Y fields to {layer}" )
+            try:
+                parameter = {
+                    'INPUT': layer,
+                    'CRS': crs,
+                    'OUTPUT': 'memory:output_from_addxyfieldstolayer'
+                }
+                result = processing.run('native:addxyfieldstolayer', parameter, feedback=Worker.progress)['OUTPUT']
+                logger.info(f'Parameters: {str(parameter)}')
+                logger.info("addxyfieldstolayer  finished")
+                return result
+            except Exception as error:
+                logger.error("An error occured in addxyfieldstolayer")
+                logger.error(f'{type(error).__name__}  –  {str(error)}')
+                logger.critical("Program terminated" )
+                sys.exit()
+
+        def convexhull(layer: QgsVectorLayer):
+            """
+            Calculates the convex hull for each feature in an input layer.
+
+            Parameters
+            ----------
+            layer : QgsVectorLayer
+                Input vector layer
+
+            Returns
+            -------
+            QgsVectorLayer
+                Specify the output vector layer.
+            """
+            logger.info(f" Calculating convexhull for layer {layer}")
+            try:
+                parameter = {
+                    'INPUT': layer,
+                    'OUTPUT': 'memory:output_from_convexhull'
+                }
+                result = processing.run('native:convexhull', parameter, feedback=Worker.progress)['OUTPUT']
+                logger.info(f'Parameters: {str(parameter)}')
+                logger.info("convexhull  finished")
+                return result
+            except Exception as error:
+                logger.error("An error occured in convexhull")
+                logger.error(f'{type(error).__name__}  –  {str(error)}')
+                logger.critical("Program terminated" )
+                sys.exit()
+
+        def concavehull(inputlayer:QgsVectorLayer, alpha: float, holes: bool, multigeom: bool ):
+            """
+            Computes the concave hull of the features from an input point layer.
+
+            Parameters
+            ----------
+            inputlayer : QgsVectorLayer [point]
+                Input point vector layer
+
+            alpha : float
+                Number from 0 (maximum concave hull) to 1 (convex hull).
+
+            holes : bool
+                Choose whether to allow holes in the final concave hull
+
+            multigeom : bool
+                Check if you want to have singlepart geometries instead of multipart ones.
+
+            Returns
+            -------
+            QgsVectorLayer [polygon]
+                Specify the output vector layer
+            """
+            logger.info('calcualting concavehull')
+            try:
+                parameters = {
+                    'INPUT': inputlayer,
+                    'ALPHA' : alpha,
+                    'HOLES' : holes,
+                    'NO_MULTIGEOMETRY' : multigeom,
+                    'OUTPUT': 'memory:output_from_concavehull'
+                }
+                logger.info(f'Parameters: {str(parameters)}')
+                result = processing.run('native:concavehull', parameters, feedback=Worker.progress)['OUTPUT']
+                logger.info('concavehull finished')
+                return result
+            except Exception as error:
+                logger.error("An error occured in concavehull")
+                logger.error(f'{type(error).__name__}  –  {str(error)}')
+                logger.critical("Program terminated" )
+                script_failed()            
+
+        def extractvertices(inputlayer:QgsVectorLayer):
+            """
+            Takes a vector layer and generates a point layer with points representing the vertices in the input geometries.
+            The attributes associated to each point are the same ones associated to the feature that the vertex belongs to.
+            Additional fields are added to the vertices indicating the vertex index (beginning at 0), the feature’s part and its index within the part
+            (as well as its ring for polygons), distance along original geometry and bisector angle of vertex for original geometry.
+
+            Parameters
+            ----------
+            inputlayer : QgsVectorLayer
+                Input vector layer
+
+            Returns
+            -------
+            QgsVectorLayer [point]
+                Specify the output vector layer
+            """
+            logger.info('Extracting vertices')
+            try:
+                parameters = {
+                    'INPUT': inputlayer,
+                    'OUTPUT': 'memory:output_from_extractvertices'
+                }
+                logger.info(f'Parameters: {str(parameters)}')
+                result = processing.run('native:extractvertices', parameters, feedback=Worker.progress)['OUTPUT']
+                logger.info('extractvertices finished')
+                return result
+            except Exception as error:
+                logger.error("An error occured in extractvertices")
+                logger.error(f'{type(error).__name__}  –  {str(error)}')
+                logger.critical("Program terminated" )
+                script_failed()    
+
+        def multiringconstantbuffer(inputlayer:QgsVectorLayer, rings: int, distance : str):
+            """
+            Computes multi-ring (donut) buffer for the features of the input layer, using a fixed or dynamic distance and number of rings.
+
+            Parameters
+            ----------
+            inputlayer : QgsVectorLayer
+                Input vector layer
+
+            rings : int
+                The number of rings. It can be a unique value (same number of rings for all the features) or it can be taken from features data (the number of rings depends on feature values).
+
+            distance : str
+                Distance between the rings. It can be a unique value (same distance for all the features) or it can be taken from features data (a field in the input data layer).
+
+            Returns
+            -------
+            QgsVectorLayer [polygon]
+                Specify the output polygon vector layer
+
+            """
+            logger.info('Creating multiringconstantbuffer')
+            try:
+                dist = float(distance)
+                logger.info('Using distance value')
+            except:
+                dist = QgsProperty.fromExpression(f'"{distance}"')
+                logger.info('Using distance from field')
+            
+            try:
+                parameters = {
+                    'INPUT': inputlayer,
+                    'RINGS': rings,
+                    'DISTANCE': distance,
+                    'OUTPUT': 'memory:output_from_multiringconstantbuffer'
+                }
+                logger.info(f'Parameters: {str(parameters)}')
+                result = processing.run('native:multiringconstantbuffer', parameters, feedback=Worker.progress)['OUTPUT']
+                logger.info('multiringconstantbuffer finished')
+                return result
+            except Exception as error:
+                logger.error("An error occured in multiringconstantbuffer")
+                logger.error(f'{type(error).__name__}  –  {str(error)}')
+                logger.critical("Program terminated" )
+                script_failed() 
+
+        def poleofinaccessibility(inputlayer:QgsVectorLayer, tolerance: int):
+            """
+            Calculates the pole of inaccessibility for a polygon layer, which is the most distant internal point from the boundary of the surface. 
+            This algorithm uses the ‘polylabel’ algorithm (Vladimir Agafonkin, 2016), which is an iterative approach guaranteed to find the true pole of inaccessibility within
+            a specified tolerance. A more precise tolerance (lower value) requires more iterations and will take longer to calculate. 
+            The distance from the calculated pole to the polygon boundary will be stored as a new attribute in the output layer.
+
+            Parameters
+            ----------
+            inputlayer : QgsVectorLayer [polygon]
+                Input vector layer
+
+            tolerance : int
+                Set the tolerance for the calculation. Default 1
+
+            Returns
+            -------
+            QgsVectorLayer [point]
+                Specify the output polygon vector layer.
+            """
+            logger.info('calcualting poleofinaccessibility')
+            try:
+                parameters = {
+                    'INPUT': inputlayer,
+                    'TOLERANCE' : tolerance,
+                    'OUTPUT': 'memory:output_from_poleofinaccessibility'
+                }
+                logger.info(f'Parameters: {str(parameters)}')
+                result = processing.run('native:poleofinaccessibility', parameters, feedback=Worker.progress)['OUTPUT']
+                logger.info('poleofinaccessibility finished')
+                return result
+            except Exception as error:
+                logger.error("An error occured in poleofinaccessibility")
+                logger.error(f'{type(error).__name__}  –  {str(error)}')
+                logger.critical("Program terminated" )
+                script_failed()
+
+
+        def symmetricaldifference(inputlayer: QgsVectorLayer, overlay_layer: QgsVectorLayer):
+            """
+            Creates a layer containing features from both the input and overlay layers but with the overlapping areas between the two layers removed.
+            The attribute table of the symmetrical difference layer contains attributes and fields from both the input and overlay layers.
+
+            Parameters
+            ----------
+            inputlayer : QgsVectorLayer
+                First layer to extract (parts of) features from.
+
+            overlay_layer : QgsVectorLayer
+                Second layer to extract (parts of) features from. Ideally the geometry type should be the same as input layer.
+
+            Returns
+            -------
+            QgsVectorLayer
+                Specify the layer to contain (the parts of) the features from the input and overlay layers that do not overlap features from the other layer
+            """
+
+            logger.info('calcualting symetrical difference')
+            try:
+                parameters = {
+                    'INPUT': inputlayer,
+                    'OVERLAY' : overlay_layer,
+                    'OUTPUT': 'memory:output_from_symmetricaldifference'
+                }
+                logger.info(f'Parameters: {str(parameters)}')
+                result = processing.run('native:symmetricaldifference', parameters, feedback=Worker.progress)['OUTPUT']
+                logger.info('Symmetricaldifference finished')
+                return result
+            except Exception as error:
+                logger.error("An error occured in symmetricaldifference")
+                logger.error(f'{type(error).__name__}  –  {str(error)}')
+                logger.critical("Program terminated" )
+                script_failed()
+
+        def lineintersections(inputlayer: QgsVectorLayer, split_layer: QgsVectorLayer, input_fields: list, intersect_fields: list):
+            """
+            Splits the lines or polygons in one layer using the lines or polygon rings in another layer to define the breaking points. Intersection between geometries in both layers are considered as split points.
+            Output will contain multi geometries for split features.
+
+            Parameters
+            ----------
+            inputlayer : QgsVectorLayer
+                Input line layer.
+
+            split_layer : QgsVectorLayer
+                Layer to use to find line intersections.
+
+            input_fields : list
+                Field(s) of the input layer to keep in the output. If no fields are chosen all fields are taken.
+
+            intersect_fields : list
+                Field(s) of the intersect layer to keep in the output. If no fields are chosen all fields are taken. Duplicate field names will be appended a count suffix to avoid collision
+
+            Returns
+            -------
+            QgsVectorLayer
+                Specify the layer to contain the intersection points of the lines from the input and overlay layers.
+
+            """
+            logger.info('Performing line intersections')
+            try:
+                parameters = {
+                    'INPUT': inputlayer,
+                    'INTERSECT': split_layer,
+                    'INPUT_FIELDS' : input_fields, 
+                    'INTERSECT_FIELDS' : intersect_fields,
+                    'OUTPUT': 'memory:output_from_lineintersections'
+                }
+                logger.info(f'Parameters: {str(parameters)}')
+                result = processing.run('native:lineintersections', parameters, feedback=Worker.progress)['OUTPUT']
+                logger.info('Lineintersections finished')
+                return result
+            except Exception as error:
+                logger.error("An error occured in Lineintersections")
+                logger.error(f'{type(error).__name__}  –  {str(error)}')
+                logger.critical("Program terminated" )
+                script_failed()
+
+        def kmeansclustering(inputlayer: QgsVectorLayer, clusters: int):
+            """
+            Calculates the 2D distance based k-means cluster number for each input feature.
+            K-means clustering aims to partition the features into k clusters in which each feature belongs to the cluster with the nearest mean. The mean point is represented by the barycenter of the clustered features.
+            If input geometries are lines or polygons, the clustering is based on the centroid of the feature.
+
+            Parameters
+            ----------
+            inputlayer : QgsVectorLayer
+                Layer to analyze
+
+            clusters : int
+                Number of clusters to create with the features
+
+            Returns
+            -------
+            QgsVectorLayer
+                Specify the output vector layer for generated the clusters.
+            """
+
+            logger.info('Calculating clusters')
+            try:
+                parameters = {
+                    'INPUT': inputlayer,
+                    'CLUSTERS' : clusters,
+                    'OUTPUT': 'memory:output_from_kmeansclustering'
+                }
+                logger.info(f'Parameters: {str(parameters)}')
+                result = processing.run('native:kmeansclustering', parameters, feedback=Worker.progress)['OUTPUT']
+                logger.info('Kmeansclustering finished')
+                return result
+            except Exception as error:
+                logger.error("An error occured in Kmeansclustering")
+                logger.error(f'{type(error).__name__}  –  {str(error)}')
+                logger.critical("Program terminated" )
+                script_failed()
+
+        def dbscanclustering(inputlayer: QgsVectorLayer, min_clusters: int, max_dist: int ):
+            """
+            Clusters point features based on a 2D implementation of Density-based spatial clustering of applications with noise (DBSCAN) algorithm.
+            The algorithm requires two parameters, a minimum cluster size, and the maximum distance allowed between clustered points.
+
+            Parameters
+            ----------
+            inputlayer : QgsVectorLayer
+                Layer to analyze
+
+            min_clusters : int
+                Minimum number of features to generate a cluster
+
+            max_dist : int
+                Distance beyond which two features can not belong to the same cluster (eps)
+
+            Returns
+            -------
+            QgsVectorLayer
+                Specify the vector layer for the result of the clustering.
+            """
+            logger.info('Performing DBScan clustering')
+            try:
+                parameters = {
+                    'INPUT': inputlayer,
+                    'MIN_SIZE' : min_clusters,
+                    'EPS': max_dist,
+                    'OUTPUT': 'memory:output_from_dbscanclustering'
+                }
+                logger.info(f'Parameters: {str(parameters)}')
+                result = processing.run('native:dbscanclustering', parameters, feedback=Worker.progress)['OUTPUT']
+                logger.info('Dbscanclustering finished')
+                return result
+            except Exception as error:
+                logger.error("An error occured in Dbscanclustering")
+                logger.error(f'{type(error).__name__}  –  {str(error)}')
+                logger.critical("Program terminated" )
+                script_failed()
+
+        def countpointsinpolygon(polygons: QgsVectorLayer, points: QgsVectorLayer, weight : str, fieldname: str):
+            """
+            Takes a point and a polygon layer and counts the number of points from the point layer in each of the polygons of the polygon layer.
+            A new polygon layer is generated, with the exact same content as the input polygon layer, but containing an additional field with the points count corresponding to each polygon.
+
+            Parameters
+            ----------
+            polygons : QgsVectorLayer
+                Polygon layer whose features are associated with the count of points they contain
+
+            points : QgsVectorLayer
+                Point layer with features to count
+
+            weight : str
+                A field from the point layer. The count generated will be the sum of the weight field of the points contained by the polygon. 
+                If the weight field is not numeric, the count will be 0.
+            
+            fieldname : str
+                The name of the field to store the count of points
+
+            Returns
+            -------
+            QgsVectorLayer
+                Specification of the output layer.
+            """
+            logger.info('Conducting point in polygon')
+            try:
+                if isinstance(weight, int):
+                    value = weight
+                else:
+                    value = 0
+
+                parameters = {
+                    'POLYGONS': polygons,
+                    'POINTS': points,
+                    'WEIGHT': value,
+                    'FIELD' : fieldname,
+                    'OUTPUT': 'memory:output_from_countpointsinpolygon'
+                }
+                logger.info(f'Parameters: {str(parameters)}')
+                result = processing.run('native:Countpointsinpolygon', parameters, feedback=Worker.progress)['OUTPUT']
+                logger.info('Promote to multipart finished')
+                return result
+            except Exception as error:
+                logger.error("An error occured in Countpointsinpolygon")
+                logger.error(f'{type(error).__name__}  –  {str(error)}')
+                logger.critical("Program terminated" )
+                script_failed()  
 
         def promoteToMultipart(layer: QgsVectorLayer):
             """
