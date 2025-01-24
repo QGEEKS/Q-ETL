@@ -49,19 +49,14 @@ class Worker:
             Creates an index to speed up queries made against a field in a table.
             Support for index creation is dependent on the layer's data provider and the field type.
 
-            Parameters
-            ----------
-            layer : QgsVectorLayer [vector: any]
-                The QgsVectorLayer input for the algorithem
+            Args:
+                layer (QgsVectorLayer): The QgsVectorLayer input for the algorithem
+                field (string): The field to base the index on
 
-            field : Field
-                The field to base the index on
-
-            Returns
-            -------
-            QgsVectorLayer [vector: any]
-                The result output from the algorithem
+            Returns:
+                layer (QgsVectorLayer): The result output from the algorithem
             """
+
             logger.info("Crating attribute index on " + layer + " on filed " + field)
             try:
                 parameter = {
@@ -83,20 +78,14 @@ class Worker:
             """
             Adds X and Y (or latitude/longitude) fields to a point layer. The X/Y fields can be calculated in a different CRS to the layer (e.g. creating latitude/longitude fields for a layer in a projected CRS).
 
-            Parameters
-            ----------
-            layer : QgsVectorLayer
-                The input layer.
+            Args:
+                layer (QgsVectorLayer): The input layer.
+                crs (string): Coordinate reference system to use for the generated x and y fields.
 
-            crs : str
-                Coordinate reference system to use for the generated x and y fields.
-
-            Returns
-            -------
-
-            QgsVectorLayer
-                Specify the output layer.
+            Returns:
+                layer (QgsVectorLayer): Specify the output layer.
             """
+
             logger.info(f"Adding X/Y fields to {layer}" )
             try:
                 parameter = {
@@ -118,16 +107,13 @@ class Worker:
             """
             Calculates the convex hull for each feature in an input layer.
 
-            Parameters
-            ----------
-            layer : QgsVectorLayer
-                Input vector layer
+            Args:
+                layer (QgsVectorLayer): Input vector layer
 
-            Returns
-            -------
-            QgsVectorLayer
-                Specify the output vector layer.
+            Returns:
+                layer (QgsVectorLayer): Specify the output vector layer.
             """
+
             logger.info(f" Calculating convexhull for layer {layer}")
             try:
                 parameter = {
@@ -148,25 +134,16 @@ class Worker:
             """
             Computes the concave hull of the features from an input point layer.
 
-            Parameters
-            ----------
-            inputlayer : QgsVectorLayer [point]
-                Input point vector layer
+            Args:
+                inputlayer (QgsVectorLayer): Input point vector layer
+                alpha (float): Number from 0 (maximum concave hull) to 1 (convex hull).
+                holes (boolean): Choose whether to allow holes in the final concave hull
+                multigeom (boolean): Check if you want to have singlepart geometries instead of multipart ones.
 
-            alpha : float
-                Number from 0 (maximum concave hull) to 1 (convex hull).
-
-            holes : bool
-                Choose whether to allow holes in the final concave hull
-
-            multigeom : bool
-                Check if you want to have singlepart geometries instead of multipart ones.
-
-            Returns
-            -------
-            QgsVectorLayer [polygon]
-                Specify the output vector layer
+            Returns:
+                layer (QgsVectorLayer): Specify the output vector layer
             """
+
             logger.info('calcualting concavehull')
             try:
                 parameters = {
@@ -193,16 +170,13 @@ class Worker:
             Additional fields are added to the vertices indicating the vertex index (beginning at 0), the feature’s part and its index within the part
             (as well as its ring for polygons), distance along original geometry and bisector angle of vertex for original geometry.
 
-            Parameters
-            ----------
-            inputlayer : QgsVectorLayer
-                Input vector layer
+            Args:
+                inputlayer (QgsVectorLayer): Input vector layer
 
-            Returns
-            -------
-            QgsVectorLayer [point]
-                Specify the output vector layer
+            Returns:
+                layer (QgsVectorLayer): Specify the output vector layer
             """
+
             logger.info('Extracting vertices')
             try:
                 parameters = {
@@ -223,23 +197,15 @@ class Worker:
             """
             Computes multi-ring (donut) buffer for the features of the input layer, using a fixed or dynamic distance and number of rings.
 
-            Parameters
-            ----------
-            inputlayer : QgsVectorLayer
-                Input vector layer
+            Args:
+                inputlayer (QgsVectorLayer): Input vector layer
+                rings (integer): The number of rings. It can be a unique value (same number of rings for all the features) or it can be taken from features data (the number of rings depends on feature values).
+                distance (string): Distance between the rings. It can be a unique value (same distance for all the features) or it can be taken from features data (a field in the input data layer).
 
-            rings : int
-                The number of rings. It can be a unique value (same number of rings for all the features) or it can be taken from features data (the number of rings depends on feature values).
-
-            distance : str
-                Distance between the rings. It can be a unique value (same distance for all the features) or it can be taken from features data (a field in the input data layer).
-
-            Returns
-            -------
-            QgsVectorLayer [polygon]
-                Specify the output polygon vector layer
-
+            Returns:
+                layer (QgsVectorLayer): Specify the output polygon vector layer
             """
+
             logger.info('Creating multiringconstantbuffer')
             try:
                 dist = float(distance)
@@ -272,19 +238,14 @@ class Worker:
             a specified tolerance. A more precise tolerance (lower value) requires more iterations and will take longer to calculate. 
             The distance from the calculated pole to the polygon boundary will be stored as a new attribute in the output layer.
 
-            Parameters
-            ----------
-            inputlayer : QgsVectorLayer [polygon]
-                Input vector layer
+            Args:
+                inputlayer (QgsVectorLayer): Input vector layer
+                tolerance (integer): Set the tolerance for the calculation. Default 1
 
-            tolerance : int
-                Set the tolerance for the calculation. Default 1
-
-            Returns
-            -------
-            QgsVectorLayer [point]
-                Specify the output polygon vector layer.
+            Returns:
+                layer (QgsVectorLayer): Specify the output polygon vector layer.
             """
+
             logger.info('calcualting poleofinaccessibility')
             try:
                 parameters = {
@@ -308,18 +269,12 @@ class Worker:
             Creates a layer containing features from both the input and overlay layers but with the overlapping areas between the two layers removed.
             The attribute table of the symmetrical difference layer contains attributes and fields from both the input and overlay layers.
 
-            Parameters
-            ----------
-            inputlayer : QgsVectorLayer
-                First layer to extract (parts of) features from.
+            Args:
+                inputlayer (QgsVectorLayer): First layer to extract (parts of) features from.
+                overlay_layer (QgsVectorLayer): Second layer to extract (parts of) features from. Ideally the geometry type should be the same as input layer.
 
-            overlay_layer : QgsVectorLayer
-                Second layer to extract (parts of) features from. Ideally the geometry type should be the same as input layer.
-
-            Returns
-            -------
-            QgsVectorLayer
-                Specify the layer to contain (the parts of) the features from the input and overlay layers that do not overlap features from the other layer
+            Returns:
+                layer (QgsVectorLayer): Specify the layer to contain (the parts of) the features from the input and overlay layers that do not overlap features from the other layer
             """
 
             logger.info('calcualting symetrical difference')
@@ -344,26 +299,16 @@ class Worker:
             Splits the lines or polygons in one layer using the lines or polygon rings in another layer to define the breaking points. Intersection between geometries in both layers are considered as split points.
             Output will contain multi geometries for split features.
 
-            Parameters
-            ----------
-            inputlayer : QgsVectorLayer
-                Input line layer.
+            Args:
+                inputlayer (QgsVectorLayer): Input line layer.
+                split_layer (QgsVectorLayer): Layer to use to find line intersections.
+                input_fields (list of strings): Field(s) of the input layer to keep in the output. If no fields are chosen all fields are taken.
+                intersect_fields (list of strings): Field(s) of the intersect layer to keep in the output. If no fields are chosen all fields are taken. Duplicate field names will be appended a count suffix to avoid collision
 
-            split_layer : QgsVectorLayer
-                Layer to use to find line intersections.
-
-            input_fields : list
-                Field(s) of the input layer to keep in the output. If no fields are chosen all fields are taken.
-
-            intersect_fields : list
-                Field(s) of the intersect layer to keep in the output. If no fields are chosen all fields are taken. Duplicate field names will be appended a count suffix to avoid collision
-
-            Returns
-            -------
-            QgsVectorLayer
-                Specify the layer to contain the intersection points of the lines from the input and overlay layers.
-
+            Returns:
+                layer (QgsVectorLayer): Specify the layer to contain the intersection points of the lines from the input and overlay layers.
             """
+
             logger.info('Performing line intersections')
             try:
                 parameters = {
@@ -389,18 +334,12 @@ class Worker:
             K-means clustering aims to partition the features into k clusters in which each feature belongs to the cluster with the nearest mean. The mean point is represented by the barycenter of the clustered features.
             If input geometries are lines or polygons, the clustering is based on the centroid of the feature.
 
-            Parameters
-            ----------
-            inputlayer : QgsVectorLayer
-                Layer to analyze
+            Args:
+                inputlayer (QgsVectorLayer): Layer to analyze
+                clusters (integer): Number of clusters to create with the features
 
-            clusters : int
-                Number of clusters to create with the features
-
-            Returns
-            -------
-            QgsVectorLayer
-                Specify the output vector layer for generated the clusters.
+            Returns:
+                layer (QgsVectorLayer): Specify the output vector layer for generated the clusters.
             """
 
             logger.info('Calculating clusters')
@@ -425,22 +364,15 @@ class Worker:
             Clusters point features based on a 2D implementation of Density-based spatial clustering of applications with noise (DBSCAN) algorithm.
             The algorithm requires two parameters, a minimum cluster size, and the maximum distance allowed between clustered points.
 
-            Parameters
-            ----------
-            inputlayer : QgsVectorLayer
-                Layer to analyze
+            Args:
+                inputlayer (QgsVectorLayer): Layer to analyze
+                min_clusters (integer): Minimum number of features to generate a cluster
+                max_dist (integer): Distance beyond which two features can not belong to the same cluster (eps)
 
-            min_clusters : int
-                Minimum number of features to generate a cluster
-
-            max_dist : int
-                Distance beyond which two features can not belong to the same cluster (eps)
-
-            Returns
-            -------
-            QgsVectorLayer
-                Specify the vector layer for the result of the clustering.
+            Returns:
+                layer (QgsVectorLayer): Specify the vector layer for the result of the clustering.
             """
+
             logger.info('Performing DBScan clustering')
             try:
                 parameters = {
@@ -464,26 +396,16 @@ class Worker:
             Takes a point and a polygon layer and counts the number of points from the point layer in each of the polygons of the polygon layer.
             A new polygon layer is generated, with the exact same content as the input polygon layer, but containing an additional field with the points count corresponding to each polygon.
 
-            Parameters
-            ----------
-            polygons : QgsVectorLayer
-                Polygon layer whose features are associated with the count of points they contain
+            Args:
+                polygons (QgsVectorLayer): Polygon layer whose features are associated with the count of points they contain
+                points (QgsVectorLayer): Point layer with features to count
+                weight (string): A field from the point layer. The count generated will be the sum of the weight field of the points contained by the polygon. If the weight field is not numeric, the count will be 0.
+                fieldname (string): The name of the field to store the count of points
 
-            points : QgsVectorLayer
-                Point layer with features to count
-
-            weight : str
-                A field from the point layer. The count generated will be the sum of the weight field of the points contained by the polygon. 
-                If the weight field is not numeric, the count will be 0.
-            
-            fieldname : str
-                The name of the field to store the count of points
-
-            Returns
-            -------
-            QgsVectorLayer
-                Specification of the output layer.
+            Returns:
+                layer (QgsVectorLayer): Specification of the output layer.
             """
+
             logger.info('Conducting point in polygon')
             try:
                 if isinstance(weight, int):
@@ -512,15 +434,11 @@ class Worker:
             """
             Generates a vectorlayer in which all geometries are multipart.
 
-            Parameters
-            ----------
-            layer : QgsVectorLayer
-                The QgsVectorLayer that is used as input.
+            Args:
+                layer (QgsVectorLayer): The QgsVectorLayer that is used as input.
 
-            Returns
-            -------
-            QgsVectorLayer
-                The QgsVectorLayer containing multi geometries.
+            Returns:
+                layer (QgsVectorLayer): The QgsVectorLayer containing multi geometries.
             """
 
             logger.info('Collecting geometries')
@@ -544,19 +462,14 @@ class Worker:
             Creates a vector layer from an input layer, containing only matching features.
             The criteria for adding features to the resulting layer is based on a QGIS expression.
 
-            Parameters
-            ----------
-            layer : QgsVectorLayer
-                The QgsVectorLayer that is used as input.
+            Args:
+                layer (QgsVectorLayer): The QgsVectorLayer that is used as input.
+                expression (string): Expression to filter the vector layer
 
-            expression : String
-                Expression to filter the vector layer
-
-            Returns
-            -------
-            QgsVectorLayer
-                The QgsVectorLayer output layer.
+            Returns:
+                layer (QgsVectorLayer): The QgsVectorLayer output layer.
             """
+
             logger.info("Extracting by expression")
             try:
                 parameter = {
@@ -580,23 +493,15 @@ class Worker:
             The original layer is not modified. A new layer is generated where the attribute table contains the renamed field.
             QGIS processing algorithem: native:renametablefield
 
-            Parameters
-            ----------
-            layer : QgsVectorLayer [vector: any]
-                The QgsVectorLayer input for the algorithem
+            Args:
+                layer (QgsVectorLayer): The QgsVectorLayer input for the algorithem
+                field (string): The field that is to be renamed
+                newname (string): New name for the field
 
-            field : Tablefield
-                The field that is to be renamed
-
-            newname : String
-                New name for the field
-
-
-            Returns
-            -------
-            QgsVectorLayer [vector: any]
-                The result output from the algorithem
+            Returns:
+                layer (QgsVectorLayer): The result output from the algorithem
             """
+
             logger.info("Renaming field")
             try:
                 parameter = {
@@ -617,21 +522,16 @@ class Worker:
 
         def timeStamper(layer: QgsVectorLayer, ts_fieldname: str):
             """
-                Create an attribute woth current timestamp on features.
+            Create an attribute woth current timestamp on features.
 
-            Parameters
-            ----------
-            layer : QgsVectorLayer [vector: any]
-                The QgsVectorLayer input for the algorithem
+            Args:
+                layer (QgsVectorLayer): The QgsVectorLayer input for the algorithem
+                ts_fieldname (string): The name of the new timestamp field
 
-            ts_fieldname : String
-                The name of the new timestamp field
-
-            Returns
-            -------
-            QgsVectorLayer [vector: any]
-                The result output from the algorithem
+            Returns:
+                layer (QgsVectorLayer): The result output from the algorithem
             """
+
             logger.info(f'Creating timestamp {ts_fieldname} using fieldCalculator')
             newLayer = Worker.fieldCalculator(layer, ts_fieldname, 5, 0, 0, ' now() ')
             return newLayer
@@ -643,32 +543,18 @@ class Worker:
             The original layer is not modified. A new layer is generated where the attribute table contains the calucalted field
             QGIS processing algorithem: native:fieldcalculator
 
-            Parameters
-            ----------
-            layer : QgsVectorLayer [vector: any]
-                The QgsVectorLayer input for the algorithem
+            Args:
+                layer (QgsVectorLayer): The QgsVectorLayer input for the algorithem
+                fieldname (string): The name of the new calcualted field
+                fieldtype (integer): Type of the field,  Default: 0  (0 — Float, 1 — Integer, 2 — String, 3 — Date)
+                fieldlength (integer): Lenght of the field, Default: 10.
+                fieldprecision (integer): Precision of the field, Default: 3.
+                formula (string): The expression that populates the values of the field.
 
-            fieldname : String
-                The name of the new calcualted field
-
-            fieldtype : Enumeration
-                Type of the field,  Default: 0  (0 — Float, 1 — Integer, 2 — String, 3 — Date)
-
-            fieldlength : Integer
-                Lenght of the field, Default: 10.
-
-            fieldprecision : Integer
-                Precision of the field, Default: 3.
-
-            formula : Expression
-                The expression that populates the values of the field.
-
-
-            Returns
-            -------
-            QgsVectorLayer [vector: any]
-                The result output from the algorithem
+            Returns:
+                layer (QgsVectorLayer): The result output from the algorithem
             """
+
             logger.info("Calculating field")
             try:
                 parameter = {
@@ -694,19 +580,14 @@ class Worker:
             """
             Takes a vector layer and generates a new one that has the same features but without the selected columns.
 
-            Parameters
-            ----------
-            layer : QgsVectorLayer
-                Input vector layer to drop field(s) from
+            Args:
+                layer (QgsVectorLayer): Input vector layer to drop field(s) from
+                columns (list of strings): The field(s) to drop
 
-            columns : List of tablefields
-                The field(s) to drop
-
-            Returns
-            -------
-            QgsVectorLayer
-                The QgsVectorLayer output layer.
+            Returns:
+                layer (QgsVectorLayer): The QgsVectorLayer output layer.
             """
+
             logger.info("deleting fields")
 
             try:
@@ -732,22 +613,15 @@ class Worker:
             The initial starting value for the incremental series can be specified. Optionally, the incremental series can be based on grouping 
             fields and a sort order for features can also be specified.
 
-            Parameters
-            ----------
-            layer : QgsVectorLayer
-                The QgsVectorLayer that is used as input.
-
-            fieldname : String
-                Name of the field with autoincremental values.
-
-            start : Integer
-                Choose the initial number of the incremental count, Default: 0.
+            Args:
+                layer (QgsVectorLayer): The QgsVectorLayer that is used as input.
+                fieldname (string): Name of the field with autoincremental values.
+                start (integer): Choose the initial number of the incremental count, Default: 0.
 
             Returns
-            -------
-            QgsVectorLayer
-                The QgsVectorLayer output layer.
+                layer (QgsVectorLayer): The QgsVectorLayer output layer.
             """
+
             logger.info("Adding incremental field")
             try:
                 parameter = {
@@ -776,15 +650,11 @@ class Worker:
             Creates an index to speed up access to the features in a layer based on their spatial location.
             Support for spatial index creation is dependent on the layer's data provider.
 
-            Parameters
-            ----------
-            layer : QgsVectorLayer [vector: any]
-                The QgsVectorLayer input for the algorithem
+            Args:
+                layer (QgsVectorLayer): The QgsVectorLayer input for the algorithem
 
-            Returns
-            -------
-            QgsVectorLayer [vector: any]
-                The result output from the algorithem
+            Returns:
+                layer (QgsVectorLayer): The result output from the algorithem
             """
             
             logger.info("Crating spatial index on " + layer)
@@ -809,19 +679,14 @@ class Worker:
             Only the parts of the features in the input layer that fall within the polygons of 
             the overlay layer will be added to the resulting layer.
 
-            Parameters
-            ----------
-            layer : QgsVectorLayer [vector: any]
-                Layer containing the features to be clipped
+            Args:
+                layer (QgsVectorLayer): Layer containing the features to be clipped
+                overlay (QgsVectorLayer): Layer containing the clipping features
 
-            overlay : [vector: polygon]
-                Layer containing the clipping features
-
-            Returns
-            -------
-            QgsVectorLayer [vector: any]
-                Layer to contain the features from the input layer that are inside the overlay (clipping) layer
+            Returns:
+                layer (QgsVectorLayer): Layer to contain the features from the input layer that are inside the overlay (clipping) layer
             """
+
             logger.info("Clipping layers")
             try:
                 parameter = {
@@ -847,43 +712,19 @@ class Worker:
             A spatial criteria is applied to select the values from the second layer that are added to each 
             feature from the first layer.
             
-            Parameters
-            ----------
-            layer : QgsVectorLayer [vector: any]
-                Input vector layer. 
-                The output layer will consist of the features of this layer with attributes from 
-                matching features in the second layer.
+            Args:
+                layer (QgsVectorLayer): Input vector layer. The output layer will consist of the features of this layer with attributes from matching features in the second layer.
+                predicate (integer): Type of spatial relation the source feature should have with the target feature so that they could be joined. One or more of: 0 — intersect, 1 — contain, 2 — equal, 3 — touch, 4 — overlap, 5 — are within 6 — cross.
+                join (QgsVectorLayer): The join layer. Features of this vector layer will add their attributes to the source layer attribute table if they satisfy the spatial relationship.
+                join_fields (list of strings): Select the specific fields you want to add from the join layer. By default all the fields are added.
+                method (integer): The type of the final joined layer. One of: 0 — Create separate feature for each matching feature (one-to-many) 1 — Take attributes of the first matching feature only (one-to-one) 2 — Take attributes of the feature with largest overlap only (one-to-one)
+                discard_nomatching (boolean): Remove from the output the input layer’s features which could not be joined
+                prefix (string): Add a prefix to joined fields in order to easily identify them and avoid field name collision
 
-            predicate : [enumeration] Default: [0]
-                Type of spatial relation the source feature should have with the target feature so that they could be joined. One or more of:
-                0 — intersect, 1 — contain, 2 — equal, 3 — touch, 4 — overlap, 5 — are within 6 — cross.
-
-            join : [vector: any]
-                The join layer. 
-                Features of this vector layer will add their attributes to the source layer attribute table if 
-                they satisfy the spatial relationship.
-
-            join_fields : [tablefield: any] [list]
-                Select the specific fields you want to add from the join layer. 
-                By default all the fields are added.
-
-            method : [enumeration]           	
-                The type of the final joined layer. One of: 
-                0 — Create separate feature for each matching feature (one-to-many)
-                1 — Take attributes of the first matching feature only (one-to-one)
-                2 — Take attributes of the feature with largest overlap only (one-to-one)
-
-            discard_nomatching : [boolean] Default: False
-                Remove from the output the input layer’s features which could not be joined
-
-            prefix : [string]
-                Add a prefix to joined fields in order to easily identify them and avoid field name collision
-
-            Returns
-            -------
-            QgsVectorLayer [vector: any]
-                the output vector layer for the join.
+            Returns:
+                layer (QgsVectorLayer): the output vector layer for the join.
             """
+
             logger.info("Clipping layers")
             try:
                 parameter = {
@@ -909,23 +750,15 @@ class Worker:
         def extractByLocation(layer: QgsVectorLayer, predicate: int, intersect: str):
             """_summary_
 
-            Parameters
-            ----------
-            layer : QgsVectorLayer [vector: any]
-                Input vector layer. 
+            Args:
+                layer (QgsVectorLayer): Input vector layer. 
+                predicate (integer): Type of spatial relation the source feature should have with the target feature so that they could be joined. One or more of: 0 — intersect, 1 — contain, 2 — equal, 3 — touch, 4 — overlap, 5 — are within 6 — cross.
+                intersect (QgsVectorLayer): Intersection vector layer
 
-            predicate : [enumeration] Default: [0]
-                Type of spatial relation the source feature should have with the target feature so that they could be joined. One or more of:
-                0 — intersect, 1 — contain, 2 — equal, 3 — touch, 4 — overlap, 5 — are within 6 — cross.
-
-            intersect : QgsVectorLayer [vector: any]
-                Intersection vector layer
-
-            Returns
-            -------
-            QgsVectorLayer [vector: any]
-                the output vector layer for the join.
+            Returns:
+                layer (QgsVectorLayer): the output vector layer for the join.
             """
+
             logger.info("Extracting by location")
             try:
                 parameter = {
@@ -950,22 +783,15 @@ class Worker:
             The subset is defined randomly, based on feature IDs, using a percentage or count value to define 
             the total number of features in the subset.
 
-            Parameters
-            ----------
-            layer : QgsVectorLayer [vector: any]
-                Input vector layer. 
+            Args:
+                layer (QgsVectorLayer): Input vector layer. 
+                method (integer): Random selection method. One of: 0 — Number of selected features 1 — Percentage of selected features
+                number (integer): Number or percentage of features to select
 
-            method : [enumeration] Default: 0
-                Random selection method. One of: 0 — Number of selected features 1 — Percentage of selected features
-
-            number : [number] Default: 10
-                Number or percentage of features to select
-
-            Returns
-            -------
-            QgsVectorLayer [vector: polygon/line]
-                The result output from the algorithem
+            Returns:
+                layer (QgsVectorLayer): The result output from the algorithem
             """
+
             logger.info("Extracting random features")
             try:
                 parameter = {
@@ -990,19 +816,14 @@ class Worker:
             Input layer features that partially overlap the overlay layer feature(s) are split along the 
             boundary of those feature(s.
 
-            Parameters
-            ----------
-            layer : QgsVectorLayer [vector: any]
-                Layer to extract (parts of) features from.
+            Args:
+                layer (QgsVectorLayer): Layer to extract (parts of) features from.
+                overlay (QgsVectorLayer): Layer containing the geometries that will be subtracted from the iniput layer geometries
 
-            overlay : QgsVectorLayer [vector: any]
-                Layer containing the geometries that will be subtracted from the iniput layer geometries
-
-            Returns
-            -------
-            QgsVectorLayer [vector: polygon/line]
-                The result output from the algorithem
+            Returns:
+                layer (QgsVectorLayer): The result output from the algorithem
             """
+
             logger.info("Finding differences")
             try:
                 parameter = {
@@ -1026,19 +847,12 @@ class Worker:
             The reprojected layer will have the same features and attributes of the input layer.
             QGIS processing algorithem: native:reprojectlayer.
 
-            Parameters
-            ----------
-            layer : QgsVectorLayer [vector: polygon]
-                The QgsVectorLayer input for the algorithem
+            Args:
+                layer (QgsVectorLayer): The QgsVectorLayer input for the algorithem
+                targetEPSG (integer): The EPSG code og the target coordinate system.
 
-            targetEPSG : Integer
-                The EPSG code og the target coordinate system.
-
-
-            Returns
-            -------
-            QgsVectorLayer [vector: polygon]
-                The result output from the algorithem
+            Returns:
+                layer (QgsVectorLayer): The result output from the algorithem
             """
 
             logger.info("Running reporjector V2")
@@ -1066,23 +880,13 @@ class Worker:
                 It creates a new layer with the same features as the ones in the input layer, but with geometries containing a lower number of vertices.
                 QGIS processing algorithem: native:simplifygeometries.
 
-                Parameters
-                ----------
-                layer : QgsVectorLayer [vector: polygon]
-                    The QgsVectorLayer input for the algorithem
+                Args:
+                    layer (QgsVectorLayer): The QgsVectorLayer input for the algorithem
+                    method (integer): Simplification method. One of: 0 — Distance (Douglas-Peucker), 1 — Snap to grid, 2 — Area (Visvalingam)
+                    tolerance (integer): Threshold tolerance (in units of the layer): if the distance between two nodes is smaller than the tolerance value, the segment will be simplified and vertices will be removed.
 
-                method : Integer
-                    Simplification method. One of: 0 — Distance (Douglas-Peucker), 1 — Snap to grid, 2 — Area (Visvalingam)
-
-                tolerance : Integer
-                    Threshold tolerance (in units of the layer): if the distance between two nodes is smaller than the tolerance value,
-                    the segment will be simplified and vertices will be removed.
-
-
-                Returns
-                -------
-                QgsVectorLayer [vector: polygon/line]
-                    The result output from the algorithem
+                Returns:
+                    layer (QgsVectorLayer): The result output from the algorithem
                 """
 
                 logger.info("Running simplify")
@@ -1113,16 +917,11 @@ class Worker:
             rings in a counter-clockwise direction.
             QGIS processing algorithem: native:forcerhr
 
-            Parameters
-            ----------
-            layer : QgsVectorLayer [vector: polygon]
-                The QgsVectorLayer input for the algorithem
+            Args:
+                layer (QgsVectorLayer): The QgsVectorLayer input for the algorithem
 
-
-            Returns
-            -------
-            QgsVectorLayer [vector: polygon]
-                The result output from the algorithem
+            Returns:
+                layer (QgsVectorLayer): The result output from the algorithem
             """
 
             logger.info("Running force right-hand rule")
@@ -1150,40 +949,20 @@ class Worker:
             to define the join criteria.
             QGIS processing algorithem: native:joinattributestable.
 
-            Parameters
-            ----------
-            layer1 : QgsVectorLayer [vector: any]
-                The 1. QgsVectorLayer input for the algorithem
+            Args:
+                layer1 (QgsVectorLayer): The 1. QgsVectorLayer input for the algorithem
+                layer1_field (string): Field of the source layer to use for the join
+                layer2 (QgsVectorLayer): The 2. QgsVectorLayer input for the algorithem
+                layer2_field (string): Field of the source layer to use for the join
+                fields_to_copy (list of strings): Select the specific fields you want to add. By default all the fields are added. Default []
+                method (integer): The type of the final joined layer. One of: 0 — Create separate feature for each matching feature (one-to-many) 1 — Take attributes of the first matching feature only (one-to-one)
+                discard (boolean): Check if you don’t want to keep the features that could not be joined
+                prefix (string): Add a prefix to joined fields in order to easily identify them and avoid field name collision
 
-            layer1_field : String
-                Field of the source layer to use for the join
-
-            layer2 : QgsVectorLayer [vector: any]
-                The 2. QgsVectorLayer input for the algorithem
-
-            layer2_field : String
-                Field of the source layer to use for the join
-
-            fields_to_copy : List
-                Select the specific fields you want to add. By default all the fields are added. Default []
-
-            method : Integer
-                The type of the final joined layer. One of: 
-                0 — Create separate feature for each matching feature (one-to-many)
-                1 — Take attributes of the first matching feature only (one-to-one)
-
-            discard : Boolean
-                Check if you don’t want to keep the features that could not be joined
-
-            prefix : String
-                Add a prefix to joined fields in order to easily identify them and avoid field name collision
-
-            Returns
-            -------
-            QgsVectorLayer [vector: polygon]
-                The result output from the algorithem
-
+            Returns:
+                layer (QgsVectorLayer): The result output from the algorithem
             """
+
             logger.info("Joining features features")
             if layerHasFeatures(layer1):
                 logger.info("Processing " + str(layer1.featureCount()) +" features")
@@ -1219,22 +998,13 @@ class Worker:
             All output geometries will be converted to multi geometries. 
             QGIS processing algorithem: native:dissolve.
 
-            Parameters
-            ----------
-            layer : QgsVectorLayer [vector: any]
-                The QgsVectorLayer input for the algorithem
+            Args:
+                layer (QgsVectorLayer): The QgsVectorLayer input for the algorithem
+                fieldList (list of strings): List of fields to dissolve on. Default []
+                disjoined (boolean): Keep disjoint features separate ? Default: False
 
-            fieldList : List
-                List of fields to dissolve on. Default []
-
-            disjoined : Boolean
-                Keep disjoint features separate ? Default: False
-
-
-            Returns
-            -------
-            QgsVectorLayer [vector: polygon]
-                The result output from the algorithem
+            Returns:
+                layer (QgsVectorLayer): The result output from the algorithem
 
             """
             logger.info("Dissolving features")
@@ -1266,37 +1036,17 @@ class Worker:
             In this case the buffer will result in a smaller polygon (setback).
             QGIS processing algorithem: native:buffer
 
-            Parameters
-            ----------
-            layer : QgsVectorLayer [vector: any]
-                The QgsVectorLayer input for the algorithem
+            Args:
+                layer (QgsVectorLayer): The QgsVectorLayer input for the algorithem
+                distance (integer): The buffer distance. Default: 10.0
+                segements (integer): Number og segments. Default: 5
+                endcapStyle (integer): Controls how line endings are handled in the buffer. Default: 0 (One of: 0 — Round, 1 — Flat, 2 — Square)
+                joinStyle (integer): Specifies whether round, miter or beveled joins should be used when offsetting corners in a line. Default: 0 (Options are: 0 — Round, 1 — Miter, 2 — Bevel)
+                miterLimit (integer): Sets the maximum distance from the offset geometry to use when creating a mitered join as a factor of the offset distance Default: 0, Minimum: 1
+                dissolve (boolean): Dissolve the final buffer. Default: false.
 
-            distance : Integer
-                The buffer distance. Default: 10.0
-
-            segements : Integer
-                Number og segments. Default: 5
-
-            endcapStyle : Enumeration
-                Controls how line endings are handled in the buffer. Default: 0 
-                (One of: 0 — Round, 1 — Flat, 2 — Square)
-
-            joinStyle : Enumeration
-                Specifies whether round, miter or beveled joins should be used when offsetting corners in a line.
-                Default: 0 (Options are: 0 — Round, 1 — Miter, 2 — Bevel)
-
-            miterLimit : Integer
-                Sets the maximum distance from the offset geometry to use when creating a mitered join as a factor of the offset distance
-                Default: 0, Minimum: 1
-
-            dissolve : Boolean
-                Dissolve the final buffer. Default: false.
-
-
-            Returns
-            -------
-            QgsVectorLayer [vector: polygon]
-                The result output from the algorithem
+            Returns:
+                layer (QgsVectorLayer): The result output from the algorithem
             """
 
             logger.info("Creating buffer layer")
@@ -1329,18 +1079,13 @@ class Worker:
             Already valid geometries are returned without further intervention. Always outputs multi-geometry layer.
             QGIS processing algorithem: native:fixgeometries
 
-            Parameters
-            ----------
-            layer : QgsVectorLayer [vector: any]
-                The QgsVectorLayer input for the algorithem
+            Args:
+                layer (QgsVectorLayer): The QgsVectorLayer input for the algorithem
 
-
-            Returns
-            -------
-            QgsVectorLayer [vector: any]
-                The result output from the algorithem
-
+            Returns:
+                layer (QgsVectorLayer): The result output from the algorithem
             """
+
             logger.info("Fixing geometries")
             if layerHasFeatures(layer):
                 logger.info("Processing " + str(layer.featureCount()) +" features")
@@ -1365,18 +1110,13 @@ class Worker:
             The centroid is a single point representing the barycenter (of all parts) of the feature, so it can be outside the feature borders. But can also be a point on each part of the feature.
             The attributes of the points in the output layer are the same as for the original features.
 
-            Parameters
-            ----------
-            layer : QgsVectorLayer [vector: any]
-                The QgsVectorLayer input for the algorithem
+            Args:
+                layer (QgsVectorLayer): The QgsVectorLayer input for the algorithem
 
-
-            Returns
-            -------
-            QgsVectorLayer [vector: any]
-                The result output from the algorithem
-
+            Returns:
+                layer (QgsVectorLayer): The result output from the algorithem
             """
+
             logger.info("Creating centroids")
             if layerHasFeatures(layer):
                 logger.info("Processing " + str(layer.featureCount()) +" features")
@@ -1402,22 +1142,15 @@ class Worker:
             The subset is defined randomly, based on feature IDs, using a percentage or count value to define the 
             total number of features in the subset.
 
-            Parameters
-            ----------
-            layer : QgsVectorLayer [vector: any]
-                The QgsVectorLayer input for the algorithem
+            Args:
+                layer (QgsVectorLayer): The QgsVectorLayer input for the algorithem
+                method (integer): Random selection method. One of: 0 — Number of selected features, 1 — Percentage of selected features
+                number (integer): Number or percentage of features to select
 
-            method : Integer
-                Random selection method. One of: 0 — Number of selected features, 1 — Percentage of selected features
-            
-            number : Integer
-                Number or percentage of features to select
-
-            Returns
-            -------
-            QgsVectorLayer [vector: any]
-                The result output from the algorithem
+            Returns:
+                layer (QgsVectorLayer): The result output from the algorithem
             """
+
             logger.info("Performing random selection")
             if layerHasFeatures(layer):
                 logger.info("Processing " + str(layer.featureCount()) +" features")
@@ -1448,23 +1181,15 @@ class Worker:
             The default Mssql driver is 'SQL Server' - if this needs to be overwritten, specify the parameter driver, else leave it empty.
             SQL statments must be trippel double-quoted - prepare the statement in the QGIS sql executor tool for testing. 
 
-            Parameters
-            ----------
-            connection : str
-                Name of a database connection from settings.json
-            databasetype : str
-                The database type, one of 'Mssql' or 'Postgres'.
-            sql_expression : str
-                The SQL expression to be executed. Use trippel double-quotes arraound the expression
-            pgdb_name: str
-                Name of postgres database if databasetype is  Postgres. Defaults to None.
-            driver : str
-                Defaults to None. The name of the Mssql driver, if 'SQL Server' is not working.
+            Args:
+                connection (string): Name of a database connection from settings.json
+                databasetype (string): The database type, one of 'Mssql' or 'Postgres'.
+                sql_expression (string): The SQL expression to be executed. Use trippel double-quotes arraound the expression
+                pgdb_name (string): Name of postgres database if databasetype is  Postgres. Defaults to None.
+                driver (string): Defaults to None. The name of the Mssql driver, if 'SQL Server' is not working.
 
-            Returns
-            -------
-            Errorcode : int
-                Returns 0 if the SQL is executed without errors.
+            Returns:
+                Errorcode (integer): Returns 0 if the SQL is executed without errors.
 
             """
 
@@ -1520,20 +1245,14 @@ class Worker:
             Optionally, the destination coordinate reference system (CRS) for the merged layer can be set. If it is 
             not set, the CRS will be taken from the first input layer. All layers will be reprojected to match this CRS.
 
-            Parameters
-            ----------
-            layer : List [vector: any] [list]
-                The layers that are to be merged into a single layer. Layers should be of the same geometry type.
-
-            CRS : [crs]
-                Choose the CRS for the output layer. If not specified, the CRS of the first input layer is used.
-            
-            Returns
-            -------
-            QgsVectorLayer [vector: any]
-                The result output from the algorithem
-            
+            Args:
+                layer (QgsVectorLayer): The layers that are to be merged into a single layer. Layers should be of the same geometry type.
+                CRS (Crs): Choose the CRS for the output layer. If not specified, the CRS of the first input layer is used.
+                
+            Returns:
+                layer (QgsVectorLayer): The result output from the algorithem
             """
+
             logger.info("Performing mergeVectorLayers")
             logger.info(f'Processing {str(len(layers))} layers')
             try:
@@ -1557,14 +1276,11 @@ class Worker:
             """
             Deletes one or more tables from a geopackage
 
-            Parameters
-            ----------
-            geopackage : str
-                The full path for the geopackage file
-            layernames : list
-                List of layernames to be deleted
-
+            Args:
+                geopackage (string): The full path for the geopackage file
+                layernames (list of strings): List of layernames to be deleted
             """
+
             logger.info("Performing delete_geopacakge_layer")
             logger.info(f"Deleting layers {layernames}")
 
@@ -1592,14 +1308,14 @@ class Worker:
             """
             Assign a new projection on a layer. The returned layer is precisely the same layer but assigned a new CRS.
 
-            Parameters
-            ----------
-            layer : QgsVectorLayer
-                The layer to be assigned a new CRS.
-            
-            targetEPSG : int
-                The EPSG code og the target coordinate system.
+            Args:
+            layer : (QgsVectorLayer)Q The layer to be assigned a new CRS.
+            targetEPSG (integer): The EPSG code og the target coordinate system.
+
+            Returns:
+                layer (QgsVectorLayer): Layer with the new projection assigned
             """
+
             logger.info(f'Assigning CRS EPSG:{targetEPSG} to {layer.name()}')
             try:
                 parameter = {
@@ -1626,17 +1342,12 @@ class Worker:
             """
             Downloads a file from the given URL and saves it locally.
 
-            Parameters
-            ----------
-            url : str
-                The URL of the file to download
-            local_filename : str
-                The local path where the file should be saved.
+            Args:
+                url (string): The URL of the file to download
+                local_filename (string): The local path where the file should be saved.
 
-            Returns
-            -------
-            Boolean
-                True if download is succesful, otherwise False.
+            Returns:
+                boolean (boolean): True if download is succesful, otherwise False.
             """
 
             logger.info(f'Downloading file from {url}')
@@ -1662,15 +1373,11 @@ class Worker:
             """
             Deletes all contents of a folder (files and directories), but not the folder it self.
 
-            Parameters
-            ----------
-            folder : str
-                Full path to the folder to be truncated
+            Args:
+                folder (string): Full path to the folder to be truncated
 
-            Returns
-            -------
-            None
-
+            Returns:
+                None
             """
 
             logger.info(f'Truncating folder {folder}')
@@ -1693,11 +1400,10 @@ class Worker:
             """
             A worker that deletes a specific file.
 
-            Parameters
-            ----------
-                filepath (str): The full path to the file to delete
-
+            Args:
+                filepath (string): The full path to the file to delete
             """
+
             logger.info(f'Deleting file {filepath}')
             try:
                 if os.path.exists(filepath):
@@ -1717,13 +1423,11 @@ class Worker:
             Moves a file from one location to another.
             Can also be used for renaming.
 
-            Parameters
-            ----------
-
-                input_filepath (str): The full path to the file to move 
-
-                output_filepath (str): The full path to the target file
+            Args:
+                input_filepath (string): The full path to the file to move 
+                output_filepath (string): The full path to the target file
             """
+
             logger.info(f'Moving file {input_filepath} to {output_filepath}')
             try:
                 if os.path.exists(input_filepath):
@@ -1743,18 +1447,14 @@ class Worker:
             Creates a python list of files with a specific extension, from an input location.
             Returns the full path to the files. 
 
-            Parameters
-            ----------
+            Args:
+                input_folder (string): The full path to teh input folder.
+                file_extension (string): The file extension to search for.
 
-                input_folder (str): The full path to teh input folder.
-
-                file_extension (str): The file extension to search for.
-
-            Returns
-            -------
-            List
-                A list of file paths derived from the input directory of the specified file type
+            Returns:
+                list (list of strings): A list of file paths derived from the input directory of the specified file type
             """
+
             filelist = []
             logger.info(f'Building filelist of {file_extension}-files from directory {input_folder}')
             try:
@@ -1778,17 +1478,13 @@ class Worker:
             """
             Checks if a specific file exists. Returns True if file exists, False if not.
 
-            Parameters
-            ----------
+            Args:
+                input_folder (string): The full path to the input folder.
 
-                input_folder (str): The full path to the input folder.
-
-
-            Returns
-            -------
-            Boolean
-                True/False if file exists.
+            Returns:
+                boolean (boolean): True/False if file exists.
             """
+
             logger.info(f'Checking if file {input_path} exists')
             try:
                 if os.path.exists(input_path):

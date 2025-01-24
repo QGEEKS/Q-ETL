@@ -20,14 +20,9 @@ class Output_Writer:
         """
         A function that exports a QgsVectorLayer into an excel spredsheet.
 
-        Parameters
-        ----------
-        layer : QgsVectorLayer
-            The QgsVectorLayer to be exported into an excel spredsheet.
-
-        path : str
-            the ouput file to be created.
-        
+        Args:
+            layer (QgsVectorLayer): The QgsVectorLayer to be exported into an excel spredsheet.
+            path (string): the ouput file to be created.
         """
 
         if layerHasFeatures(layer):
@@ -51,25 +46,13 @@ class Output_Writer:
         """
         A function that exports a QgsVectorLayer into a Postgis database.
 
-        Parameters
-        ----------
-        layer : QgsVectorLayer
-            The QgsVectorLayer to be exported into Postgis
-
-        connection : str
-            The name of the connection object in the settings file
-
-        dbname : str
-            The database name
-
-        schema : str
-            Schema name
-
-        tablename : str
-            The name of the table that will be imported
-        
-        overwrite : bool
-            Defaults to True. Should the resulting table in Postgis be overwritten if it exists. If set to False, then it will append the data.
+        Args:
+            layer (QgsVectorLayer): The QgsVectorLayer to be exported into Postgis
+            connection (string): The name of the connection object in the settings file
+            dbname (string): The database name
+            schema (string): Schema name
+            tablename (string): The name of the table that will be imported
+            overwrite (boolean): Defaults to True. Should the resulting table in Postgis be overwritten if it exists. If set to False, then it will append the data.
         """
 
         if layerHasFeatures(layer):
@@ -103,21 +86,11 @@ class Output_Writer:
         """
         A function that writes a QgsVectorLayer to a Geopackage file. 
 
-        Parameters
-        ----------
-        layer : QgsVectorLayer
-            The QgsVectorLayer that is to be written to the geopackage
-
-        layername : String
-            The name of the layer in the geopackage file
-
-        geopackage : String
-            The full path for the geopackage to be created
-
-        overwrite : Boolean
-
-            Specify wheather the writer will overwrite existing geopackage or append layer. Boolean True/False
-
+        Args:
+            layer (QgsVectorLayer): The QgsVectorLayer that is to be written to the geopackage
+            layername (string): The name of the layer in the geopackage file
+            geopackage (string): The full path for the geopackage to be created
+            overwrite (boolean): Specify wheather the writer will overwrite existing geopackage or append layer. Boolean True/False
         """
 
         if layerHasFeatures(layer):
@@ -144,18 +117,12 @@ class Output_Writer:
         Append a layer to an existing geopackage.
         If the new layer does not exist, it will be created. It it exists, the features will be appended to the layer.
 
-        Parameters
-        ----------
-        layer : QgsVectorLayer
-            The QgsVectorLayer that is to be written to a file
-
-        layername : String
-            The name of the layer in the geopackage file
-
-        geopackage : String
-            The full path for the geopackage to be created
-
+        Args:
+            layer (QgsVectorLayer): The QgsVectorLayer that is to be written to a file
+            layername (string): The name of the layer in the geopackage file
+            geopackage (string): The full path for the geopackage to be created
         """
+
         logger.info("Running append layer to Geopackage")
         if os.path.isfile(geopackage):
             logger.info(f'Geopackage {geopackage} exists, appending layer')
@@ -187,16 +154,10 @@ class Output_Writer:
 
     def file(layer: str, path: str, format: str):
         """
-        Parameters
-        ----------
-        layer : QgsVectorLayer
-            The QgsVectorLayer that is to be written to a file
-
-        path : _type_
-            The full path for the file to be created
-
-        format : _type_
-            The driver type used to write the data to the file. 
+        Args:
+            layer (QgsVectorLayer): The QgsVectorLayer that is to be written to a file
+            path (string): The full path for the file to be created
+            format (string): The driver type used to write the data to the file. 
         """
 
         if layerHasFeatures(layer):
@@ -216,16 +177,10 @@ class Output_Writer:
         """
         Create an output file from a list of lines. 
 
-        Parameters
-        ----------
-        file : Path and filename
-            The file to be created.
-            
-        list : List
-            List of lines to be written to the file.
-
-        newline : Boolean
-            If true, a newline character will be added to the end of each line.
+        Args:
+            file (string): The path to the resulting file
+            list (list of strings): List of lines to be written to the file.
+            newline (boolean): If true, a newline character will be added to the end of each line.
         """
         logger.info("Creating text file: " + file)
         try:
@@ -247,35 +202,16 @@ class Output_Writer:
         A function that exports a QgsVectorLayer into a MSSQL database using ogr2ogr.
         The function writes the data to a temporary geojson file, that is then importet to the database with ogr2ogr.
         
-        Parameters
-        ----------
-        layer : QgsVectorLayer
-            The QgsVectorLayer that is to be written to a file.
-
-        connection : String
-            The name of a connection from the settings.json file.
-        
-        driver : String (Optional)
-            The driver used for writing to the database.
-            Default value is : 'SQL Server'.
-            
-        schema : String
-            The target schema.
-
-        table : String
-            The target table.
-
-        overwrite : Boolean
-            Overwrite or append.
-
-        geom_type : String
-            Geometry type. One of geometry/geography.
-
-        geom_name : String
-            Name of the geometry coloumn.
-
-        ogr2ogr_params : String
-            Extra parameters for ogr2ogr besides the default.
+        Args:
+            layer (QgsVectorLayer): The QgsVectorLayer that is to be written to a file.
+            connection (string): The name of a connection from the settings.json file.
+            driver (string): The driver used for writing to the database. Default value is : 'SQL Server'.
+            schema (string): The target schema.
+            table (string): The target table.
+            overwrite (boolean): Overwrite or append.
+            geom_type (string): Geometry type. One of geometry/geography.
+            geom_name (string): Name of the geometry coloumn.
+            ogr2ogr_params (string): Extra parameters for ogr2ogr besides the default.
         """
 
         try:
@@ -340,14 +276,10 @@ class Output_Writer:
         """
         A function that export a QgsVectorLayer into an ESRI File
 
-        Parameters
-        ----------
-        layer : QgsVectorLayer
-            The layer that is to be written to an ESRI File GeoDatabase
-        path : str
-            The full path for the ESRI File Geodatabase to be created
-        layername : str
-            The name of the resulting layer in the ESRI File Geodatabase
+        Args:
+            layer (QgsVectorLayer): The layer that is to be written to an ESRI File GeoDatabase
+            path (string): The full path for the ESRI File Geodatabase to be created
+            layername (string): The name of the resulting layer in the ESRI File Geodatabase
         """
 
         if layerHasFeatures(layer):
@@ -370,22 +302,11 @@ class Output_Writer:
         it will be overwritten (removed and recreated). 
         If the GeoPackage exists and Overwrite existing GeoPackage is not checked, the layer will be appended.
 
-        Parameters
-        ----------
-        input : [vector: any] [list]
-            The (vector) layers to import into the GeoPackage. 
-            Raster layers are not supported. If a raster layer is added, a QgsProcessingException will be thrown.
-
-        overwrite : [boolean]Default: False
-            If the specified GeoPackage exists, setting this option to True will make sure that it is deleted 
-            and a new one will be created before the layers are added. If set to False, layers will be appended.
-
-        style : [boolean] Default: True
-            Save the layer styles
-
-        path : str
-            The full path for the Geopackage to be created
-
+        Args:
+            input (list of QgsVectorLayers): The (vector) layers to import into the GeoPackage. Raster layers are not supported. If a raster layer is added, a QgsProcessingException will be thrown.
+            overwrite (boolean): If the specified GeoPackage exists, setting this option to True will make sure that it is deleted and a new one will be created before the layers are added. If set to False, layers will be appended.
+            style (boolean): Save the layer styles
+            path (string): The full path for the Geopackage to be created
         """
 
         logger.info("Performing packageLayers")
