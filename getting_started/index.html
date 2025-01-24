@@ -1,0 +1,641 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="..">
+      
+      
+        <link rel="next" href="../Inputs/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.50">
+    
+    
+      
+        <title>Getting started - Q-ETL Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.a40c8224.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#setup" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Q-ETL Documentation" class="md-header__button md-logo" aria-label="Q-ETL Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Q-ETL Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Getting started
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Q-ETL Documentation" class="md-nav__button md-logo" aria-label="Q-ETL Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Q-ETL Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Getting started
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Getting started
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#step-1-unzip" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1 - Unzip
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-2-settingsjson" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2 - settings.json
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-3-the-python-project-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 3 - The python project file.
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-4-the-project-cmd-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 4 - The project cmd file.
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    API
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            API
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Inputs/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Inputs
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../workers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Workers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../constructors/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Constructors
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../outputs/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Outputs
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#step-1-unzip" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1 - Unzip
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-2-settingsjson" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2 - settings.json
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-3-the-python-project-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 3 - The python project file.
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-4-the-project-cmd-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 4 - The project cmd file.
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<p>This guide will show you how to set up and configure QGIS ETL to run jobs.
+At the end, the system will be configured to run a simple job, performing an ETL task - loading, manipulating, and writing data.</p>
+<h1 id="setup">Setup</h1>
+<h2 id="step-1-unzip">Step 1 - Unzip</h2>
+<p>Fetch latest relase <a href="https://github.com/MFuglsang/Q-ETL/releases">here</a>. This will download a zip file containing the application. Unzip this archive. </p>
+<p>This example will unzip the application in <strong>C:/Apps</strong></p>
+<p>When it is unzipped, you will have a folder like this: </p>
+<p>TODO: ADD FOLDER STRUCTURE EXAMPLE</p>
+<h2 id="step-2-settingsjson">Step 2 - settings.json</h2>
+<p>The first step we need to do is to go through the process of creating the settings.json file in the root.
+Make a copy of the file <em>settings_template.json</em>, and rename it to <em>settings.json</em>. </p>
+<p>TODO: ADD EXPLANATION OF SETTINGS.JSON</p>
+<h2 id="step-3-the-python-project-file">Step 3 - The python project file.</h2>
+<p>Navigate to the python folder and locate the <em>boilerplate.py</em> file. Make a copy of this file and rename it to <em>MyProject.py</em>.</p>
+<p>Open and examine the content of the file - there is not much in it yet:</p>
+<pre><code class="language-python">from core import *
+from engine import *
+
+## Code goes here
+</code></pre>
+<p>Let's keep the file open, we will use it in a short while, we just have one more file to modify before we can start to code the ETL job.</p>
+<h2 id="step-4-the-project-cmd-file">Step 4 - The project cmd file.</h2>
+<p>Go to the root folder of the application, and locate the file <em>boilerplate.cmd</em>. Make a copy of this file, and rename it to <em>MyProject.cmd</em>.</p>
+<p>Open this new .cmd file:</p>
+<pre><code class="language-cmd">&lt;PATH-TO&gt;\python-qgis.bat &lt;FULL-PATH-TO-PYTHON-SCRIPT&gt;
+</code></pre>
+<p>You need to insert the full path to the <em>python-qgis.bat</em> and the full path to <em>MyProject.py</em> file we created in the previous step. Depending on how you have made your QGIS installation, the path to python-qgis.bat is different. In a OSGEO4W installation, it is in the OSGEO4W\bin folder. In a standalone QGIS installation, it is in QGIS\bin. The path to the MyProject.py depends on where you have placed your project.</p>
+<p>An example <em>cmd</em> file could look like this:</p>
+<pre><code class="language-cmd">C:\App\OSGeo4W\bin\python-qgis.bat C:\App\Q-ETL\python\MyProject.py
+</code></pre>
+<p>Now, the project is configured to run the project file MyProject.py - and we will now turn our focus on developing our ETL model</p>
+<h1 id="development">Development</h1>
+<p>For this tutorial, we will load data from a WFS service, reproject it, and store it on disk in a Geopackage.
+The WFS service that we are going to use, contains bus routes and stops - and we are interested in getting the bus stops out.
+The service comes in EPSG:25832.</p>
+<p>The service:</p>
+<pre><code>https://geofyn.admin.gc2.io/wfs/geofyn/fynbus/25832?
+</code></pre>
+<p>The typename we are looking for is <em>Fynbus:stops</em></p>
+<p>For it to work in our code, we need to turn it into a QGIS URI string. the simplest way to do that is to let QGIS load the layer for you and extract the information.
+When the layer is loaded, go to the properties of the layer, and select 'Information'- here the URI string can be copied:</p>
+<p>TODO: ADD SCREENSHOT FROM QGIS</p>
+<p>The string we are going to use as URI is:</p>
+<pre><code>&quot;srsname='EPSG:25832' typename='fynbus:stops' url='https://geofyn.admin.gc2.io/wfs/geofyn/fynbus/25832'&quot;
+</code></pre>
+<p>Now, it is time to go to our project and start to code the operations. </p>
+<p>We can try and run the code as it is, verify that all configurations are correct, and see how that program executes.
+Go to the root folder of your project, and run the MyProject.cmd file. This will open a terminal window, which reports the execution progress.
+When it finishes, go to the folder that was specified as LogPath in the config, and locate the new log file from this run. It has the project name and timestamp in the filename.</p>
+<p>This is the basic format of the log file generated on each run. It validates the configuration, examines the environment and operating system, and finally, it starts to execute the script - which in this case is empty.
+Now we have confirmed that the boilerplates and configuration of our project are valid, and we can build the code to manage the data.</p>
+<p>The process has three steps: Load, reproject and write.</p>
+<ol>
+<li>Load data
+The code is structured in classes - the three main ones are going to be used her. First we create a reader, by invoking the Input_Reader class:
+Then, we construct our input layer, by calling the 'wfs' method on our reader. By calling this method, we are going to give it just one parameter - the URI that we constructed in QGIS. we assign the output layer to a variable, in this case we call it wfslayer, for easy readability of this example. </li>
+</ol>
+<pre><code>reader = Input_Reader
+wfslayer = reader.wfs(&quot;srsname='EPSG:25832' typename='fynbus:stops' url='https://geofyn.admin.gc2.io/wfs/geofyn/fynbus/25832'&quot;)
+</code></pre>
+<ol>
+<li>Next, we must do the reprojection of the data from EPSG:25832 to EPSG:4326. for this, we will create a worker, which will be able to perform operations on layers. This is based on the Worker class. QGIS knows the ESPSG code of the layer, so all we need to specify is the target code (we omit the 'EPSG:', so it is only an input integer here...)</li>
+</ol>
+<pre><code>worker = Worker
+reprojectedlayer = worker.reproject(wfslayer, 4326)
+</code></pre>
+<ol>
+<li>Finally, we will write our reprojected layer to a Geopackage file. For this, we will use our Output_writer class.
+On the writer, we will call the 'geopackage' method, which takes four arguments: Layer to write, layername in the geopackage, the geopackage file to write to, and an option to overwrite the Geopackage.</li>
+</ol>
+<pre><code>writer = Output_Writer
+writer.geopackage(reprojectedlayer,'Busstops','c:/temp/fynbus.gpkg',True)
+</code></pre>
+<p>Now, the code looks like this:</p>
+<p>TODO: INSERT EXAMPLE</p>
+<p>Now, let's call our MyProject.cmd file, and wait for it to finish. It won't take long, the QGIS engine is super fast.
+When the job finishes, let go and inspect the log file that is created. The start parts are the same as all other runs, but the script part at the bottom is now different:</p>
+<p>As the log states, it reads a total of 4706 features from the source with the wfs reader. it channels these features through the reprojector worker - also returning the same 4706 features (which indicates no geometry problems). Finally, it writes the features to the Geopackage, and the job ends with success ❤️ </p>
+<p>This concludes this quickstart tutorial. The next step is to browse the API documentation to find out which methods are available in <em>Input_reader</em>, <em>Worker</em>, and <em>Output_Writer</em> classes. </p>
+<p>On behalf of the QGIS ETL team, Enjoy 😃 </p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.60a45f97.min.js"></script>
+      
+    
+  </body>
+</html>
