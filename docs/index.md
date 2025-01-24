@@ -21,7 +21,7 @@ To run the job, simply call the _.cmd_ file, and the job will execute. The trans
 See more in the [Getting started](getting_started) section.
 
 ## Download
-Download the latest release [here](https://github.com/MFuglsang/Q-ETL/releases).
+Download the latest release [here](https://github.com/QGEEKS/Q-ETL/releases).
 
 ---------
 <sup>1</sup> The Q-ETL project builds upon the work of the QGIS project (https://qgis.org). This project si not developed, endorsed by, or otherwise related to the QGIS project.

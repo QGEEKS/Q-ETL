@@ -18,21 +18,13 @@ class Constructor:
         """
         Create a layer from a list of wkt's.
 
-        Parameters
-        ----------
-        type : String
-            One of 'Point', 'Line','Polygon','MultiPoint', 'MultiLine', 'MultiPolygon'
+        Args:
+            type (string): One of 'Point', 'Line','Polygon','MultiPoint', 'MultiLine', 'MultiPolygon'
+            wktList (list of strings): List of wkt's to be added to the new layer
+            epsg (integer): The epsg code corrosponding to the wkt features coordinate system.
 
-        wktList : List
-            List of wkt's to be added to the new layer
-
-        epsg : integer
-            The epsg code corrosponding to the wkt features coordinate system.
-
-        Returns
-        -------
-        QgsVectorLayer
-            The output layers containing the wkt's
+        Returns:
+            layer (QgsVectorLayer): The output layers containing the wkt's
         """
 
         logger.info("Creating layer from WKT")
@@ -70,17 +62,14 @@ class Constructor:
                 sys.exit()
 
     def bboxFromLayer(layer: str):
-        """_summary_
+        """
+        Create a bounding box from the extents of a given layer
 
-        Parameters
-        ----------
-        layer : QgsVectorLayer
-            The layer, that the bbox is calculated uppon.
+        Args:
+            layer (QgsVectorLayer): The layer, that the bbox is calculated uppon.
 
-        Returns
-        -------
-        QgsVectorLayer
-            The output layer, containing the bbox from the input layer
+        Returns:
+            layer (QgsVectorLayer): The output layer, containing the bbox from the input layer
             
         """
         logger.info("Extracting bbox from layer" )

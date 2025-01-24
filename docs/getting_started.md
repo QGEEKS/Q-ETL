@@ -5,7 +5,7 @@ At the end, the system will be configured to run a simple job, performing an ETL
 
 ## Step 1 - Unzip 
 
-Fetch latest relase [here](https://github.com/MFuglsang/Q-ETL/releases). This will download a zip file containing the application. Unzip this archive. 
+Fetch latest relase [here](https://github.com/QGEEKS/Q-ETL/releases). This will download a zip file containing the application. Unzip this archive. 
 
 This example will unzip the application in **C:/Apps**
 
