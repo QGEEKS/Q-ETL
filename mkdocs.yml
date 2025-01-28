@@ -8,6 +8,7 @@ nav:
     - Workers: workers.md
     - Constructors: constructors.md
     - Outputs: outputs.md
+    - Integrations: integrations.md
 plugins:
   - search
   - mkdocstrings:
