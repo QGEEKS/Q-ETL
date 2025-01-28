@@ -9,3 +9,6 @@ development.cmd
 settings.json
 /server/app/server.cmd
 /server/logs/*.log
+/db/internal.db
+/site/
+/venv/

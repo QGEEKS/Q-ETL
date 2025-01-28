@@ -7,7 +7,7 @@ wfslayer = input_reader.wfs('https://geofyn.admin.gc2.io/wfs/geofyn/fynbus/25832
 
 ## Reprojecting the wfs layer to EPSG:4326 from EPSG:25832
 worker = Worker
-reprojectedLayer = worker.reproject(wfslayer, 'EPSG:4326')
+reprojectedLayer = worker.Vector.reproject(wfslayer, 'EPSG:4326')
 
 ## Writing the QGIS layer to a Geojson file
 output_writer = Output_Writer

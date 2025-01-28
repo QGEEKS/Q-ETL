@@ -1,0 +1,20 @@
+site_name: Q-ETL Documentation
+theme: material
+nav:
+  - Home: index.md
+  - Getting started: getting_started.md
+  - API:
+    - Inputs: Inputs.md
+    - Workers: workers.md
+    - Constructors: constructors.md
+    - Outputs: outputs.md
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          setup_commands:
+            - import sys
+            - sys.path.append('python')
+          selection:
+            docstring_style: numpy

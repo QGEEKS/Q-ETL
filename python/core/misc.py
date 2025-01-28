@@ -1,5 +1,7 @@
 from core.logger import *
+from core.db import *
 import sys
+import subprocess
 import platform,socket,re,uuid,json
 import pip._internal as pip
 from sys import argv
@@ -11,6 +13,72 @@ from email.mime.text import MIMEText
 from qgis.core import QgsVectorFileWriter, QgsProject
 from random import randrange
 import tracemalloc
+
+
+def install_dependencies():
+    logfile = get_logfile()
+    try:
+        import psutil
+    except:
+        logger.info(f'Missing dependency found: psutil')
+        try:
+            subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'psutil'])
+            import psutil
+        except:
+            logger.info(f'Unable to install dependencies - run the editor in admin mode on first run')
+            script_failed()
+        logger.info(f'Dependency: psutil - installed')
+
+    try:
+        import geopandas
+    except:
+        logger.info(f'Missing dependency found: geopandas')
+        try:
+            subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'geopandas'])
+            import geopandas
+        except:
+            logger.info(f'Unable to install dependencies - run the editor in admin mode on first run')
+            script_failed()
+        logger.info(f'Dependency: geopandas - installed')
+
+def get_version():
+    with open('version.json') as f:
+        data = json.load(f)
+    return  data['version']
+
+
+def createJobRun(id):
+    config = get_config()
+    logfile = get_logfile()
+    jobrun_path = config['TempFolder'] + 'job_run.json'
+    try:
+        os.remove(jobrun_path)
+    except OSError:
+        pass
+
+    element = {
+        'id' : str(id),
+        'logfile' : logfile
+    }
+
+    with open(jobrun_path, 'w') as f:
+        json.dump(element, f)
+
+def remove_jobrun():
+    config = get_config()
+    jobrun_path = config['TempFolder'] + 'job_run.json'
+    try:
+        os.remove(jobrun_path)
+    except OSError:
+        pass
+
+def read_jobrun():
+    config = get_config()
+    jobrun_path = config['TempFolder'] + 'job_run.json'
+    with open(jobrun_path) as f:
+        data = json.load(f)
+    return data
+
 
 def layerHasFeatures(layer: str):
     if layer.featureCount() == 0:
@@ -60,18 +128,6 @@ def validateEnvironment(settings):
     except:
         logger.info('Qgs_PrefixPath not configured')
         script_failed()
-    try:    
-        isExist = os.path.exists(settings['QGIS_Plugin_Path'])
-        if not isExist:
-            
-            logger.error('QGIS_Plugin_Path not found')
-            logger.critical('Program terminated')
-            script_failed()
-        else:
-            logger.info('QGIS_Plugin_Path found')
-    except:
-        logger.info('QGIS_Plugin_Path not configured')
-        script_failed()
 
     try:
         isExist = os.path.exists(settings['QGIS_bin_folder'])
@@ -86,7 +142,21 @@ def validateEnvironment(settings):
         logger.info('QGIS_Bin_Folder Not configured')
         script_failed()
 
+    try:
+        isExist = os.path.exists(settings['QGIS_ini_Path'])
+        if not isExist:
+            
+            logger.error('QGIS_ini_Path not found')
+            logger.critical('Program terminated')
+            script_failed()
+        else:
+            logger.info('QGIS_ini_Path found')
+    except : 
+        logger.info('QGIS_ini_Path Not configured')
+        script_failed()
+
     ## Locating the logdir
+    
     try:
         isExist = os.path.exists(settings['logdir'])
         if not isExist:
@@ -94,7 +164,7 @@ def validateEnvironment(settings):
             logger.critical('Program terminated')
             script_failed()
         else:
-            logger.info('Logdir found')
+            logger.info(f'Logdir is {settings["logdir"]}')
 
         if settings['logdir'][-1] != '/':
             settings['logdir'] = settings['logdir'] + '/'
@@ -110,7 +180,7 @@ def validateEnvironment(settings):
             logger.critical('Program terminated')
             script_failed()
         else:
-            logger.info('TempFolder found')
+            logger.info(f'TempFolder is {settings["TempFolder"]}')
         if settings['TempFolder'][-1] != '/':
             settings['TempFolder'] = settings['TempFolder'] + '/'
     except: 
@@ -121,7 +191,7 @@ def validateEnvironment(settings):
     logger.info('')  
     logger.info('Environement and settings OK !')     
 
-def describeEngine(scriptfolder, algorithms, version):
+def describeEngine(scriptfolder, algorithms, version, qetl_version):
     logger = get_logger()
     qgis_supported = get_qgis_support()
 
@@ -161,8 +231,9 @@ def describeEngine(scriptfolder, algorithms, version):
     logger.info("Available memory: " + info['ram'] + " ")
     logger.info("Memory-profiling : Active ")
     logger.info("")
+    logger.info("Q-ETL version: " + str(qetl_version) + "                ")
     logger.info("QGIS version: " + str(version) + "                ")
-    logger.info("Q-ETL status: " + str(supported) + "                ")
+    logger.info("Q-ETL / QGIS status: " + str(supported) + "                ")
     logger.info("Script folder: " + str(scriptfolder) + "")
     algs = []
     for s in algorithms:
@@ -179,6 +250,12 @@ def get_config():
 
     with open(settings_file, 'r') as file:
         settings = json.load(file)
+
+        ##Setting the plugin path based on Qgs_PrefixPath 
+        settings['QGIS_Plugin_Path'] = settings['Qgs_PrefixPath'] + '/python/plugins'
+
+        if not os.path.exists(settings['logdir']):
+            settings['logdir'] = path.abspath(path.join(argv[0] ,"../..")) + '/logs'
 
     return settings
 
@@ -218,6 +295,8 @@ def script_finished():
     logger = get_logger()
     now = datetime.now()
     current, peak = tracemalloc.get_traced_memory()
+    jobrun = read_jobrun()
+    update_job(jobrun['id'], 'Finished', now)
     logger.info('')
     logger.info('')
     logger.info('##################################################')
@@ -232,6 +311,8 @@ def script_failed():
     logger = get_logger()
     now = datetime.now()
     config = get_config()
+    jobrun = read_jobrun()
+    update_job(jobrun['id'], 'Failed', now)
 
     email = bool(config["emailConfiguration"]["emailOnError"])
 

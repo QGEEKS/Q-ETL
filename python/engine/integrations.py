@@ -23,15 +23,11 @@ class Integrations:
         """
         Convert a QGIS layer to a Geopandas dataframe for further processing
 
-        Parameters
-        ----------
-        layer : str
-            The QGIS layer to be converted to dataframe
+        Args:
+            layer (string): The QGIS layer to be converted to dataframe
 
-        Returns
-        -------
-        Dataframe
-            The GeoPandas dataframe from the input layer
+        Returns:
+            dataframe (dataframe): The GeoPandas dataframe from the input layer
         """
 
         logger.info(f'Creating Geopandas dataframe from layer  {str(layer)}')
@@ -54,15 +50,11 @@ class Integrations:
         """
         Convert a  a Geopandas dataframe ton QGIS layer
 
-        Parameters
-        ----------
-        dataframe : str
-            The dataframe to be converted to QGIS layer
+        Args:
+            dataframe (dataframe): The dataframe to be converted to QGIS layer
 
         Returns
-        -------
-        Dataframe
-            The QGIS layer from the input dataframe
+            dataframe (dataframe): The QGIS layer from the input dataframe
         """
 
         logger.info(f'Creating layer from Geopandas dataframe ')

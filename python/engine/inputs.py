@@ -15,15 +15,11 @@ class Input_Reader:
         """
         A function that reads a WFS service.
 
-        Parameters
-        ----------
-        uri : str
-            The uri can be a HTTP url to a WFS server (http://foobar/wfs?TYPENAME=xxx&SRSNAME=yyy[&FILTER=zzz) or a URI constructed using the QgsDataSourceURI class with the following parameters: - url=string (mandatory): HTTP url to a WFS server endpoint. e.g http://foobar/wfs - typename=string (mandatory): WFS typename - srsname=string (recommended): SRS like ‘EPSG:XXXX’ - username=string - password=string - authcfg=string - version=auto/1.0.0/1.1.0/2.0.0 -sql=string: full SELECT SQL statement with optional WHERE, ORDER BY and possibly with JOIN if supported on server - filter=string: QGIS expression or OGC/FES filter - restrictToRequestBBOX=1: to download only features in the view extent (or more generally in the bounding box of the feature iterator) - maxNumFeatures=number - IgnoreAxisOrientation=1: to ignore EPSG axis order for WFS 1.1 or 2.0 - InvertAxisOrientation=1: to invert axis order - hideDownloadProgressDialog=1: to hide the download progress dialog
+        Args:
+            uri (string): The uri can be a HTTP url to a WFS server (http://foobar/wfs?TYPENAME=xxx&SRSNAME=yyy[&FILTER=zzz) or a URI constructed using the QgsDataSourceURI class with the following parameters: - url=string (mandatory): HTTP url to a WFS server endpoint. e.g http://foobar/wfs - typename=string (mandatory): WFS typename - srsname=string (recommended): SRS like ‘EPSG:XXXX’ - username=string - password=string - authcfg=string - version=auto/1.0.0/1.1.0/2.0.0 -sql=string: full SELECT SQL statement with optional WHERE, ORDER BY and possibly with JOIN if supported on server - filter=string: QGIS expression or OGC/FES filter - restrictToRequestBBOX=1: to download only features in the view extent (or more generally in the bounding box of the feature iterator) - maxNumFeatures=number - IgnoreAxisOrientation=1: to ignore EPSG axis order for WFS 1.1 or 2.0 - InvertAxisOrientation=1: to invert axis order - hideDownloadProgressDialog=1: to hide the download progress dialog
 
-        Returns
-        -------
-        layer
-            A QgsVectorLayer object containing data from the WFS service.
+        Returns:
+            layer (QgsVectorLayer): A QgsVectorLayer object containing data from the WFS service.
         """
               
         try:
@@ -41,15 +37,11 @@ class Input_Reader:
         """
         A function that reads a shapefile
 
-        Parameters
-        ----------
-        filepath : str
-            The path to the shapefile to read
-        
-        Returns
-        -------
-        layer
-            A QgsVectorLayer containing data from the shapefile.
+        Args:
+            filepath (string): The path to the shapefile to read
+            
+        Returns:
+            layer (QgsVectorLayer): A QgsVectorLayer containing data from the shapefile.
         """
         logger.info(f'Reading file: {filepath}')
         try: 
@@ -67,15 +59,11 @@ class Input_Reader:
         """
         A function that reads a GeoJson file.
 
-        Parameters
-        ----------
-        filepath : str
-            The path to the GeoJson file to read
-            
-        Returns
-        -------
-        layer
-            A QgsVectorLayer object containing data from the GeoJson file.
+        Args:
+            filepath (string): The path to the GeoJson file to read
+                
+        Returns:
+            layer (QgsVectorLayer): A QgsVectorLayer object containing data from the GeoJson file.
         """
 
         logger.info(f'Reading file: {filepath}')
@@ -111,18 +99,12 @@ class Input_Reader:
         """
         A function that reads alayer from a Geopackage file.
 
-        Parameters
-        ----------
-        file : str
-            The path to the geopackage file to read
-
-        Layername : str
-            The layer to load from the Geopackage
-            
-        Returns
-        -------
-        layer
-            A QgsVectorLayer object containing data from the geopackage.
+        Args: 
+            file (string) : The path to the geopackage file to read
+            Layername (string): The layer to load from the Geopackage
+                
+        Returns:
+            layer (QgsVectorLayer): A QgsVectorLayer object containing data from the geopackage.
         """
 
         layer = Input_Reader.fileBasedDB(file, layername, 'Geopackage')
@@ -132,12 +114,12 @@ class Input_Reader:
         """
         A function that read a layer from an ESRI File Geodatabase using the OpenFileGDB driver.
 
-        Parameters
-        ----------
-        file : str
-            The path to the file geodatabase to read.
-        layername : str
-            The layer to load from the database.
+        Args:
+            file (string): The path to the file geodatabase to read.
+            layername (string): The layer to load from the database.
+
+        Returns:
+            layer (QgsVectorLayer): A QgsVectorLayer object containing the data
         """
         layer = Input_Reader.fileBasedDB(file, layername, 'ESRI File Geodatabase')
         return layer

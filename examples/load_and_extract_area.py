@@ -11,10 +11,10 @@ box = constructor.layerFromWKT('Polygon', ['POLYGON((582913.5369507923 6132445.9
 
 ## Input Geometry has errors, fixing them
 worker = Worker
-wfs_geomfix = worker.fixGeometry(wfslayer)
+wfs_geomfix = worker.Vector.fixGeometry(wfslayer)
 
 ## Clipping the WFS with the work-geometry
-extractLayer = worker.clip(wfs_geomfix, box)
+extractLayer = worker.Vector.clip(wfs_geomfix, box)
 
 ## Writing the QGIS layer to a Geojson file
 output_writer = Output_Writer
