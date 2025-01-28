@@ -10,7 +10,7 @@ reader = Input_Reader
 layer = reader.geojson("testdata/kommuner.geojson")
 
 worker = Worker
-reprojectedLayer = worker.reproject(layer, "EPSG:4326")
+reprojectedLayer = worker.Vector.reproject(layer, "EPSG:4326")
 
 writer = Output_writer
 writer.file(reprojectedLayer, "C:/temp/kommuner_4326.geojson", "GeoJson")
@@ -24,4 +24,4 @@ See more in the [Getting started](getting_started) section.
 Download the latest release [here](https://github.com/QGEEKS/Q-ETL/releases).
 
 ---------
-<sup>1</sup> The Q-ETL project builds upon the work of the QGIS project (https://qgis.org). This project si not developed, endorsed by, or otherwise related to the QGIS project.
+<sup>1</sup> The Q-ETL project builds upon the work of the QGIS project ([https://qgis.org](https://qgis.org)). This project is not developed, endorsed by, or otherwise related to the QGIS project.

@@ -101,7 +101,7 @@ wfslayer = reader.wfs("srsname='EPSG:25832' typename='fynbus:stops' url='https:/
 2. Next, we must do the reprojection of the data from EPSG:25832 to EPSG:4326. for this, we will create a worker, which will be able to perform operations on layers. This is based on the Worker class. QGIS knows the ESPSG code of the layer, so all we need to specify is the target code (we omit the 'EPSG:', so it is only an input integer here...)
 ```
 worker = Worker
-reprojectedlayer = worker.reproject(wfslayer, 4326)
+reprojectedlayer = worker.Vector.reproject(wfslayer, 4326)
 ```
 
 3. Finally, we will write our reprojected layer to a Geopackage file. For this, we will use our Output_writer class.
