@@ -10,13 +10,13 @@ import json
 from PyQt5.QtCore import QSettings
 import smtplib
 from email.mime.text import MIMEText
-from qgis.core import QgsVectorFileWriter, QgsProject
+from qgis.core import QgsVectorFileWriter, QgsProject, QgsVectorLayer
 from random import randrange
 import tracemalloc
 
 
 def install_dependencies():
-    logfile = get_logfile()
+    logger = get_logger() 
     try:
         import psutil
     except:
@@ -41,10 +41,93 @@ def install_dependencies():
             script_failed()
         logger.info(f'Dependency: geopandas - installed')
 
+    try:
+        import dotenv
+    except:
+        logger.info(f'Missing dependency found: dotenv')
+        try:
+            subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'python-dotenv'])
+            import dotenv
+        except:
+            logger.info(f'Unable to install dependencies - run the editor in admin mode on first run')
+            script_failed()
+        logger.info(f'Dependency: dotenv - installed')
+
+    try:
+        import ijson
+    except:
+        logger.info(f'Missing dependency found: ijson')
+        try:
+            subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'ijson'])
+            import ijson
+        except:
+            logger.info(f'Unable to install dependencies - run the editor in admin mode on first run')
+            script_failed()
+        logger.info(f'Dependency: ijson - installed')
+
 def get_version():
     with open('version.json') as f:
         data = json.load(f)
     return  data['version']
+
+def kommunekodeToLokalId(kommunekoder: list):
+    logger = get_logger() 
+    logger.info(f'translation kommunekoder to DAGI lokalid')
+    coredata = getKommuneData('kommunekode')
+    dagi_lokailid = []
+    try:
+        for kode in kommunekoder:
+            lokalid = coredata[kode]['id.lokalid']
+            dagi_lokailid.append(lokalid)
+        return dagi_lokailid
+    except Exception as error:
+        logger.info(f'An error occured translating kommunekoder to DAGI lokalid')
+        logger.error(f'{type(error).__name__}  –  {str(error)}')
+        logger.critical("Program terminated")
+        script_failed()
+
+def getKommuneData(type: str):
+    logger = get_logger() 
+    logger.info(f'Getting core data from kommuner.fgb')
+    logger.info(f'Reading file: {f"{os.getcwd()}/core_data/kommuner.fgb"}')
+    try:
+        file = f"{os.getcwd()}/core_data/kommuner.fgb"
+        print(file)
+        layer =  QgsVectorLayer(file, f'QgsLayer_coredata_kommune', "ogr")
+        logger.info("Finished reading file")
+        data = {}
+        
+        if type == 'id_lokalid':
+            logger.info("Processing id_lokalid")
+            for feature in layer.getFeatures():
+                data[feature['id.lokalid']] = {
+                    'navn' : feature['navn'],
+                    'kommunekode' : feature['kommunekode'],
+                    'regionskode' : feature['regionskode'],
+                }
+            return data
+        elif type == 'kommunekode':
+            logger.info("Processing kommunekode")
+            for feature in layer.getFeatures():
+                data[feature['kommunekode']] = {
+                    'navn' : feature['navn'],
+                    'id.lokalid' : feature['id.lokalid'],
+                    'regionskode' : feature['regionskode'],
+
+                }
+            return data
+        
+        else:
+            logger.error(f"Unsupported value for getKommuneData: {type}")
+            logger.critical("Program terminated")
+            script_failed()
+
+        return layer
+    except Exception as error:
+        logger.info(f'An error occured opening file {"../core_data/kommuner.fgb"}')
+        logger.error(f'{type(error).__name__}  –  {str(error)}')
+        logger.critical("Program terminated")
+        script_failed()
 
 
 def createJobRun(id):
