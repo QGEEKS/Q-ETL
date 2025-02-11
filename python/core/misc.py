@@ -15,6 +15,8 @@ from random import randrange
 import tracemalloc
 
 
+
+
 def install_dependencies():
     logger = get_logger() 
     try:
@@ -88,11 +90,15 @@ def kommunekodeToLokalId(kommunekoder: list):
 
 def getKommuneData(type: str):
     logger = get_logger() 
-    logger.info(f'Getting core data from kommuner.fgb')
-    logger.info(f'Reading file: {f"{os.getcwd()}/core_data/kommuner.fgb"}')
-    try:
-        file = f"{os.getcwd()}/core_data/kommuner.fgb"
-        print(file)
+    config = get_config()
+    logger.info(f'Getting DAGI kommuner from Datafordeler')
+    tmpfile = f'{config["TempFolder"]}QETL_dagi_kommuneinddeling_{str(randrange(1000))}.fgb'
+
+    ogr2ogrstring = f'{config["QGIS_bin_folder"]}/ogr2ogr.exe -of {tmpfile} -if GML "/vsicurl_streaming/https://wfs.datafordeler.dk/DAGIM/DAGI_10MULTIGEOM_GMLSFP/1.0.0/WFS?USERNAME=LEREDWTUHQ&PASSWORD=N8NZQb*9S234&SERVICE=WFS&REQUEST=GetFeature&VERSION=2.0.0&TYPENAMES=dagi10:Kommuneinddeling&STARTINDEX=0&COUNT=1000&SRSNAME=urn:ogc:def:crs:EPSG::25832" -dialect SQLite -sql "SELECT id_lokalid,  kommunekode, st_multi(ST_CollectionExtract(geometri, 3)) AS multigeometri FROM Kommuneinddeling"  -geom=summary '
+    run = subprocess.run(ogr2ogrstring, capture_output=True)
+    
+    """
+    try: 
         layer =  QgsVectorLayer(file, f'QgsLayer_coredata_kommune', "ogr")
         logger.info("Finished reading file")
         data = {}
@@ -128,7 +134,7 @@ def getKommuneData(type: str):
         logger.error(f'{type(error).__name__}  –  {str(error)}')
         logger.critical("Program terminated")
         script_failed()
-
+"""
 
 def createJobRun(id):
     config = get_config()
@@ -399,7 +405,7 @@ def script_failed():
 
     email = bool(config["emailConfiguration"]["emailOnError"])
 
-    if email == True:
+    if email == "True":
         try:
             logger.info('')
 

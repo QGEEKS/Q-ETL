@@ -21,18 +21,76 @@ from typing import Iterator
 from datetime import date
 from pathlib import Path
 
-
-
-
 class Integrations:
     logger = get_logger() 
     load_dotenv(find_dotenv())
     
     class Datafordeler:
 
+        def getDagiKommuner(kommunekoder:list):
+            config = get_config()
+            df_host = os.environ.get("DATAFORDELER_DOWNLOAD_HOST")
+            logger.info(f'Getting DAGI kommuneinddeling from Datafordeler.dk for municipalities {kommunekoder}')
+            logger.info(f'Using Datafordeler tjenestebruger {os.environ.get("DATAFORDELER_TJENESTEBRUGER")}')
+
+            try:
+                logger.info(f'Step 1: Getting kommuneinddeling')            
+                kommuneinddeling_file = f'{config["TempFolder"]}/df_temp/DAGI_V1_Kommuneinddeling_TotalDownload_gpkg_Current_171.gpkg'
+                if os.path.exists(kommuneinddeling_file):
+                    os.remove(kommuneinddeling_file)
+                    logger.info(f'Downloading {f"{df_host}Filename=DAGI_V1_Kommuneinddeling_TotalDownload_gpkg_Current_171.zip"}')
+                    url = f'{df_host}Filename=DAGI_V1_Kommuneinddeling_TotalDownload_gpkg_Current_171.zip&username={os.environ.get("DATAFORDELER_TJENESTEBRUGER")}&password={os.environ.get("DATAFORDELER_PASSWORD")}'
+                    tmpfile = f'{config["TempFolder"]}QETL_dagi_kommuneinddeling_{str(randrange(1000))}.zip'
+                    with requests.get(url, stream=True) as response:
+                        response.raise_for_status()
+                        with open(tmpfile, 'wb') as file:
+                            for chunk in response.iter_content(chunk_size=8192):
+                                file.write(chunk)
+
+                    if not os.path.exists(f'{config["TempFolder"]}/df_temp'):
+                        os.makedirs(f'{config["TempFolder"]}/df_temp')
+
+                    with zipfile.ZipFile(tmpfile, 'r') as zip_ref:
+                        zip_ref.extractall(f'{config["TempFolder"]}/df_temp')
+                    os.remove(tmpfile)
+            
+                layer =  QgsVectorLayer(kommuneinddeling_file,  f'QgsLayer_dagi', "ogr")
+                logger.info("Finished reading DAGI file")
+                
+                if len(kommunekoder) == 0:
+                    layer.startEditing()
+                    for feature in layer.getFeatures():
+                        id = feature.id()
+                        if 'dagi.' not in feature['gmlid']:
+                            layer.deleteFeature(id)
+                    layer.commitChanges()
+                    return layer
+                else:
+                    logger.info("Filtering municipality codes")
+                    layer.startEditing()
+                    for feature in layer.getFeatures():
+                        id = feature.id()
+                        if 'dagi.' not in feature['gmlid']:
+                            layer.deleteFeature(id)
+                        elif feature['kommunekode'] not in kommunekoder:
+                            layer.deleteFeature(id)
+                        else:
+                            pass
+                        
+                    layer.commitChanges()
+                    logger.info(f"Returning {layer.featureCount()} municipalities")
+                    return layer
+
+            except Exception as error:
+                logger.error("Error getting NavngivenVej from Dataforsyningen")
+                logger.error(f'{type(error).__name__}  –  {str(error)}')
+                logger.critical("Program terminated" )
+                sys.exit()
 
         def getDarNavngivenVej(kommunekoder: list):
+
             config = get_config()
+            df_host = os.environ.get("DATAFORDELER_DOWNLOAD_HOST")
             logger.info(f'Getting DAR navngivenvej from Datafordeler.dk for municipalities {kommunekoder}')
             logger.info(f'Using Datafordeler tjenestebruger {os.environ.get("DATAFORDELER_TJENESTEBRUGER")}')
 
@@ -47,8 +105,8 @@ class Integrations:
                         logger.info(f'Skipping download, using existing copy of Adressepunkt with thimestamp {timestamp}')
                     else:
                         os.remove(navngivenvej_file)
-                        logger.info(f'Downloading {"https://api.datafordeler.dk/FileDownloads/GetFile?Filename=DAR_V1_NavngivenVej_TotalDownload_json_Current_169.zip"}')
-                        url = f'https://api.datafordeler.dk/FileDownloads/GetFile?Filename=DAR_V1_NavngivenVej_TotalDownload_json_Current_169.zip&username={os.environ.get("DATAFORDELER_TJENESTEBRUGER")}&password={os.environ.get("DATAFORDELER_PASSWORD")}'
+                        logger.info(f'Downloading {"{df_host}Filename=DAR_V1_NavngivenVej_TotalDownload_json_Current_169.zip"}')
+                        url = f'{df_host}Filename=DAR_V1_NavngivenVej_TotalDownload_json_Current_169.zip&username={os.environ.get("DATAFORDELER_TJENESTEBRUGER")}&password={os.environ.get("DATAFORDELER_PASSWORD")}'
                         tmpfile = f'{config["TempFolder"]}QETL_dar_navngivenVej_{str(randrange(1000))}.zip'
                         with requests.get(url, stream=True) as response:
                             response.raise_for_status()
@@ -65,8 +123,8 @@ class Integrations:
                             zip_ref.extractall(f'{config["TempFolder"]}/df_temp')
                         os.remove(tmpfile)
                 else :
-                    logger.info(f'Downloading {"https://api.datafordeler.dk/FileDownloads/GetFile?Filename=DAR_V1_NavngivenVej_TotalDownload_json_Current_169.zip"}')
-                    url = f'https://api.datafordeler.dk/FileDownloads/GetFile?Filename=DAR_V1_NavngivenVej_TotalDownload_json_Current_169.zip&username={os.environ.get("DATAFORDELER_TJENESTEBRUGER")}&password={os.environ.get("DATAFORDELER_PASSWORD")}'
+                    logger.info(f'Downloading {"{df_host}Filename=DAR_V1_NavngivenVej_TotalDownload_json_Current_169.zip"}')
+                    url = f'{df_host}Filename=DAR_V1_NavngivenVej_TotalDownload_json_Current_169.zip&username={os.environ.get("DATAFORDELER_TJENESTEBRUGER")}&password={os.environ.get("DATAFORDELER_PASSWORD")}'
                     tmpfile = f'{config["TempFolder"]}QETL_dar_navngivenVej_{str(randrange(1000))}.zip'
                     with requests.get(url, stream=True) as response:
                         response.raise_for_status()
@@ -132,6 +190,7 @@ class Integrations:
         def getDarAdresser(kommunekoder: list):
             dagilokailid = kommunekodeToLokalId(kommunekoder)
             config = get_config()
+            df_host = os.environ.get("DATAFORDELER_DOWNLOAD_HOST")
             logger.info(f'Getting DAR adresse from Datafordeler.dk for municipalities {kommunekoder}')
             logger.info(f'Using Datafordeler tjenestebruger {os.environ.get("DATAFORDELER_TJENESTEBRUGER")}')
             ## Preparing adressepunkter first
@@ -146,8 +205,8 @@ class Integrations:
                         logger.info(f'Skipping download, using existing copy of Adressepunkt with thimestamp {timestamp}')
                     else:
                         os.remove(adressepunkt_file)
-                        logger.info(f'Downloading {"https://api.datafordeler.dk/FileDownloads/GetFile?Filename=DAR_V1_Adressepunkt_TotalDownload_json_Current_169.zip"}')
-                        url = f'https://api.datafordeler.dk/FileDownloads/GetFile?Filename=DAR_V1_Adressepunkt_TotalDownload_json_Current_169.zip&username={os.environ.get("DATAFORDELER_TJENESTEBRUGER")}&password={os.environ.get("DATAFORDELER_PASSWORD")}'
+                        logger.info(f'Downloading {"{df_host}Filename=DAR_V1_Adressepunkt_TotalDownload_json_Current_169.zip"}')
+                        url = f'{df_host}Filename=DAR_V1_Adressepunkt_TotalDownload_json_Current_169.zip&username={os.environ.get("DATAFORDELER_TJENESTEBRUGER")}&password={os.environ.get("DATAFORDELER_PASSWORD")}'
                         tmpfile = f'{config["TempFolder"]}QETL_dar_adressepunkt_{str(randrange(1000))}.zip'
                         with requests.get(url, stream=True) as response:
                             response.raise_for_status()
@@ -164,8 +223,8 @@ class Integrations:
                             zip_ref.extractall(f'{config["TempFolder"]}/df_temp')
                         os.remove(tmpfile)
                 else :
-                    logger.info(f'Downloading {"https://api.datafordeler.dk/FileDownloads/GetFile?Filename=DAR_V1_Adressepunkt_TotalDownload_json_Current_169.zip"}')
-                    url = f'https://api.datafordeler.dk/FileDownloads/GetFile?Filename=DAR_V1_Adressepunkt_TotalDownload_json_Current_169.zip&username={os.environ.get("DATAFORDELER_TJENESTEBRUGER")}&password={os.environ.get("DATAFORDELER_PASSWORD")}'
+                    logger.info(f'Downloading {"{df_host}Filename=DAR_V1_Adressepunkt_TotalDownload_json_Current_169.zip"}')
+                    url = f'{df_host}Filename=DAR_V1_Adressepunkt_TotalDownload_json_Current_169.zip&username={os.environ.get("DATAFORDELER_TJENESTEBRUGER")}&password={os.environ.get("DATAFORDELER_PASSWORD")}'
                     tmpfile = f'{config["TempFolder"]}QETL_dar_adressepunkt_{str(randrange(1000))}.zip'
                     with requests.get(url, stream=True) as response:
                         response.raise_for_status()
@@ -206,8 +265,8 @@ class Integrations:
                         logger.info(f'Skipping download, using existing copy of Husnummer with thimestamp {timestamp}')
                     else:
                         os.remove(husnummer_file)
-                        logger.info(f'Downloading {"https://api.datafordeler.dk/FileDownloads/GetFile?Filename=DAR_V1_Husnummer_TotalDownload_json_Current_169.zip"}')
-                        url = f'https://api.datafordeler.dk/FileDownloads/GetFile?Filename=DAR_V1_Husnummer_TotalDownload_json_Current_169.zip&username={os.environ.get("DATAFORDELER_TJENESTEBRUGER")}&password={os.environ.get("DATAFORDELER_PASSWORD")}'
+                        logger.info(f'Downloading {"{df_host}Filename=DAR_V1_Husnummer_TotalDownload_json_Current_169.zip"}')
+                        url = f'{df_host}Filename=DAR_V1_Husnummer_TotalDownload_json_Current_169.zip&username={os.environ.get("DATAFORDELER_TJENESTEBRUGER")}&password={os.environ.get("DATAFORDELER_PASSWORD")}'
                         tmpfile = f'{config["TempFolder"]}QETL_dar_Husnummer{str(randrange(1000))}.zip'
                         with requests.get(url, stream=True) as response:
                             response.raise_for_status()
@@ -219,8 +278,8 @@ class Integrations:
                             zip_ref.extractall(f'{config["TempFolder"]}/df_temp')
                         os.remove(tmpfile)
                 else:
-                    logger.info(f'Downloading {"https://api.datafordeler.dk/FileDownloads/GetFile?Filename=DAR_V1_Husnummer_TotalDownload_json_Current_169.zip"}')
-                    url = f'https://api.datafordeler.dk/FileDownloads/GetFile?Filename=DAR_V1_Husnummer_TotalDownload_json_Current_169.zip&username={os.environ.get("DATAFORDELER_TJENESTEBRUGER")}&password={os.environ.get("DATAFORDELER_PASSWORD")}'
+                    logger.info(f'Downloading {"{df_host}Filename=DAR_V1_Husnummer_TotalDownload_json_Current_169.zip"}')
+                    url = f'{df_host}Filename=DAR_V1_Husnummer_TotalDownload_json_Current_169.zip&username={os.environ.get("DATAFORDELER_TJENESTEBRUGER")}&password={os.environ.get("DATAFORDELER_PASSWORD")}'
                     tmpfile = f'{config["TempFolder"]}QETL_dar_Husnummer{str(randrange(1000))}.zip'
                     with requests.get(url, stream=True) as response:
                         response.raise_for_status()
@@ -263,8 +322,8 @@ class Integrations:
                         logger.info(f'Skipping download, using existing copy of Adresse with thimestamp {timestamp}')
                     else:
                         os.remove(adresser_file)
-                        logger.info(f'Downloading {"https://api.datafordeler.dk/FileDownloads/GetFile?Filename=DAR_V1_Adresse_TotalDownload_json_Current_169.zip"}')
-                        url = f'https://api.datafordeler.dk/FileDownloads/GetFile?Filename=DAR_V1_Adresse_TotalDownload_json_Current_169.zip&username={os.environ.get("DATAFORDELER_TJENESTEBRUGER")}&password={os.environ.get("DATAFORDELER_PASSWORD")}'
+                        logger.info(f'Downloading {"{df_host}Filename=DAR_V1_Adresse_TotalDownload_json_Current_169.zip"}')
+                        url = f'{df_host}Filename=DAR_V1_Adresse_TotalDownload_json_Current_169.zip&username={os.environ.get("DATAFORDELER_TJENESTEBRUGER")}&password={os.environ.get("DATAFORDELER_PASSWORD")}'
                         tmpfile = f'{config["TempFolder"]}QETL_dar_Adresse{str(randrange(1000))}.zip'
                         with requests.get(url, stream=True) as response:
                             response.raise_for_status()
@@ -276,8 +335,8 @@ class Integrations:
                             zip_ref.extractall(f'{config["TempFolder"]}/df_temp')
                         os.remove(tmpfile)
                 else:
-                    logger.info(f'Downloading {"https://api.datafordeler.dk/FileDownloads/GetFile?Filename=DAR_V1_Adresse_TotalDownload_json_Current_169.zip"}')
-                    url = f'https://api.datafordeler.dk/FileDownloads/GetFile?Filename=DAR_V1_Adresse_TotalDownload_json_Current_169.zip&username={os.environ.get("DATAFORDELER_TJENESTEBRUGER")}&password={os.environ.get("DATAFORDELER_PASSWORD")}'
+                    logger.info(f'Downloading {"{df_host}Filename=DAR_V1_Adresse_TotalDownload_json_Current_169.zip"}')
+                    url = f'{df_host}Filename=DAR_V1_Adresse_TotalDownload_json_Current_169.zip&username={os.environ.get("DATAFORDELER_TJENESTEBRUGER")}&password={os.environ.get("DATAFORDELER_PASSWORD")}'
                     tmpfile = f'{config["TempFolder"]}QETL_dar_Adresse{str(randrange(1000))}.zip'
                     with requests.get(url, stream=True) as response:
                         response.raise_for_status()
@@ -339,6 +398,7 @@ class Integrations:
 
         def getDarHusnummer(kommunekoder: list):
             config = get_config()
+            df_host = os.environ.get("DATAFORDELER_DOWNLOAD_HOST")
             dagilokailid = kommunekodeToLokalId(kommunekoder)
             logger.info(f'Getting DAR husnummer from Datafordeler.dk for municipalities {kommunekoder}')
             logger.info(f'Using Datafordeler tjenestebruger {os.environ.get("DATAFORDELER_TJENESTEBRUGER")}')
@@ -354,8 +414,8 @@ class Integrations:
                         logger.info(f'Skipping download, using existing copy of Adressepunkt with thimestamp {timestamp}')
                     else:
                         os.remove(adressepunkt_file)
-                        logger.info(f'Downloading {"https://api.datafordeler.dk/FileDownloads/GetFile?Filename=DAR_V1_Adressepunkt_TotalDownload_json_Current_169.zip"}')
-                        url = f'https://api.datafordeler.dk/FileDownloads/GetFile?Filename=DAR_V1_Adressepunkt_TotalDownload_json_Current_169.zip&username={os.environ.get("DATAFORDELER_TJENESTEBRUGER")}&password={os.environ.get("DATAFORDELER_PASSWORD")}'
+                        logger.info(f'Downloading {"{df_host}Filename=DAR_V1_Adressepunkt_TotalDownload_json_Current_169.zip"}')
+                        url = f'{df_host}Filename=DAR_V1_Adressepunkt_TotalDownload_json_Current_169.zip&username={os.environ.get("DATAFORDELER_TJENESTEBRUGER")}&password={os.environ.get("DATAFORDELER_PASSWORD")}'
                         tmpfile = f'{config["TempFolder"]}QETL_dar_adressepunkt_{str(randrange(1000))}.zip'
                         with requests.get(url, stream=True) as response:
                             response.raise_for_status()
@@ -372,8 +432,8 @@ class Integrations:
                             zip_ref.extractall(f'{config["TempFolder"]}/df_temp')
                         os.remove(tmpfile)
                 else :
-                    logger.info(f'Downloading {"https://api.datafordeler.dk/FileDownloads/GetFile?Filename=DAR_V1_Adressepunkt_TotalDownload_json_Current_169.zip"}')
-                    url = f'https://api.datafordeler.dk/FileDownloads/GetFile?Filename=DAR_V1_Adressepunkt_TotalDownload_json_Current_169.zip&username={os.environ.get("DATAFORDELER_TJENESTEBRUGER")}&password={os.environ.get("DATAFORDELER_PASSWORD")}'
+                    logger.info(f'Downloading {"{df_host}Filename=DAR_V1_Adressepunkt_TotalDownload_json_Current_169.zip"}')
+                    url = f'{df_host}Filename=DAR_V1_Adressepunkt_TotalDownload_json_Current_169.zip&username={os.environ.get("DATAFORDELER_TJENESTEBRUGER")}&password={os.environ.get("DATAFORDELER_PASSWORD")}'
                     tmpfile = f'{config["TempFolder"]}QETL_dar_adressepunkt_{str(randrange(1000))}.zip'
                     with requests.get(url, stream=True) as response:
                         response.raise_for_status()
@@ -413,8 +473,8 @@ class Integrations:
                         logger.info(f'Skipping download, using existing copy of Husnummer with thimestamp {timestamp}')
                     else:
                         os.remove(husnummer_file)
-                        logger.info(f'Downloading {"https://api.datafordeler.dk/FileDownloads/GetFile?Filename=DAR_V1_Husnummer_TotalDownload_json_Current_169.zip"}')
-                        url = f'https://api.datafordeler.dk/FileDownloads/GetFile?Filename=DAR_V1_Husnummer_TotalDownload_json_Current_169.zip&username={os.environ.get("DATAFORDELER_TJENESTEBRUGER")}&password={os.environ.get("DATAFORDELER_PASSWORD")}'
+                        logger.info(f'Downloading {"{df_host}Filename=DAR_V1_Husnummer_TotalDownload_json_Current_169.zip"}')
+                        url = f'{df_host}Filename=DAR_V1_Husnummer_TotalDownload_json_Current_169.zip&username={os.environ.get("DATAFORDELER_TJENESTEBRUGER")}&password={os.environ.get("DATAFORDELER_PASSWORD")}'
                         tmpfile = f'{config["TempFolder"]}QETL_dar_Husnummer{str(randrange(1000))}.zip'
                         with requests.get(url, stream=True) as response:
                             response.raise_for_status()
