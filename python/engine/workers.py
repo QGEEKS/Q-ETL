@@ -1333,6 +1333,35 @@ class Worker:
                 logger.critical("Program terminated" )
                 sys.exit()
 
+        def listUniqueValues(layer: QgsVectorLayer, target_field: str):
+            """
+            Retrieve a list of unique values in a field.
+
+            Args:
+                layer (QgsVectorLayer): The layer to analyze
+                target_field (str): The column that contains values.
+
+            Returns:
+                unique_values: A list of unique values found in the input field.
+            """
+            
+            logger.info(f'Retrieving unique values from {target_field} in {layer.name()}')
+            try:
+                parameter = {
+                    'INPUT': layer,
+                    'FIELDS': [target_field],
+                }
+                logger.info(f'Parameters: {str(parameter)}')
+                values = processing.run('qgis:listuniquevalues', parameter, feedback=Worker.progress)['UNIQUE_VALUES']
+                result = values.split(';')
+                logger.info('Retrieving unique values finished')
+                return result
+            except Exception as error:
+                logger.error("An error occured while retrieving values")
+                logger.error(f'{type(error).__name__}  –  {str(error)}')
+                logger.critical("Program terminated" )
+                sys.exit()
+
     class File:
         '''
         A Worker subclass that contains methods to work with the filesystem.
