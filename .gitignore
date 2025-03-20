@@ -11,3 +11,5 @@ settings.json
 /server/logs/*.log
 /db/internal.db
 .env
+/site/
+/venv/
