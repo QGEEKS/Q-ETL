@@ -18,7 +18,7 @@ TODO: ADD FOLDER STRUCTURE EXAMPLE
 The first step we need to do is to go through the process of creating the settings.json file in the root.
 Make a copy of the file _settings\_template.json_, and rename it to _settings.json_. 
 
-TODO: ADD EXPLANATION OF SETTINGS.JSON
+For information on how to configure settings.json, see [configurations](https://github.com/QGEEKS/Q-ETL/configurations)
 
 ## Step 3 - The python project file.
 
@@ -74,7 +74,7 @@ TODO: ADD SCREENSHOT FROM QGIS
 
 The string we are going to use as URI is:
 
-```
+```python
 "srsname='EPSG:25832' typename='fynbus:stops' url='https://geofyn.admin.gc2.io/wfs/geofyn/fynbus/25832'"
 ``` 
 
@@ -93,27 +93,41 @@ The process has three steps: Load, reproject and write.
 1. Load data
 The code is structured in classes - the three main ones are going to be used her. First we create a reader, by invoking the Input_Reader class:
 Then, we construct our input layer, by calling the 'wfs' method on our reader. By calling this method, we are going to give it just one parameter - the URI that we constructed in QGIS. we assign the output layer to a variable, in this case we call it wfslayer, for easy readability of this example. 
-```
+```python
 reader = Input_Reader
 wfslayer = reader.wfs("srsname='EPSG:25832' typename='fynbus:stops' url='https://geofyn.admin.gc2.io/wfs/geofyn/fynbus/25832'")
 ```
 
 2. Next, we must do the reprojection of the data from EPSG:25832 to EPSG:4326. for this, we will create a worker, which will be able to perform operations on layers. This is based on the Worker class. QGIS knows the ESPSG code of the layer, so all we need to specify is the target code (we omit the 'EPSG:', so it is only an input integer here...)
-```
+```python
 worker = Worker
 reprojectedlayer = worker.Vector.reproject(wfslayer, 4326)
 ```
 
 3. Finally, we will write our reprojected layer to a Geopackage file. For this, we will use our Output_writer class.
 On the writer, we will call the 'geopackage' method, which takes four arguments: Layer to write, layername in the geopackage, the geopackage file to write to, and an option to overwrite the Geopackage.
-```
+
+```python
 writer = Output_Writer
 writer.geopackage(reprojectedlayer,'Busstops','c:/temp/fynbus.gpkg',True)
 ```
 
 Now, the code looks like this:
 
-TODO: INSERT EXAMPLE
+```python
+from core import *
+from engine import *
+
+reader = Input_Reader
+wfslayer = reader.wfs("srsname='EPSG:25832' typename='fynbus:stops' url='https://geofyn.admin.gc2.io/wfs/geofyn/fynbus/25832'")
+
+worker = Worker
+reprojectedlayer = worker.Vector.reproject(wfslayer, 4326)
+
+writer = Output_Writer
+writer.geopackage(reprojectedlayer,'Busstops','c:/temp/fynbus.gpkg',True)
+
+```
 
 Now, let's call our MyProject.cmd file, and wait for it to finish. It won't take long, the QGIS engine is super fast.
 When the job finishes, let go and inspect the log file that is created. The start parts are the same as all other runs, but the script part at the bottom is now different:
