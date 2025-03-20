@@ -12,3 +12,4 @@ settings.json
 /db/internal.db
 /site/
 /venv/
+.env
