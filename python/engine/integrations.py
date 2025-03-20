@@ -2,7 +2,7 @@ from core.logger import *
 from core.misc import get_config
 import sys
 import shutil
-from core.misc import get_config, create_tempfile, delete_tempfile, kommunekodeToLokalId
+from core.misc import get_config, create_tempfile, delete_tempfile, kommunekodeToLokalId, getCurrentFile
 from qgis.analysis import QgsNativeAlgorithms
 from qgis.core import QgsCoordinateReferenceSystem, QgsVectorLayer, QgsVectorFileWriter, QgsProject, QgsFeatureRequest, QgsProcessingContext, QgsField, QgsFeature, QgsGeometry
 from PyQt5.QtCore import QVariant
@@ -26,77 +26,15 @@ class Integrations:
     load_dotenv(find_dotenv())
     
     class Datafordeler:
-
-        def getDagiKommuner(kommunekoder:list):
-            config = get_config()
-            df_host = os.environ.get("DATAFORDELER_DOWNLOAD_HOST")
-            logger.info(f'Getting DAGI kommuneinddeling from Datafordeler.dk for municipalities {kommunekoder}')
-            logger.info(f'Using Datafordeler tjenestebruger {os.environ.get("DATAFORDELER_TJENESTEBRUGER")}')
-
-            try:
-                logger.info(f'Step 1: Getting kommuneinddeling')            
-                kommuneinddeling_file = f'{config["TempFolder"]}/df_temp/DAGI_V1_Kommuneinddeling_TotalDownload_gpkg_Current_171.gpkg'
-                if os.path.exists(kommuneinddeling_file):
-                    os.remove(kommuneinddeling_file)
-                    logger.info(f'Downloading {f"{df_host}Filename=DAGI_V1_Kommuneinddeling_TotalDownload_gpkg_Current_171.zip"}')
-                    url = f'{df_host}Filename=DAGI_V1_Kommuneinddeling_TotalDownload_gpkg_Current_171.zip&username={os.environ.get("DATAFORDELER_TJENESTEBRUGER")}&password={os.environ.get("DATAFORDELER_PASSWORD")}'
-                    tmpfile = f'{config["TempFolder"]}QETL_dagi_kommuneinddeling_{str(randrange(1000))}.zip'
-                    with requests.get(url, stream=True) as response:
-                        response.raise_for_status()
-                        with open(tmpfile, 'wb') as file:
-                            for chunk in response.iter_content(chunk_size=8192):
-                                file.write(chunk)
-
-                    if not os.path.exists(f'{config["TempFolder"]}/df_temp'):
-                        os.makedirs(f'{config["TempFolder"]}/df_temp')
-
-                    with zipfile.ZipFile(tmpfile, 'r') as zip_ref:
-                        zip_ref.extractall(f'{config["TempFolder"]}/df_temp')
-                    os.remove(tmpfile)
-            
-                layer =  QgsVectorLayer(kommuneinddeling_file,  f'QgsLayer_dagi', "ogr")
-                logger.info("Finished reading DAGI file")
-                
-                if len(kommunekoder) == 0:
-                    layer.startEditing()
-                    for feature in layer.getFeatures():
-                        id = feature.id()
-                        if 'dagi.' not in feature['gmlid']:
-                            layer.deleteFeature(id)
-                    layer.commitChanges()
-                    return layer
-                else:
-                    logger.info("Filtering municipality codes")
-                    layer.startEditing()
-                    for feature in layer.getFeatures():
-                        id = feature.id()
-                        if 'dagi.' not in feature['gmlid']:
-                            layer.deleteFeature(id)
-                        elif feature['kommunekode'] not in kommunekoder:
-                            layer.deleteFeature(id)
-                        else:
-                            pass
-                        
-                    layer.commitChanges()
-                    logger.info(f"Returning {layer.featureCount()} municipalities")
-                    return layer
-
-            except Exception as error:
-                logger.error("Error getting NavngivenVej from Dataforsyningen")
-                logger.error(f'{type(error).__name__}  –  {str(error)}')
-                logger.critical("Program terminated" )
-                sys.exit()
-
         def getDarNavngivenVej(kommunekoder: list):
-
             config = get_config()
             df_host = os.environ.get("DATAFORDELER_DOWNLOAD_HOST")
+            fileToDownload = getCurrentFile('DAR', 'NavngivenVej')
             logger.info(f'Getting DAR navngivenvej from Datafordeler.dk for municipalities {kommunekoder}')
             logger.info(f'Using Datafordeler tjenestebruger {os.environ.get("DATAFORDELER_TJENESTEBRUGER")}')
-
             try:
                 logger.info(f'Step 1: Getting navngivenvej')            
-                navngivenvej_file = f'{config["TempFolder"]}/df_temp/DAR_V1_NavngivenVej_TotalDownload_json_Current_169.json'
+                navngivenvej_file = f'{config["TempFolder"]}/df_temp/{fileToDownload}.json'
                 if os.path.exists(navngivenvej_file):
                     path = Path(navngivenvej_file)
                     timestamp = date.fromtimestamp(path.stat().st_mtime)
@@ -105,8 +43,8 @@ class Integrations:
                         logger.info(f'Skipping download, using existing copy of Adressepunkt with thimestamp {timestamp}')
                     else:
                         os.remove(navngivenvej_file)
-                        logger.info(f'Downloading {"{df_host}Filename=DAR_V1_NavngivenVej_TotalDownload_json_Current_169.zip"}')
-                        url = f'{df_host}Filename=DAR_V1_NavngivenVej_TotalDownload_json_Current_169.zip&username={os.environ.get("DATAFORDELER_TJENESTEBRUGER")}&password={os.environ.get("DATAFORDELER_PASSWORD")}'
+                        logger.info(f'Downloading "{df_host}Filename={fileToDownload}.zip"')
+                        url = f'{df_host}Filename={fileToDownload}.zip&username={os.environ.get("DATAFORDELER_TJENESTEBRUGER")}&password={os.environ.get("DATAFORDELER_PASSWORD")}'
                         tmpfile = f'{config["TempFolder"]}QETL_dar_navngivenVej_{str(randrange(1000))}.zip'
                         with requests.get(url, stream=True) as response:
                             response.raise_for_status()
@@ -123,8 +61,8 @@ class Integrations:
                             zip_ref.extractall(f'{config["TempFolder"]}/df_temp')
                         os.remove(tmpfile)
                 else :
-                    logger.info(f'Downloading {"{df_host}Filename=DAR_V1_NavngivenVej_TotalDownload_json_Current_169.zip"}')
-                    url = f'{df_host}Filename=DAR_V1_NavngivenVej_TotalDownload_json_Current_169.zip&username={os.environ.get("DATAFORDELER_TJENESTEBRUGER")}&password={os.environ.get("DATAFORDELER_PASSWORD")}'
+                    logger.info(f'Downloading {"{df_host}Filename={fileToDownload}.zip"}')
+                    url = f'{df_host}Filename={fileToDownload}.zip&username={os.environ.get("DATAFORDELER_TJENESTEBRUGER")}&password={os.environ.get("DATAFORDELER_PASSWORD")}'
                     tmpfile = f'{config["TempFolder"]}QETL_dar_navngivenVej_{str(randrange(1000))}.zip'
                     with requests.get(url, stream=True) as response:
                         response.raise_for_status()
@@ -183,20 +121,22 @@ class Integrations:
                 logger.critical("Program terminated" )
                 sys.exit()
             return layer
-
-
-
-
-        def getDarAdresser(kommunekoder: list):
+        
+        def Test(reg, layer):
+            getCurrentFile(reg, layer)
+            
+        def getDarAdresse(kommunekoder: list):
             dagilokailid = kommunekodeToLokalId(kommunekoder)
             config = get_config()
+
             df_host = os.environ.get("DATAFORDELER_DOWNLOAD_HOST")
             logger.info(f'Getting DAR adresse from Datafordeler.dk for municipalities {kommunekoder}')
             logger.info(f'Using Datafordeler tjenestebruger {os.environ.get("DATAFORDELER_TJENESTEBRUGER")}')
             ## Preparing adressepunkter first
             try:
-                logger.info(f'Step 1: Getting navngivenvej')            
-                adressepunkt_file = f'{config["TempFolder"]}/df_temp/DAR_V1_Adressepunkt_TotalDownload_json_Current_169.json'
+                logger.info(f'Step 1: Getting Adressepunkter')     
+                fileToDownload = getCurrentFile('DAR', 'Adressepunkt')       
+                adressepunkt_file = f'{config["TempFolder"]}/df_temp/{fileToDownload}.json'
                 if os.path.exists(adressepunkt_file):
                     path = Path(adressepunkt_file)
                     timestamp = date.fromtimestamp(path.stat().st_mtime)
@@ -205,8 +145,8 @@ class Integrations:
                         logger.info(f'Skipping download, using existing copy of Adressepunkt with thimestamp {timestamp}')
                     else:
                         os.remove(adressepunkt_file)
-                        logger.info(f'Downloading {"{df_host}Filename=DAR_V1_Adressepunkt_TotalDownload_json_Current_169.zip"}')
-                        url = f'{df_host}Filename=DAR_V1_Adressepunkt_TotalDownload_json_Current_169.zip&username={os.environ.get("DATAFORDELER_TJENESTEBRUGER")}&password={os.environ.get("DATAFORDELER_PASSWORD")}'
+                        logger.info(f'Downloading "{df_host}Filename={fileToDownload}.zip"')
+                        url = f'{df_host}Filename={fileToDownload}.zip&username={os.environ.get("DATAFORDELER_TJENESTEBRUGER")}&password={os.environ.get("DATAFORDELER_PASSWORD")}'
                         tmpfile = f'{config["TempFolder"]}QETL_dar_adressepunkt_{str(randrange(1000))}.zip'
                         with requests.get(url, stream=True) as response:
                             response.raise_for_status()
@@ -223,8 +163,8 @@ class Integrations:
                             zip_ref.extractall(f'{config["TempFolder"]}/df_temp')
                         os.remove(tmpfile)
                 else :
-                    logger.info(f'Downloading {"{df_host}Filename=DAR_V1_Adressepunkt_TotalDownload_json_Current_169.zip"}')
-                    url = f'{df_host}Filename=DAR_V1_Adressepunkt_TotalDownload_json_Current_169.zip&username={os.environ.get("DATAFORDELER_TJENESTEBRUGER")}&password={os.environ.get("DATAFORDELER_PASSWORD")}'
+                    logger.info(f'Downloading {"{df_host}Filename={fileToDownload}.zip"}')
+                    url = f'{df_host}Filename={fileToDownload}.zip&username={os.environ.get("DATAFORDELER_TJENESTEBRUGER")}&password={os.environ.get("DATAFORDELER_PASSWORD")}'
                     tmpfile = f'{config["TempFolder"]}QETL_dar_adressepunkt_{str(randrange(1000))}.zip'
                     with requests.get(url, stream=True) as response:
                         response.raise_for_status()
@@ -255,7 +195,8 @@ class Integrations:
             
             try:
                 logger.info(f'Step 2: Getting DAR Husnummer')
-                husnummer_file = f'{config["TempFolder"]}/df_temp/DAR_V1_Husnummer_TotalDownload_json_Current_169.json'
+                fileToDownload = getCurrentFile('DAR', 'Husnummer')  
+                husnummer_file = f'{config["TempFolder"]}/df_temp/{fileToDownload}.json'
                 
                 if os.path.exists(husnummer_file):
                     path = Path(husnummer_file)
@@ -265,8 +206,8 @@ class Integrations:
                         logger.info(f'Skipping download, using existing copy of Husnummer with thimestamp {timestamp}')
                     else:
                         os.remove(husnummer_file)
-                        logger.info(f'Downloading {"{df_host}Filename=DAR_V1_Husnummer_TotalDownload_json_Current_169.zip"}')
-                        url = f'{df_host}Filename=DAR_V1_Husnummer_TotalDownload_json_Current_169.zip&username={os.environ.get("DATAFORDELER_TJENESTEBRUGER")}&password={os.environ.get("DATAFORDELER_PASSWORD")}'
+                        logger.info(f'Downloading "{df_host}Filename={fileToDownload}.zip"')
+                        url = f'{df_host}Filename={fileToDownload}.zip&username={os.environ.get("DATAFORDELER_TJENESTEBRUGER")}&password={os.environ.get("DATAFORDELER_PASSWORD")}'
                         tmpfile = f'{config["TempFolder"]}QETL_dar_Husnummer{str(randrange(1000))}.zip'
                         with requests.get(url, stream=True) as response:
                             response.raise_for_status()
@@ -278,8 +219,8 @@ class Integrations:
                             zip_ref.extractall(f'{config["TempFolder"]}/df_temp')
                         os.remove(tmpfile)
                 else:
-                    logger.info(f'Downloading {"{df_host}Filename=DAR_V1_Husnummer_TotalDownload_json_Current_169.zip"}')
-                    url = f'{df_host}Filename=DAR_V1_Husnummer_TotalDownload_json_Current_169.zip&username={os.environ.get("DATAFORDELER_TJENESTEBRUGER")}&password={os.environ.get("DATAFORDELER_PASSWORD")}'
+                    logger.info(f'Downloading {"{df_host}Filename={fileToDownload}.zip"}')
+                    url = f'{df_host}Filename={fileToDownload}.zip&username={os.environ.get("DATAFORDELER_TJENESTEBRUGER")}&password={os.environ.get("DATAFORDELER_PASSWORD")}'
                     tmpfile = f'{config["TempFolder"]}QETL_dar_Husnummer{str(randrange(1000))}.zip'
                     with requests.get(url, stream=True) as response:
                         response.raise_for_status()
@@ -312,7 +253,8 @@ class Integrations:
             ## STEP 3
             try:
                 logger.info(f'Step 3: Getting DAR adresse')
-                adresser_file = f'{config["TempFolder"]}/df_temp/DAR_V1_Adresse_TotalDownload_json_Current_169.json'
+                fileToDownload = getCurrentFile('DAR', 'Adresse')  
+                adresser_file = f'{config["TempFolder"]}/df_temp/{fileToDownload}.json'
                 
                 if os.path.exists(adresser_file):
                     path = Path(adresser_file)
@@ -322,8 +264,8 @@ class Integrations:
                         logger.info(f'Skipping download, using existing copy of Adresse with thimestamp {timestamp}')
                     else:
                         os.remove(adresser_file)
-                        logger.info(f'Downloading {"{df_host}Filename=DAR_V1_Adresse_TotalDownload_json_Current_169.zip"}')
-                        url = f'{df_host}Filename=DAR_V1_Adresse_TotalDownload_json_Current_169.zip&username={os.environ.get("DATAFORDELER_TJENESTEBRUGER")}&password={os.environ.get("DATAFORDELER_PASSWORD")}'
+                        logger.info(f'Downloading "{df_host}Filename={fileToDownload}.zip"')
+                        url = f'{df_host}Filename={fileToDownload}.zip&username={os.environ.get("DATAFORDELER_TJENESTEBRUGER")}&password={os.environ.get("DATAFORDELER_PASSWORD")}'
                         tmpfile = f'{config["TempFolder"]}QETL_dar_Adresse{str(randrange(1000))}.zip'
                         with requests.get(url, stream=True) as response:
                             response.raise_for_status()
@@ -335,8 +277,8 @@ class Integrations:
                             zip_ref.extractall(f'{config["TempFolder"]}/df_temp')
                         os.remove(tmpfile)
                 else:
-                    logger.info(f'Downloading {"{df_host}Filename=DAR_V1_Adresse_TotalDownload_json_Current_169.zip"}')
-                    url = f'{df_host}Filename=DAR_V1_Adresse_TotalDownload_json_Current_169.zip&username={os.environ.get("DATAFORDELER_TJENESTEBRUGER")}&password={os.environ.get("DATAFORDELER_PASSWORD")}'
+                    logger.info(f'Downloading {"{df_host}Filename={fileToDownload}.zip"}')
+                    url = f'{df_host}Filename={fileToDownload}.zip&username={os.environ.get("DATAFORDELER_TJENESTEBRUGER")}&password={os.environ.get("DATAFORDELER_PASSWORD")}'
                     tmpfile = f'{config["TempFolder"]}QETL_dar_Adresse{str(randrange(1000))}.zip'
                     with requests.get(url, stream=True) as response:
                         response.raise_for_status()
@@ -393,198 +335,164 @@ class Integrations:
                 logger.critical("Program terminated" )
                 sys.exit()
             return layer
-
-
+        
 
         def getDarHusnummer(kommunekoder: list):
-            config = get_config()
-            df_host = os.environ.get("DATAFORDELER_DOWNLOAD_HOST")
-            dagilokailid = kommunekodeToLokalId(kommunekoder)
-            logger.info(f'Getting DAR husnummer from Datafordeler.dk for municipalities {kommunekoder}')
-            logger.info(f'Using Datafordeler tjenestebruger {os.environ.get("DATAFORDELER_TJENESTEBRUGER")}')
-            ## Preparing adressepunkter first
-            try:
-                logger.info(f'Step 1: Getting adressepunkter')            
-                adressepunkt_file = f'{config["TempFolder"]}/df_temp/DAR_V1_Adressepunkt_TotalDownload_json_Current_169.json'
-                if os.path.exists(adressepunkt_file):
-                    path = Path(adressepunkt_file)
-                    timestamp = date.fromtimestamp(path.stat().st_mtime)
-                    if date.today() == timestamp:
-                        pass
-                        logger.info(f'Skipping download, using existing copy of Adressepunkt with thimestamp {timestamp}')
-                    else:
-                        os.remove(adressepunkt_file)
-                        logger.info(f'Downloading {"{df_host}Filename=DAR_V1_Adressepunkt_TotalDownload_json_Current_169.zip"}')
-                        url = f'{df_host}Filename=DAR_V1_Adressepunkt_TotalDownload_json_Current_169.zip&username={os.environ.get("DATAFORDELER_TJENESTEBRUGER")}&password={os.environ.get("DATAFORDELER_PASSWORD")}'
-                        tmpfile = f'{config["TempFolder"]}QETL_dar_adressepunkt_{str(randrange(1000))}.zip'
-                        with requests.get(url, stream=True) as response:
-                            response.raise_for_status()
-                            with open(tmpfile, 'wb') as file:
-                                for chunk in response.iter_content(chunk_size=8192):
-                                    file.write(chunk)
-                        logger.info(f'Step 1: Preparing adressepunkter')
+                    dagilokailid = kommunekodeToLokalId(kommunekoder)
+                    config = get_config()
+
+                    df_host = os.environ.get("DATAFORDELER_DOWNLOAD_HOST")
+                    logger.info(f'Getting DAR adresse from Datafordeler.dk for municipalities {kommunekoder}')
+                    logger.info(f'Using Datafordeler tjenestebruger {os.environ.get("DATAFORDELER_TJENESTEBRUGER")}')
+                    ## Preparing adressepunkter first
+                    try:
+                        logger.info(f'Step 1: Getting Adressepunkter')     
+                        fileToDownload = getCurrentFile('DAR', 'Adressepunkt')       
+                        adressepunkt_file = f'{config["TempFolder"]}/df_temp/{fileToDownload}.json'
+                        if os.path.exists(adressepunkt_file):
+                            path = Path(adressepunkt_file)
+                            timestamp = date.fromtimestamp(path.stat().st_mtime)
+                            if date.today() == timestamp:
+                                pass
+                                logger.info(f'Skipping download, using existing copy of Adressepunkt with thimestamp {timestamp}')
+                            else:
+                                os.remove(adressepunkt_file)
+                                logger.info(f'Downloading "{df_host}Filename={fileToDownload}.zip"')
+                                url = f'{df_host}Filename={fileToDownload}.zip&username={os.environ.get("DATAFORDELER_TJENESTEBRUGER")}&password={os.environ.get("DATAFORDELER_PASSWORD")}'
+                                tmpfile = f'{config["TempFolder"]}QETL_dar_adressepunkt_{str(randrange(1000))}.zip'
+                                with requests.get(url, stream=True) as response:
+                                    response.raise_for_status()
+                                    with open(tmpfile, 'wb') as file:
+                                        for chunk in response.iter_content(chunk_size=8192):
+                                            file.write(chunk)
+                                logger.info(f'Step 1: Preparing adressepunkter')
+                                adressepunkter = {}
+
+                                if not os.path.exists(f'{config["TempFolder"]}/df_temp'):
+                                    os.makedirs(f'{config["TempFolder"]}/df_temp')
+
+                                with zipfile.ZipFile(tmpfile, 'r') as zip_ref:
+                                    zip_ref.extractall(f'{config["TempFolder"]}/df_temp')
+                                os.remove(tmpfile)
+                        else :
+                            logger.info(f'Downloading {"{df_host}Filename={fileToDownload}.zip"}')
+                            url = f'{df_host}Filename={fileToDownload}.zip&username={os.environ.get("DATAFORDELER_TJENESTEBRUGER")}&password={os.environ.get("DATAFORDELER_PASSWORD")}'
+                            tmpfile = f'{config["TempFolder"]}QETL_dar_adressepunkt_{str(randrange(1000))}.zip'
+                            with requests.get(url, stream=True) as response:
+                                response.raise_for_status()
+                                with open(tmpfile, 'wb') as file:
+                                    for chunk in response.iter_content(chunk_size=8192):
+                                        file.write(chunk)
+                            logger.info(f'Step 1: Preparing adressepunkter')
+                            adressepunkter = {}
+
+                            if not os.path.exists(f'{config["TempFolder"]}/df_temp'):
+                                os.makedirs(f'{config["TempFolder"]}/df_temp')
+
+                            with zipfile.ZipFile(tmpfile, 'r') as zip_ref:
+                                zip_ref.extractall(f'{config["TempFolder"]}/df_temp')
+                            os.remove(tmpfile)
+
                         adressepunkter = {}
-
-                        if not os.path.exists(f'{config["TempFolder"]}/df_temp'):
-                            os.makedirs(f'{config["TempFolder"]}/df_temp')
-
-                        with zipfile.ZipFile(tmpfile, 'r') as zip_ref:
-                            zip_ref.extractall(f'{config["TempFolder"]}/df_temp')
-                        os.remove(tmpfile)
-                else :
-                    logger.info(f'Downloading {"{df_host}Filename=DAR_V1_Adressepunkt_TotalDownload_json_Current_169.zip"}')
-                    url = f'{df_host}Filename=DAR_V1_Adressepunkt_TotalDownload_json_Current_169.zip&username={os.environ.get("DATAFORDELER_TJENESTEBRUGER")}&password={os.environ.get("DATAFORDELER_PASSWORD")}'
-                    tmpfile = f'{config["TempFolder"]}QETL_dar_adressepunkt_{str(randrange(1000))}.zip'
-                    with requests.get(url, stream=True) as response:
-                        response.raise_for_status()
-                        with open(tmpfile, 'wb') as file:
-                            for chunk in response.iter_content(chunk_size=8192):
-                                file.write(chunk)
-                    logger.info(f'Step 1: Preparing adressepunkter')
-                    adressepunkter = {}
-
-                    if not os.path.exists(f'{config["TempFolder"]}/df_temp'):
-                        os.makedirs(f'{config["TempFolder"]}/df_temp')
-
-                    with zipfile.ZipFile(tmpfile, 'r') as zip_ref:
-                        zip_ref.extractall(f'{config["TempFolder"]}/df_temp')
-                    os.remove(tmpfile)
-
-                adressepunkter = {}
-                with open(adressepunkt_file, "rb") as f:
-                    for elm in ijson.items(f, 'item'):
-                        adressepunkter[elm['id_lokalId']]= elm['position']
-                
-                logger.info(f'Step 1: Got {len(adressepunkter.keys())} adressepunkter')
-            except Exception as error:
-                logger.error("Error getting Adressepunkter from Dataforsyningen")
-                logger.error(f'{type(error).__name__}  –  {str(error)}')
-                logger.critical("Program terminated" )
-                sys.exit()
-            try:
-                logger.info(f'Step 2: Getting DAR Husnummer')
-                husnummer_file = f'{config["TempFolder"]}/df_temp/DAR_V1_Husnummer_TotalDownload_json_Current_169.json'
-                
-                if os.path.exists(husnummer_file):
-                    path = Path(husnummer_file)
-                    timestamp = date.fromtimestamp(path.stat().st_mtime)
-                    if date.today() == timestamp:
-                        pass
-                        logger.info(f'Skipping download, using existing copy of Husnummer with thimestamp {timestamp}')
-                    else:
-                        os.remove(husnummer_file)
-                        logger.info(f'Downloading {"{df_host}Filename=DAR_V1_Husnummer_TotalDownload_json_Current_169.zip"}')
-                        url = f'{df_host}Filename=DAR_V1_Husnummer_TotalDownload_json_Current_169.zip&username={os.environ.get("DATAFORDELER_TJENESTEBRUGER")}&password={os.environ.get("DATAFORDELER_PASSWORD")}'
-                        tmpfile = f'{config["TempFolder"]}QETL_dar_Husnummer{str(randrange(1000))}.zip'
-                        with requests.get(url, stream=True) as response:
-                            response.raise_for_status()
-                            with open(tmpfile, 'wb') as file:
-                                for chunk in response.iter_content(chunk_size=8192):
-                                    file.write(chunk)
-
-                        with zipfile.ZipFile(tmpfile, 'r') as zip_ref:
-                            zip_ref.extractall(f'{config["TempFolder"]}/df_temp')
-                        os.remove(tmpfile)
-
-                husnummre = []
-                logger.info(f'Step 2: Processing husnumre')
-                with open(husnummer_file, "rb") as f:
-                    for elm in ijson.items(f, 'item'):
-                        if elm['kommuneinddeling'] in dagilokailid:
-                            id = elm['id_lokalId']
-                            punkt = elm['adgangspunkt']
-                            wkt = adressepunkter[punkt]
-                            elm['geometri'] = wkt
-                            husnummre.append(elm)
-
-                logger.info(f'Step 2: Got {len(husnummre)} husnumre after filtering')
-            except Exception as error:
-                logger.error("Error getting Husnumre from Dataforsyningen")
-                logger.error(f'{type(error).__name__}  –  {str(error)}')
-                logger.critical("Program terminated" )
-                sys.exit()
-            try:
-                logger.info(f'Step 3: Building layer')
-                keyslist = []
-                for key in husnummre[0]:
-                    keyslist.append(key)
-
-                layer = QgsVectorLayer("Point?crs=EPSG:25832", "husnummerlayer", "memory")
-                provider = layer.dataProvider()
-                attributes = []
-                for attribute in keyslist:
-                    attributes.append(QgsField(attribute, QVariant.String))   
-                provider.addAttributes(attributes)
-                layer.updateFields() 
-
-                logger.info(f'Step 3: Adding features')   
-                for feature in husnummre:
-                    attribute_list = []
-                    for attribute in keyslist:
-                        attribute_list.append(feature[attribute])
-                    layerfeature = QgsFeature()
-                    layerfeature.setAttributes(attribute_list)
-                    layerfeature.setGeometry(QgsGeometry.fromWkt(feature['geometri']))
-                    provider.addFeature(layerfeature)
-            except Exception as error:
-                logger.error("Error building husnummer layer")
-                logger.error(f'{type(error).__name__}  –  {str(error)}')
-                logger.critical("Program terminated" )
-                sys.exit()
-            return layer
-
+                        with open(adressepunkt_file, "rb") as f:
+                            for elm in ijson.items(f, 'item'):
+                                adressepunkter[elm['id_lokalId']]= elm['position']
+                        
+                        logger.info(f'Step 1: Got {len(adressepunkter.keys())} adressepunkter')
+                    except Exception as error:
+                        logger.error("Error getting Adressepunkter from Dataforsyningen")
+                        logger.error(f'{type(error).__name__}  –  {str(error)}')
+                        logger.critical("Program terminated" )
+                        sys.exit()
                     
+                    try:
+                        logger.info(f'Step 2: Getting DAR Husnummer')
+                        fileToDownload = getCurrentFile('DAR', 'Husnummer')  
+                        husnummer_file = f'{config["TempFolder"]}/df_temp/{fileToDownload}.json'
+                        
+                        if os.path.exists(husnummer_file):
+                            path = Path(husnummer_file)
+                            timestamp = date.fromtimestamp(path.stat().st_mtime)
+                            if date.today() == timestamp:
+                                pass
+                                logger.info(f'Skipping download, using existing copy of Husnummer with thimestamp {timestamp}')
+                            else:
+                                os.remove(husnummer_file)
+                                logger.info(f'Downloading "{df_host}Filename={fileToDownload}.zip"')
+                                url = f'{df_host}Filename={fileToDownload}.zip&username={os.environ.get("DATAFORDELER_TJENESTEBRUGER")}&password={os.environ.get("DATAFORDELER_PASSWORD")}'
+                                tmpfile = f'{config["TempFolder"]}QETL_dar_Husnummer{str(randrange(1000))}.zip'
+                                with requests.get(url, stream=True) as response:
+                                    response.raise_for_status()
+                                    with open(tmpfile, 'wb') as file:
+                                        for chunk in response.iter_content(chunk_size=8192):
+                                            file.write(chunk)
 
-        """
-        def dagi_selector(dagi_type: str, codes: list):
-            
-            Retrieve a polygon for one or more DAGI units - kommune or Sogn from Datafordeleren by wfs
+                                with zipfile.ZipFile(tmpfile, 'r') as zip_ref:
+                                    zip_ref.extractall(f'{config["TempFolder"]}/df_temp')
+                                os.remove(tmpfile)
+                        else:
+                            logger.info(f'Downloading {"{df_host}Filename={fileToDownload}.zip"}')
+                            url = f'{df_host}Filename={fileToDownload}.zip&username={os.environ.get("DATAFORDELER_TJENESTEBRUGER")}&password={os.environ.get("DATAFORDELER_PASSWORD")}'
+                            tmpfile = f'{config["TempFolder"]}QETL_dar_Husnummer{str(randrange(1000))}.zip'
+                            with requests.get(url, stream=True) as response:
+                                response.raise_for_status()
+                                with open(tmpfile, 'wb') as file:
+                                    for chunk in response.iter_content(chunk_size=8192):
+                                        file.write(chunk)
 
-            Parameters
-            ----------
-            dagi_type : str
-                Type of DAGI unit, one of (kommune, sogn)    
-            
-            code : list
-                List of codes to retrieve
-
-            Returns
-            -------
-            QgsVectorLayer
-            A QgsVectorLayer object containing DAGI data from Datafordler.dk.
-
-            
-
-            logger.info(f'Getting DAGI geometry from {dagi_type}, codes {codes}')
-            logger.info(f'Using Datafordeler user {os.environ.get("DATAFORDELER_TJENESTEBRUGER")}')
-            pattern = r'^0\d{3}$'
-
-            for elm in codes:
-
-                invalid = 0
-                if not bool(re.match(pattern, elm)):
-                    invalid +=1 
-
-            if invalid == 0:
-                if dagi_type.lower() not in ('kommune', 'sogn'):
-                    logger.error("Unsupported DAGI type {dagi_type}")
-                    logger.critical("Program terminated")
-                    script_failed()
-                else:
-                    if dagi_type.lower() == 'kommune':
-                        pass
-                    elif dagi_type.lower() == 'sogn':
-                        pass
-                    else:
-                        pass
-            else:
-                logger.error("Non-conform DAGI codes: {invalid}")
-                logger.critical("Program terminated")
-                script_failed()
-
-             """
+                            with zipfile.ZipFile(tmpfile, 'r') as zip_ref:
+                                zip_ref.extractall(f'{config["TempFolder"]}/df_temp')
+                            os.remove(tmpfile)
 
 
+                        husnummre = []
+                        logger.info(f'Step 2: Processing husnumre')
+                        with open(husnummer_file, "rb") as f:
+                            for elm in ijson.items(f, 'item'):
+                                if elm['kommuneinddeling'] in dagilokailid:
+                                    husnummer = elm
+                                    punkt = husnummer['adgangspunkt']
+                                    wkt = adressepunkter[punkt]
+                                    husnummer['geometri'] = wkt
+                                    husnummre.append(husnummer)
+
+                        logger.info(f'Step 2: Got {len(husnummre)} husnumre after filtering')
+                    except Exception as error:
+                        logger.error("Error getting Husnumre from Dataforsyningen")
+                        logger.error(f'{type(error).__name__}  –  {str(error)}')
+                        logger.critical("Program terminated" )
+                        sys.exit()
+
+                    try:
+                        logger.info(f'Step 3: Building layer')
+                        keyslist = []
+                        for key in husnummre[0]:
+                            keyslist.append(key)
+
+                        layer = QgsVectorLayer("Point?crs=EPSG:25832", "adresselayer", "memory")
+                        provider = layer.dataProvider()
+                        attributes = []
+                        for attribute in keyslist:
+                            attributes.append(QgsField(attribute, QVariant.String))   
+                        provider.addAttributes(attributes)
+                        layer.updateFields() 
+
+                        logger.info(f'Step 3: Adding features')   
+                        for feature in husnummre:
+                            attribute_list = []
+                            for attribute in keyslist:
+                                attribute_list.append(feature[attribute])
+                            layerfeature = QgsFeature()
+                            layerfeature.setAttributes(attribute_list)
+                            layerfeature.setGeometry(QgsGeometry.fromWkt(feature['geometri']))
+                            provider.addFeature(layerfeature)
+                        return layer
+                    except Exception as error:
+                        logger.error("Error building adresse layer")
+                        logger.error(f'{type(error).__name__}  –  {str(error)}')
+                        logger.critical("Program terminated" )
+                        sys.exit()
+           
     ## ##################################
     ## Geopandas import / export
     ## ##################################

@@ -9,6 +9,7 @@ import os.path as path
 import json
 from PyQt5.QtCore import QSettings
 import smtplib
+import requests
 from email.mime.text import MIMEText
 from qgis.core import QgsVectorFileWriter, QgsProject, QgsVectorLayer
 from random import randrange
@@ -74,8 +75,33 @@ def get_version():
 
 def kommunekodeToLokalId(kommunekoder: list):
     logger = get_logger() 
-    logger.info(f'translation kommunekoder to DAGI lokalid')
-    coredata = getKommuneData('kommunekode')
+    logger.info(f'Translating kommunekoder to DAGI lokalid for codes {kommunekoder}')
+    lokal_id = []
+    try:
+        with open('core_data/dagi_kommune_kodetabel.json') as json_file:
+            data = json.load(json_file)
+    except:
+        logger.info(f'Unable to open dagi_kommune_kodetabel from core_data')
+        script_failed()
+
+    for kode in kommunekoder:
+        try:
+            lokal_id.append(data[kode])
+        except:
+            logger.info(f'unable to map {kode} to key in dagi_kommune_kodetabel')
+            script_failed()   
+    logger.info(f'Finished translating kommunekoder, returning {lokal_id}')
+    return lokal_id
+
+def getCurrentFile(registry: str, layer: str):   
+    url = f'https://api.datafordeler.dk/FileDownloads/GetAvailableFileDownloads?Register={registry}&username={os.environ.get("DATAFORDELER_TJENESTEBRUGER")}&password={os.environ.get("DATAFORDELER_PASSWORD")}'
+    resp = requests.get(url=url)
+    data = resp.json() 
+    for elm in data:
+        if elm['typeOfDownload'] == 'TotalDownload' and elm['entityName'] == layer and elm['typeOfData'] == 'Current':
+            return elm['fileName'].split('.')[0]
+
+"""
     dagi_lokailid = []
     try:
         for kode in kommunekoder:
@@ -87,54 +113,7 @@ def kommunekodeToLokalId(kommunekoder: list):
         logger.error(f'{type(error).__name__}  –  {str(error)}')
         logger.critical("Program terminated")
         script_failed()
-
-def getKommuneData(type: str):
-    logger = get_logger() 
-    config = get_config()
-    logger.info(f'Getting DAGI kommuner from Datafordeler')
-    tmpfile = f'{config["TempFolder"]}QETL_dagi_kommuneinddeling_{str(randrange(1000))}.fgb'
-
-    ogr2ogrstring = f'{config["QGIS_bin_folder"]}/ogr2ogr.exe -of {tmpfile} -if GML "/vsicurl_streaming/https://wfs.datafordeler.dk/DAGIM/DAGI_10MULTIGEOM_GMLSFP/1.0.0/WFS?USERNAME=LEREDWTUHQ&PASSWORD=N8NZQb*9S234&SERVICE=WFS&REQUEST=GetFeature&VERSION=2.0.0&TYPENAMES=dagi10:Kommuneinddeling&STARTINDEX=0&COUNT=1000&SRSNAME=urn:ogc:def:crs:EPSG::25832" -dialect SQLite -sql "SELECT id_lokalid,  kommunekode, st_multi(ST_CollectionExtract(geometri, 3)) AS multigeometri FROM Kommuneinddeling"  -geom=summary '
-    run = subprocess.run(ogr2ogrstring, capture_output=True)
-    
-    """
-    try: 
-        layer =  QgsVectorLayer(file, f'QgsLayer_coredata_kommune', "ogr")
-        logger.info("Finished reading file")
-        data = {}
-        
-        if type == 'id_lokalid':
-            logger.info("Processing id_lokalid")
-            for feature in layer.getFeatures():
-                data[feature['id.lokalid']] = {
-                    'navn' : feature['navn'],
-                    'kommunekode' : feature['kommunekode'],
-                    'regionskode' : feature['regionskode'],
-                }
-            return data
-        elif type == 'kommunekode':
-            logger.info("Processing kommunekode")
-            for feature in layer.getFeatures():
-                data[feature['kommunekode']] = {
-                    'navn' : feature['navn'],
-                    'id.lokalid' : feature['id.lokalid'],
-                    'regionskode' : feature['regionskode'],
-
-                }
-            return data
-        
-        else:
-            logger.error(f"Unsupported value for getKommuneData: {type}")
-            logger.critical("Program terminated")
-            script_failed()
-
-        return layer
-    except Exception as error:
-        logger.info(f'An error occured opening file {"../core_data/kommuner.fgb"}')
-        logger.error(f'{type(error).__name__}  –  {str(error)}')
-        logger.critical("Program terminated")
-        script_failed()
-"""
+        """
 
 def createJobRun(id):
     config = get_config()
