@@ -9,14 +9,17 @@ import os.path as path
 import json
 from PyQt5.QtCore import QSettings
 import smtplib
+import requests
 from email.mime.text import MIMEText
-from qgis.core import QgsVectorFileWriter, QgsProject
+from qgis.core import QgsVectorFileWriter, QgsProject, QgsVectorLayer
 from random import randrange
 import tracemalloc
 
 
+
+
 def install_dependencies():
-    logfile = get_logfile()
+    logger = get_logger() 
     try:
         import psutil
     except:
@@ -41,11 +44,76 @@ def install_dependencies():
             script_failed()
         logger.info(f'Dependency: geopandas - installed')
 
+    try:
+        import dotenv
+    except:
+        logger.info(f'Missing dependency found: dotenv')
+        try:
+            subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'python-dotenv'])
+            import dotenv
+        except:
+            logger.info(f'Unable to install dependencies - run the editor in admin mode on first run')
+            script_failed()
+        logger.info(f'Dependency: dotenv - installed')
+
+    try:
+        import ijson
+    except:
+        logger.info(f'Missing dependency found: ijson')
+        try:
+            subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'ijson'])
+            import ijson
+        except:
+            logger.info(f'Unable to install dependencies - run the editor in admin mode on first run')
+            script_failed()
+        logger.info(f'Dependency: ijson - installed')
+
 def get_version():
     with open('version.json') as f:
         data = json.load(f)
     return  data['version']
 
+def kommunekodeToLokalId(kommunekoder: list):
+    logger = get_logger() 
+    logger.info(f'Translating kommunekoder to DAGI lokalid for codes {kommunekoder}')
+    lokal_id = []
+    try:
+        with open('core_data/dagi_kommune_kodetabel.json') as json_file:
+            data = json.load(json_file)
+    except:
+        logger.info(f'Unable to open dagi_kommune_kodetabel from core_data')
+        script_failed()
+
+    for kode in kommunekoder:
+        try:
+            lokal_id.append(data[kode])
+        except:
+            logger.info(f'unable to map {kode} to key in dagi_kommune_kodetabel')
+            script_failed()   
+    logger.info(f'Finished translating kommunekoder, returning {lokal_id}')
+    return lokal_id
+
+def getCurrentFile(registry: str, layer: str):   
+    url = f'https://api.datafordeler.dk/FileDownloads/GetAvailableFileDownloads?Register={registry}&username={os.environ.get("DATAFORDELER_TJENESTEBRUGER")}&password={os.environ.get("DATAFORDELER_PASSWORD")}'
+    resp = requests.get(url=url)
+    data = resp.json() 
+    for elm in data:
+        if elm['typeOfDownload'] == 'TotalDownload' and elm['entityName'] == layer and elm['typeOfData'] == 'Current':
+            return elm['fileName'].split('.')[0]
+
+"""
+    dagi_lokailid = []
+    try:
+        for kode in kommunekoder:
+            lokalid = coredata[kode]['id.lokalid']
+            dagi_lokailid.append(lokalid)
+        return dagi_lokailid
+    except Exception as error:
+        logger.info(f'An error occured translating kommunekoder to DAGI lokalid')
+        logger.error(f'{type(error).__name__}  –  {str(error)}')
+        logger.critical("Program terminated")
+        script_failed()
+        """
 
 def createJobRun(id):
     config = get_config()
@@ -316,7 +384,7 @@ def script_failed():
 
     email = bool(config["emailConfiguration"]["emailOnError"])
 
-    if email == True:
+    if email == "True":
         try:
             logger.info('')
 
