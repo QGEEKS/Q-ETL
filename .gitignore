@@ -13,3 +13,4 @@ settings.json
 .env
 /site/
 /venv/
+.env
