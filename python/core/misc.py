@@ -13,6 +13,7 @@ import requests
 from email.mime.text import MIMEText
 from qgis.core import QgsVectorFileWriter, QgsProject, QgsVectorLayer
 from random import randrange
+from datetime import datetime, timedelta
 import tracemalloc
 
 
@@ -126,7 +127,8 @@ def createJobRun(id):
 
     element = {
         'id' : str(id),
-        'logfile' : logfile
+        'logfile' : logfile,
+        'starttime' : datetime.now().strftime("%d/%m/%Y, %H:%M"),
     }
 
     with open(jobrun_path, 'w') as f:
@@ -364,12 +366,16 @@ def script_finished():
     now = datetime.now()
     current, peak = tracemalloc.get_traced_memory()
     jobrun = read_jobrun()
+    starttime = datetime.strptime(jobrun['starttime'], "%d/%m/%Y, %H:%M")
+    time_difference = datetime.now() - starttime
+    time_difference_in_minutes = time_difference / timedelta(minutes=1)
     update_job(jobrun['id'], 'Finished', now)
     logger.info('')
     logger.info('')
     logger.info('##################################################')
     logger.info('JOB: ' + argv[0] + ' FINISHED')
     logger.info('ENDTIME: ' + now.strftime("%d/%m/%Y, %H:%M"))
+    logger.info(f'Time elapsed: {round(time_difference_in_minutes, 2)} minutes')
     logger.info(f'Peak memory usage: {round((peak / 10**7), 2)} GB')
     logger.info('##################################################')
 
@@ -420,11 +426,18 @@ def script_failed():
         except:
             logger.info(f'An error occured sending error Email to {message["To"]} ' )
 
+    jobrun = read_jobrun()
+    starttime = datetime.strptime(jobrun['starttime'], "%d/%m/%Y, %H:%M")
+    time_difference = datetime.now() - starttime
+    time_difference_in_minutes = time_difference / timedelta(minutes=1)
+    update_job(jobrun['id'], 'Finished', now)
 
     logger.info('')
     logger.info('##################################################')
     logger.info('JOB: ' + argv[0] + ' FAILED')
     logger.info('ENDTIME: ' + now.strftime("%d/%m/%Y, %H:%M"))
+    logger.info(f'Time elapsed: {round(time_difference_in_minutes, 2)} minutes')
+    logger.info(f'Peak memory usage: {round((peak / 10**7), 2)} GB')
     logger.info('##################################################')
     sys.exit()
     
