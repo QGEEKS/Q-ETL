@@ -38,7 +38,36 @@ class Worker:
     ## The shared element for logging across all workers
     logger = get_logger() 
 
+    class Generic:
+        '''
+        A Worker subclass that contains method for generic execution of QGIS processing functions.
+        '''
+        def ProcessingRunner(algName: str, parameters: dict):
+            """
+            A generic method to run QGIS processing algorithms. Supply the algorithm name and the parameters as a dictionary.
+            The method will run the algorithm and return the outputs.
 
+            Args:
+                algName (str): The name of the QGIS processing algorithm to run.
+                parameters (dict): the parameters for the algorithm as a dictionary.
+
+            Returns:
+                layer (QgsVectorLayer): The result output from the algorithem
+            """
+
+            logger.info(f'Running {algName}')
+            try:
+ 
+                result = processing.run(algName, parameters, feedback=Worker.progress)['OUTPUT']
+                logger.info(f'Parameters: {str(parameters)}')
+                logger.info("ProcessingRunner  finished")
+                return result
+            except Exception as error:
+                logger.error("An error occured in ProcessingRunner")
+                logger.error(f'{type(error).__name__}  –  {str(error)}')
+                logger.critical("Program terminated" )
+                sys.exit()
+ 
     class Vector:
         '''
         A Worker subclass that contains methods to transform vector data or their attributes.
