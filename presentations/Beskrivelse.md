@@ -49,7 +49,7 @@ style: |
     }
 paginate: true
 
-footer: Daníel Örn & Morten Fuglsang 2024 
+footer: Daníel Örn & Morten Fuglsang 2025 
 
         
 ---
@@ -74,8 +74,11 @@ footer: Daníel Örn & Morten Fuglsang 2024
 # Hvordan fungerer det ?
 
 ## - Scripts skrives i python, som afvikles via QGIS' motor.
+## - Alt det QGIS kan på datasiden kan vi også, plus lidt mere :-)
 ## - QGIS startes uden brugerflade og afvikler ETL-jobbet.
 ## - Du kan med QGIS brugerfladen danne de konfigurationer til værktøjer der skal bruges i jobs.
+
+
 
 ---
 
@@ -86,7 +89,7 @@ footer: Daníel Örn & Morten Fuglsang 2024
 ![height: 500 right:50%](../tutorial//final_code.png)
 
 ## Klassisk ETL: Læser data fra service, behandler og skriver data til en database... 
-https://github.com/MFuglsang/Q-ETL/wiki/Basic-tutorial
+https://github.com/QGEEKS/Q-ETL/wiki/Basic-tutorial
 
 ---
 
@@ -105,17 +108,29 @@ https://github.com/MFuglsang/Q-ETL/wiki/Basic-tutorial
 
 # Projekt-status
 
-## - En del værktøjer til vector mappet ind. Flere kommer til løbende.
+## - En del værktøjer til vectordata mappet ind. Flere kommer til løbende.
+## - Generisk tool for øvrige tools
 ## - Vi arbejder på understøttelse for rasterdata.
 ## - Har indført autogenereret dokumentation
-https://q-etl-docs.vercel.app/
+https://qgeeks.github.io/Q-ETL/
+
+---
+![bg](./ressources/Slide2.png)
+
+# Øvrige funktioner
+
+## - Mulighed for mail-afsendelse ved job der fejler
+
+## - Logserver, se dine joblogs uden at være på serveren der  kører Q-ETL
+
+## - Integrationer til Datafordeleren er i sin spæde opstart - afventer moderniseringens nye muligheder...
 
 ---
 
 ![bg](./ressources/Background1.png)
 
 # Projektet fineds på Github:
-https://github.com/MFuglsang/Q-ETL
+https://github.com/QGEEKS/Q-ETL
 
 ## Alle er velkomne til at bidrage...
 
