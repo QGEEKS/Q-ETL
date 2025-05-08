@@ -562,7 +562,7 @@ class Worker:
             """
 
             logger.info(f'Creating timestamp {ts_fieldname} using fieldCalculator')
-            newLayer = Worker.fieldCalculator(layer, ts_fieldname, 5, 0, 0, ' now() ')
+            newLayer = Worker.Vector.fieldCalculator(layer, ts_fieldname, 5, 0, 0, ' now() ')
             return newLayer
 
         def fieldCalculator (layer: QgsVectorLayer, fieldname: str, fieldtype: int, fieldlength: int, fieldprecision: int, formula: str):
