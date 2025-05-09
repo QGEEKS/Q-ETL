@@ -114,11 +114,17 @@ def getCurrentFile(registry: str, layer: str):
         logger.critical("Program terminated")
         script_failed()
         """
+def cmdName():
+    path = argv[0]
+    fileName = path.split('\\')[-1].split('.')[0]
+    return fileName
 
 def createJobRun(id):
     config = get_config()
-    logfile = get_logfile()
-    jobrun_path = config['TempFolder'] + 'job_run.json'
+    logger = get_logger()
+
+    jobrun_path = config['TempFolder']  + f'job_run_{cmdName()}.json'
+    logger.info(f'Creating jobrun file {jobrun_path}')
     try:
         os.remove(jobrun_path)
     except OSError:
@@ -134,7 +140,8 @@ def createJobRun(id):
 
 def remove_jobrun():
     config = get_config()
-    jobrun_path = config['TempFolder'] + 'job_run.json'
+    
+    jobrun_path = config['TempFolder'] + f'job_run_{cmdName()}.json'
     try:
         os.remove(jobrun_path)
     except OSError:
@@ -142,7 +149,7 @@ def remove_jobrun():
 
 def read_jobrun():
     config = get_config()
-    jobrun_path = config['TempFolder'] + 'job_run.json'
+    jobrun_path = config['TempFolder'] + f'job_run_{cmdName()}.json'
     with open(jobrun_path) as f:
         data = json.load(f)
     return data
