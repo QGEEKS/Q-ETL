@@ -16,7 +16,7 @@ import tracemalloc
 
 
 def install_dependencies():
-    logfile = get_logfile()
+    logger = get_logger()
     try:
         import psutil
     except:
@@ -24,10 +24,10 @@ def install_dependencies():
         try:
             subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'psutil'])
             import psutil
+            logger.info(f'Dependency: psutil - installed')
         except:
             logger.info(f'Unable to install dependencies - run the editor in admin mode on first run')
             script_failed()
-        logger.info(f'Dependency: psutil - installed')
 
     try:
         import geopandas
@@ -36,10 +36,23 @@ def install_dependencies():
         try:
             subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'geopandas'])
             import geopandas
+            logger.info(f'Dependency: geopandas - installed')
         except:
             logger.info(f'Unable to install dependencies - run the editor in admin mode on first run')
             script_failed()
-        logger.info(f'Dependency: geopandas - installed')
+
+    try:
+        import coloredlogs
+    except:
+        logger.info(f'Missing dependency found: coloredlogs')
+        try:
+            subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'coloredlogs'])
+            import coloredlogs
+            logger.info(f'Dependency: coloredlogs - installed')
+        except:
+            logger.info(f'Unable to install dependencies - run the editor in admin mode on first run')
+            script_failed()
+
 
 def get_version():
     with open('version.json') as f:
@@ -359,7 +372,7 @@ def script_failed():
     logger.info('ENDTIME: ' + now.strftime("%d/%m/%Y, %H:%M"))
     logger.info('##################################################')
     sys.exit()
-    
+
 
 
 
