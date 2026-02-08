@@ -9,6 +9,10 @@
       
       
       
+        <link rel="prev" href="..">
+      
+      
+        <link rel="next" href="../Inputs/">
       
       
         
@@ -19,7 +23,7 @@
     
     
       
-        <title>Getting started - Q-ETL Documentation</title>
+        <title>Basic Tutorial - Q-ETL Documentation</title>
       
     
     
@@ -62,7 +66,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#setup" class="md-skip">
+        <a href="#introduction" class="md-skip">
           Skip to content
         </a>
       
@@ -98,7 +102,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Getting started
+              Basic Tutorial
             
           </span>
         </div>
@@ -218,10 +222,37 @@
       
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../basic_tutorial/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Basic Tutorial
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -237,6 +268,37 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#input-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Input service
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -572,43 +634,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#step-1-unzip" class="md-nav__link">
+  <a href="#input-service" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 1 - Unzip
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#step-2-settingsjson" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Step 2 - settings.json
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#step-3-the-python-project-file" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Step 3 - The python project file.
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#step-4-the-project-cmd-file" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Step 4 - The project cmd file.
+        Input service
       
     </span>
   </a>
@@ -632,102 +661,143 @@
 
 
 
-<p>This guide will show you how to set up and configure QGIS ETL to run jobs.
-At the end, the system will be configured to run a simple job, performing an ETL task - loading, manipulating, and writing data.</p>
-<h1 id="setup">Setup</h1>
-<h2 id="step-1-unzip">Step 1 - Unzip</h2>
-<p>Fetch latest relase <a href="https://github.com/QGEEKS/Q-ETL/releases">here</a>. This will download a zip file containing the application. Unzip this archive. </p>
-<p>This example will unzip the application in <strong>C:/Apps</strong></p>
-<p>When it is unzipped, you will have a folder like this:</p>
-<p><img alt="Folder Structure Example" src="https://github.com/QGEEKS/Q-ETL/raw/ressources/images/quickstart/unpack.png" /></p>
-<h2 id="step-2-settingsjson">Step 2 - settings.json</h2>
-<p>The first step we need to do is to go through the process of creating the settings.json file in the root.
-Make a copy of the file <em>settings_template.json</em>, and rename it to <em>settings.json</em>. </p>
-<p>TODO: ADD EXPLANATION OF SETTINGS.JSON</p>
-<h2 id="step-3-the-python-project-file">Step 3 - The python project file.</h2>
-<p>Navigate to the python folder and locate the <em>boilerplate.py</em> file. Make a copy of this file and rename it to <em>MyProject.py</em>.</p>
-<p>Open and examine the content of the file - there is not much in it yet:</p>
+<h1 id="introduction">Introduction</h1>
+<p>This tutorial will show you how to create your first job, using QGIS to make most of the configuration of the parameters. 
+We expect you to have completed the <a href="https://github.com/MFuglsang/Q-ETL/wiki/Getting-started">Getting started</a> guide so that you have Q-ETL configured and running.</p>
+<p>You are working in a Danish municipality. You want to have a map of electric-car charging stations in your system, but you don't have the data in your local database. These come from a WFS service from the geodata-collection GeoFA, where different actors can maintain Geodata.
+Therefor you set up a Q-ETL job, to gather the data, do processing, and save them to your database. This job will run nightly, ensuring that data is up to date every morning.</p>
+<h2 id="input-service">Input service</h2>
+<p>The service that we use as input, is from GeoFA, we are looking for charging stations for Electric cars.
+The service is:</p>
+<p><code>https://geofa.geodanmark.dk/ows/fkg/fkg</code></p>
+<p>We load this as a WFS in QGIS, and examine the layers.
+We are looking for the layer 'Ladefaciliteter'</p>
+<p><img src="https://github.com/QGEEKS/Q-ETL/raw/ressources/tutorial/geofa.png" width="50%" height="50%"> 
+<br/></p>
+<p>We then load the data to QGIS:</p>
+<p><img src="https://github.com/QGEEKS/Q-ETL/raw/ressources/tutorial/data.png" width="50%" height="50%"> </p>
+<p>We get data for the entire country, but we only want one municipality. That's ok, we will filter that out later...</p>
+<p>Now we know everything we need to create our job - it's time to build our Q-ETL job.</p>
+<h1 id="creating-the-job">Creating the job</h1>
+<p>Navigate to the Q-ETL folder. In the root, you will have boilerplate.cmd. We make a copy this file, and call it mastra.cmd (Name by the data source, however it can be called whatever you want). Fill in the paths required.</p>
+<p><img src="https://github.com/QGEEKS/Q-ETL/raw/ressources/tutorial/cmd.png" width="100%" height="100%"></p>
+<p>Next, we go to the python folder. Here we will find the boilerplate.py. In the same way, we make a copy of it, named masta.py</p>
 <pre><code class="language-python">from core import *
 from engine import *
 
-## Code goes here
-</code></pre>
-<p>Let's keep the file open, we will use it in a short while, we just have one more file to modify before we can start to code the ETL job.</p>
-<h2 id="step-4-the-project-cmd-file">Step 4 - The project cmd file.</h2>
-<p>Go to the root folder of the application, and locate the file <em>boilerplate.cmd</em>. Make a copy of this file, and rename it to <em>MyProject.cmd</em>.</p>
-<p>Open this new .cmd file:</p>
-<pre><code class="language-cmd">&lt;PATH-TO&gt;\python-qgis.bat &lt;FULL-PATH-TO-PYTHON-SCRIPT&gt;
-</code></pre>
-<p>You need to insert the full path to the <em>python-qgis.bat</em> and the full path to <em>MyProject.py</em> file we created in the previous step. Depending on how you have made your QGIS installation, the path to python-qgis.bat is different. In a OSGEO4W installation, it is in the OSGEO4W\bin folder. In a standalone QGIS installation, it is in QGIS\bin. The path to the MyProject.py depends on where you have placed your project.</p>
-<p>An example <em>cmd</em> file could look like this:</p>
-<pre><code class="language-cmd">C:\App\OSGeo4W\bin\python-qgis.bat C:\App\Q-ETL\python\MyProject.py
-</code></pre>
-<p>Now, the project is configured to run the project file MyProject.py - and we will now turn our focus on developing our ETL model</p>
-<h1 id="development">Development</h1>
-<p>For this tutorial, we will load data from a WFS service, reproject it, and store it on disk in a Geopackage.
-The WFS service that we are going to use, contains bus routes and stops - and we are interested in getting the bus stops out.
-The service comes in EPSG:25832.</p>
-<p>The service:</p>
-<pre><code class="language-python">https://geofyn.admin.gc2.io/wfs/geofyn/fynbus/25832?
-</code></pre>
-<p>The typename we are looking for is <em>Fynbus:stops</em></p>
-<p>For it to work in our code, we need to turn it into a QGIS URI string. the simplest way to do that is to let QGIS load the layer for you and extract the information.
-When the layer is loaded, go to the properties of the layer, and select 'Information'- here the URI string can be copied:</p>
-<p>TODO: ADD SCREENSHOT FROM QGIS</p>
-<p><img alt="Folder Structure Example" src="https://github.com/QGEEKS/Q-ETL/raw/ressources/images/quickstart/wfs_source.png" /></p>
-<pre><code class="language-python">&quot;srsname='EPSG:25832' typename='fynbus:stops' url='https://geofyn.admin.gc2.io/wfs/geofyn/fynbus/25832'&quot;
-</code></pre>
-<p>Now, it is time to go to our project and start to code the operations. </p>
-<p>We can try and run the code as it is, verify that all configurations are correct, and see how that program executes.
-Go to the root folder of your project, and run the MyProject.cmd file. This will open a terminal window, which reports the execution progress.
-When it finishes, go to the folder that was specified as LogPath in the config, and locate the new log file from this run. It has the project name and timestamp in the filename.</p>
-<p>This is the basic format of the log file generated on each run. It validates the configuration, examines the environment and operating system, and finally, it starts to execute the script - which in this case is empty.
-Now we have confirmed that the boilerplates and configuration of our project are valid, and we can build the code to manage the data.</p>
-<p>The process has three steps: Load, reproject and write.</p>
-<ol>
-<li>Load data
-The code is structured in classes - the three main ones are going to be used her. First we create a reader, by invoking the Input_Reader class:
-Then, we construct our input layer, by calling the 'wfs' method on our reader. By calling this method, we are going to give it just one parameter - the URI that we constructed in QGIS. we assign the output layer to a variable, in this case we call it wfslayer, for easy readability of this example. </li>
-</ol>
-<pre><code class="language-python">reader = Input_Reader
-wfslayer = reader.wfs(&quot;srsname='EPSG:25832' typename='fynbus:stops' url='https://geofyn.admin.gc2.io/wfs/geofyn/fynbus/25832'&quot;)
-</code></pre>
-<ol>
-<li>Next, we must do the reprojection of the data from EPSG:25832 to EPSG:4326. for this, we will create a worker, which will be able to perform operations on layers. This is based on the Worker class. QGIS knows the ESPSG code of the layer, so all we need to specify is the target code (we omit the 'EPSG:', so it is only an input integer here...)</li>
-</ol>
-<pre><code class="language-python">worker = Worker
-reprojectedlayer = worker.Vector.reproject(wfslayer, 4326)
-</code></pre>
-<ol>
-<li>Finally, we will write our reprojected layer to a Geopackage file. For this, we will use our Output_writer class.
-On the writer, we will call the 'geopackage' method, which takes four arguments: Layer to write, layername in the geopackage, the geopackage file to write to, and an option to overwrite the Geopackage.</li>
-</ol>
-<pre><code class="language-python">writer = Output_Writer
-writer.geopackage(reprojectedlayer,'Busstops','c:/temp/fynbus.gpkg',True)
-</code></pre>
-<p>Now, the code looks like this:</p>
-<pre><code class="language-python">from engine import *
-from core import *
-from python.engine.outputs import Output_Writer
-from python.engine.workers import Worker
-
-## Reading from WFS into a QGIS layer
-input_reader = Input_Reader
-wfslayer = input_reader.wfs('https://geofyn.admin.gc2.io/wfs/geofyn/fynbus/25832?SERVICE=WFS&amp;REQUEST=GetFeature&amp;VERSION=1.1.0&amp;TYPENAME=fynbus:routes_25832_v&amp;SRSNAME=urn:ogc:def:crs:EPSG::25832')
-
-worker = Worker()
-reprojectedlayer = worker.Vector.reproject(wfslayer, 4326)
-
-## Writing the QGIS layer to a Geojson file
-output_writer = Output_Writer()
-output_writer.file(wfslayer, 'c:/temp/wfs.geojson', 'GeoJson')
+## Code goes here...
 
 </code></pre>
-<p>Now, let's call our MyProject.cmd file, and wait for it to finish. It won't take long, the QGIS engine is super fast.
-When the job finishes, let go and inspect the log file that is created. The start parts are the same as all other runs, but the script part at the bottom is now different:</p>
-<p>As the log states, it reads a total of 4706 features from the source with the wfs reader. it channels these features through the reprojector worker - also returning the same 4706 features (which indicates no geometry problems). Finally, it writes the features to the Geopackage, and the job ends with success ❤️ </p>
-<p>This concludes this quickstart tutorial. The next step is to browse the API documentation to find out which methods are available in <em>Input_reader</em>, <em>Worker</em>, and <em>Output_Writer</em> classes. </p>
-<p>On behalf of the QGIS ETL team, Enjoy 😃</p>
+<p>This is the file we are going to start working in right now, the project is ready to go. If you run mastra.cmd, the job will execute, but nothing will happen, since we have no processingin mastra.py</p>
+<h2 id="loading-the-data-in-q-etl">Loading the data in Q-ETL</h2>
+<p>In other ETL tools, loading WFS data can be complicated. That is not the case in Q-ETL, where QGIS does all the work for us. Since we have loaded the data in QGIS in the start of this guide, we know that QGIS can handle it well, and is able to read the data.</p>
+<p>We go to QGIS, and look at the properties of our layer:</p>
+<p><img src="https://github.com/QGEEKS/Q-ETL/raw/ressources/tutorial/wfs_properties.png" width="100%" height="100%"></p>
+<p>Here we can see the Source information of our WFS layer under 'Information' - we copy this line out of QGIS.
+This is all we need. However, there is a few elements we don't need, so we trim them away, going from :</p>
+<p><code>pagingEnabled='default' preferCoordinatesForWfsT11='false' restrictToRequestBBOX='1' srsname='EPSG:25832' typename='fkg:fkg.t_5607_ladefacilitet' url='https://geofa.geodanmark.dk/ows/fkg/fkg'</code></p>
+<p>To:</p>
+<p><code>srsname='EPSG:25832' typename='fkg:fkg.t_5607_ladefacilitet' url='https://geofa.geodanmark.dk/ows/fkg/fkg'</code></p>
+<p>Our first setup step will be to put this in a WFS reader.</p>
+<p>We first load the three main classes that we need - reader, worker, and writer (See the documentation at XXX for descriptions)
+The class instances can be named whatever you like, but here, we will go with simple names.</p>
+<pre><code class="language-python">from core import *
+from engine import *
+
+reader = Input_Reader
+worker = Worker
+writer = Output_Writer
+</code></pre>
+<p>Now, we can access our class instances. If we type 'reader' and add a dot, we are shown all the methods in the reader class.
+We need the WFS reader. You get what inputs the method needs, and a description directly in your IDE.</p>
+<p><img src="https://github.com/QGEEKS/Q-ETL/raw/ressources/tutorial/wfs_reader.png" width="100%" height="100%"></p>
+<p>We create a python variable, let's call it wfs_layer. We set the variable to the wfs-reader output:</p>
+<pre><code class="language-python">wfslayer = reader.wfs(&quot;srsname='EPSG:25832' typename='fkg:fkg.t_5800_fac_pkt' url= 'httpS://geofa.geodanmark.dk/ows/fkg/fkg'&quot;)
+</code></pre>
+<p>Now, the reader is configured, and we can test it out. We go to a terminal, and run the geofa.cmd file:</p>
+<p><img src="https://github.com/QGEEKS/Q-ETL/raw/ressources/tutorial/terminal.png" width="100%" height="100%"></p>
+<p>When we hit enter, the job runs. We get detailed logs in the window:</p>
+<p><img src="https://github.com/QGEEKS/Q-ETL/raw/ressources/tutorial/cmd_log.png" width="100%" height="100%"></p>
+<p>As we can see, the job runs. it reads our WFS service, and then stops - there is nothing more to do in the job. But now, we have configured the WFS access to data, and can start processing it </p>
+<h2 id="processing-the-data">Processing the data</h2>
+<p>Now we have successfully loaded the data, now we can transform them. In this case, we need to filter the data, so that we only get our municipality.
+This is done by using workers.</p>
+<p>In this case, we need to filter by an expression, which is a tool from the QGIS processing toolbar. 
+Lets make it work there first, the same way we did with our WFS.
+Open the processing toolbox, and search for 'expression' - then we find our tool:</p>
+<p><img src="https://github.com/QGEEKS/Q-ETL/raw/ressources/tutorial/extract_dialog.png" width="50%" height="50%"></p>
+<p>We open the tool dialog, and fill it out. We need municipality 330, so we build an expression with that value:</p>
+<p><img src="https://github.com/QGEEKS/Q-ETL/raw/ressources/tutorial/extract_dialog2.png" width="75%" height="75%"></p>
+<p>To make sure our expression is correct, we can run the tool in QGIS, and examine the result. If everything looks ok, we can use the values from the QGIS tool in Q-ETL. In the bottom corner of the tool, is an 'Advanced' button. Click that, and we find the 'Copy as python command':</p>
+<p><img src="https://github.com/QGEEKS/Q-ETL/raw/ressources/tutorial/save_python.png" width="50%" height="50%"></p>
+<p>If we click that, the python code for running this tool with the values from the GUI is exported.
+We paste that into a text editor to see what we get:</p>
+<p><img src="https://github.com/QGEEKS/Q-ETL/raw/ressources/tutorial/python_code.png" width="100%" height="100%"></p>
+<p>In the expression parameter, we get the exact python-formatted expression that we need:</p>
+<p><code>'EXPRESSION':' "beliggenhedskommune" = 330'</code></p>
+<p>That we can use to configure our worker in Q-ETL.
+We use a method from the workers class - in this case the ExtractByExpression method (Notice the same naming as in QGIS)</p>
+<p><img src="https://github.com/QGEEKS/Q-ETL/raw/ressources/tutorial/extract_worker.png" width="100%" height="100%"></p>
+<p>We then take our expression, and configure the tool. The input-layer is the output from the WFS reader.We add the output layer to a new variable:</p>
+<p><img src="https://github.com/QGEEKS/Q-ETL/raw/ressources/tutorial/extract_worker_configured.png" width="100%" height="100%"></p>
+<p>Now, we can run the geofa.cmd again, and see what happens in the logfile:</p>
+<p><img src="https://github.com/QGEEKS/Q-ETL/raw/ressources/tutorial/extract_log.png" width="100%" height="100%"></p>
+<p>We can now see, that the extract by expression tool is running, and producing output.
+Now, we will just add a timestamp to the data, so that we know when we have acquired them.
+This is done with the addTimestamp worker.</p>
+<pre><code class="language-python">ts_layer= worker.Vector.addTimestamp(filteredLayer, &quot;qetl_ts&quot;)
+</code></pre>
+<p><img src="https://github.com/QGEEKS/Q-ETL/raw/ressources/tutorial/timestamp_log.png" width="100%" height="100%"></p>
+<p>That means that we have processed the data, and now we can write them to our database.</p>
+<h2 id="writing-the-data">Writing the data</h2>
+<p>In this tutorial, we are going to write the data to a Postgres/PostGIS database.
+In order to not have database-credentials and users in directly in the jobs, these are maintained in the configuration.json file. </p>
+<h3 id="the-target-database">The target database</h3>
+<p>In the settings.json, we have the database connection:</p>
+<pre><code class="language-json">&quot;MyPostGIS&quot; : {
+    &quot;host&quot; : &quot;localhost&quot;,
+    &quot;port&quot; : &quot;5432&quot;,
+    &quot;databasename&quot;:&quot;gis&quot;,
+    &quot;user&quot; : &quot;xxx&quot;,
+    &quot;password&quot;: &quot;xxx&quot;
+},
+</code></pre>
+<p>The name of the configuration is what we are going to use to write to the database.
+Now, in order to write to the database, we call the instance of our 'Output_Writer' class.
+Here we select the postgis writer, and fill in the parameters:</p>
+<pre><code class="language-python">writer.postgis(ts_layer, &quot;MyPostGIS&quot;, &quot;gis&quot;, &quot;qetl&quot;, &quot;ladestandere&quot;, True)
+</code></pre>
+<p>When that is done, our script is ready. The full code is now:</p>
+<pre><code class="language-python">from core import *
+from engine import *
+
+reader = Input_Reader
+worker = Worker
+writer = Output_Writer
+
+wfslayer = reader.wfs(&quot;srsname='EPSG:25832' typename='fkg:fkg.t_5800_fac_pkt' url= 'httpS://geofa.geodanmark.dk/ows/fkg/fkg'&quot;)
+
+filteredLayer = worker.Vector.extractByExpression(wfslayer, '&quot;beliggenhedskommune&quot; =330')
+
+ts_layer= worker.Vector.addTimestamp(filteredLayer, &quot;qetl_ts&quot;)
+
+writer.postgis(ts_layer, &quot;MyPostGIS&quot;, &quot;gis&quot;, &quot;qetl&quot;, &quot;ladestandere&quot;, True)
+</code></pre>
+<p>We can now again run the geofa cmd, and examine the output:</p>
+<p><img src="https://github.com/QGEEKS/Q-ETL/raw/ressources/tutorial/writer_log.png" width="100%" height="100%"></p>
+<h1 id="examine-the-output">Examine the output.</h1>
+<h2 id="the-data">The data</h2>
+<p>If we open the data in our database, we can examine the data. With a slight modification of the select script, we can see the data and out timestamp column:</p>
+<p><img src="https://github.com/QGEEKS/Q-ETL/raw/ressources/tutorial/database_table.png" width="100%" height="100%"></p>
+<p>That looks good, how about in QGIS ?</p>
+<p><img src="https://github.com/QGEEKS/Q-ETL/raw/ressources/tutorial/result_data.png" width="75%" height="75%"></p>
+<h2 id="the-logs">The logs</h2>
+<p>In the final step, let's just examine the log file created.</p>
+<p><img src="https://github.com/QGEEKS/Q-ETL/raw/ressources/tutorial/final_log.png" width="100%" height="100%"></p>
+<p>We can see, that all our operations went well, the data was loaded, filtered and written to the database... Perfect!</p>
+<h1 id="whats-next">What's next</h1>
+<p>The job is ready, at can be scheduled using windows task scheduler. Select a time where you want the job to run, and point the scheduler to geofa.cmd. 
+Then data will automatically flow into your database at night, while you have sweet dreams about all the ETL money you are saving by using Q-ETL :-)</p>
 
 
 
