@@ -9,9 +9,9 @@ Fetch latest relase [here](https://github.com/QGEEKS/Q-ETL/releases). This will 
 
 This example will unzip the application in **C:/Apps**
 
-When it is unzipped, you will have a folder like this: 
+When it is unzipped, you will have a folder like this:
 
-TODO: ADD FOLDER STRUCTURE EXAMPLE
+![Folder Structure Example](https://github.com/QGEEKS/Q-ETL/raw/ressources/images/quickstart/unpack.png)
 
 ## Step 2 - settings.json
 
@@ -61,7 +61,7 @@ The WFS service that we are going to use, contains bus routes and stops - and we
 The service comes in EPSG:25832.
 
 The service:
-```
+```python
 https://geofyn.admin.gc2.io/wfs/geofyn/fynbus/25832?
 ```
 
@@ -72,9 +72,9 @@ When the layer is loaded, go to the properties of the layer, and select 'Informa
 
 TODO: ADD SCREENSHOT FROM QGIS
 
-The string we are going to use as URI is:
+![Folder Structure Example](https://github.com/QGEEKS/Q-ETL/raw/ressources/images/quickstart/wfs_source.png)
 
-```
+```python
 "srsname='EPSG:25832' typename='fynbus:stops' url='https://geofyn.admin.gc2.io/wfs/geofyn/fynbus/25832'"
 ``` 
 
@@ -93,27 +93,44 @@ The process has three steps: Load, reproject and write.
 1. Load data
 The code is structured in classes - the three main ones are going to be used her. First we create a reader, by invoking the Input_Reader class:
 Then, we construct our input layer, by calling the 'wfs' method on our reader. By calling this method, we are going to give it just one parameter - the URI that we constructed in QGIS. we assign the output layer to a variable, in this case we call it wfslayer, for easy readability of this example. 
-```
+```python
 reader = Input_Reader
 wfslayer = reader.wfs("srsname='EPSG:25832' typename='fynbus:stops' url='https://geofyn.admin.gc2.io/wfs/geofyn/fynbus/25832'")
 ```
 
 2. Next, we must do the reprojection of the data from EPSG:25832 to EPSG:4326. for this, we will create a worker, which will be able to perform operations on layers. This is based on the Worker class. QGIS knows the ESPSG code of the layer, so all we need to specify is the target code (we omit the 'EPSG:', so it is only an input integer here...)
-```
+```python
 worker = Worker
 reprojectedlayer = worker.Vector.reproject(wfslayer, 4326)
 ```
 
 3. Finally, we will write our reprojected layer to a Geopackage file. For this, we will use our Output_writer class.
 On the writer, we will call the 'geopackage' method, which takes four arguments: Layer to write, layername in the geopackage, the geopackage file to write to, and an option to overwrite the Geopackage.
-```
+```python
 writer = Output_Writer
 writer.geopackage(reprojectedlayer,'Busstops','c:/temp/fynbus.gpkg',True)
 ```
 
 Now, the code looks like this:
 
-TODO: INSERT EXAMPLE
+```python
+from engine import *
+from core import *
+from python.engine.outputs import Output_Writer
+from python.engine.workers import Worker
+
+## Reading from WFS into a QGIS layer
+input_reader = Input_Reader
+wfslayer = input_reader.wfs('https://geofyn.admin.gc2.io/wfs/geofyn/fynbus/25832?SERVICE=WFS&REQUEST=GetFeature&VERSION=1.1.0&TYPENAME=fynbus:routes_25832_v&SRSNAME=urn:ogc:def:crs:EPSG::25832')
+
+worker = Worker()
+reprojectedlayer = worker.Vector.reproject(wfslayer, 4326)
+
+## Writing the QGIS layer to a Geojson file
+output_writer = Output_Writer()
+output_writer.file(wfslayer, 'c:/temp/wfs.geojson', 'GeoJson')
+
+```
 
 Now, let's call our MyProject.cmd file, and wait for it to finish. It won't take long, the QGIS engine is super fast.
 When the job finishes, let go and inspect the log file that is created. The start parts are the same as all other runs, but the script part at the bottom is now different:
@@ -122,4 +139,4 @@ As the log states, it reads a total of 4706 features from the source with the wf
 
 This concludes this quickstart tutorial. The next step is to browse the API documentation to find out which methods are available in _Input\_reader_, _Worker_, and _Output\_Writer_ classes. 
 
-On behalf of the QGIS ETL team, Enjoy 😃 
+On behalf of the QGIS ETL team, Enjoy 😃
