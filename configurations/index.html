@@ -9,6 +9,10 @@
       
       
       
+        <link rel="prev" href="../basic_tutorial/">
+      
+      
+        <link rel="next" href="../Inputs/">
       
       
         
@@ -19,7 +23,7 @@
     
     
       
-        <title>Configurations - Q-ETL Documentation</title>
+        <title>Configuration - Q-ETL Documentation</title>
       
     
     
@@ -98,7 +102,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Configurations
+              Configuration
             
           </span>
         </div>
@@ -272,6 +276,235 @@
       
   
   
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configuration
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configuration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#configuring-the-settingsjson-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuring the settings.json file
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuring the settings.json file">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#qgs_prefixpath-required" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Qgs_PrefixPath (Required)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#qgis_ini_path-required" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        QGIS_ini_Path (Required)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#qgis_bin_folder-required" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        QGIS_bin_folder (Required)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logdir-required" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        logdir (Required)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempfolder-required" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TempFolder (Required)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#databaseconnections-optional" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DatabaseConnections (Optional)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#emailconfiguration-optional" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        emailConfiguration (Optional)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pushoverconfiguration-optional" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        pushoverConfiguration (Optional)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setting-env-for-datafordelerendk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Setting .env for Datafordeleren.dk
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setting-up-the-log-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Setting up the log server
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Setting up the log server">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
   
   
     
@@ -283,10 +516,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
         
           
-          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
             
   
   
@@ -304,8 +537,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -505,10 +738,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
         
           
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
             
   
   
@@ -526,8 +759,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -715,6 +948,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#pushoverconfiguration-optional" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        pushoverConfiguration (Optional)
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -821,7 +1065,12 @@
         &quot;smtp_password&quot; : &quot;&quot;,
         &quot;message_from&quot; : &quot;&quot;,
         &quot;message_to&quot; : []
-    } 
+    } ,
+    &quot;pushoverConfiguration&quot;: {
+        &quot;pushoverOnError&quot; : &quot;False&quot;,
+        &quot;pushover_user_key&quot; : &quot;&quot;,
+        &quot;pushover_app_token&quot; : &quot;&quot;
+    }  
 
 }
 </code></pre>
@@ -842,6 +1091,8 @@ For instance: C:/Program Files/QGIS x.xx.x/bin</p>
 You can create named configurations to multiple databases.</p>
 <h3 id="emailconfiguration-optional">emailConfiguration (Optional)</h3>
 <p>Jobs can send email on errors. This is be default dsiabled. If you have an SMTP server, you can configure Q-ETL to uses it, sending email notifications if scheduled jobs fail.</p>
+<h3 id="pushoverconfiguration-optional">pushoverConfiguration (Optional)</h3>
+<p>Jobs can send error messages to Android and Iphone devices using the Pushover service</p>
 <h2 id="setting-env-for-datafordelerendk">Setting .env for Datafordeleren.dk</h2>
 <p>In order to use datafordeleren, you need to configure your user and password for your tjenestebruger.
 Make a copy of the root file '.evv_template, and rename it to '.env'
