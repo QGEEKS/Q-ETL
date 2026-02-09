@@ -454,45 +454,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#setting-up-the-log-server" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Setting up the log server
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Setting up the log server">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Configuration
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#troubleshooting" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Troubleshooting
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -975,45 +936,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#setting-up-the-log-server" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Setting up the log server
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Setting up the log server">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Configuration
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#troubleshooting" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Troubleshooting
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -1103,42 +1025,6 @@ DATAFORDELER_PASSWORD=
 DATAFORDELER_DOWNLOAD_HOST=https://api.datafordeler.dk/FileDownloads/GetFile?
 
 </code></pre>
-<h2 id="setting-up-the-log-server">Setting up the log server</h2>
-<p>To enable remote access to logs, it is possible to configure a logfile server from Q-ETL.
-This makes it possible to access job logs from remote locations, to verify that jobs have run and completed without logging onto the server.</p>
-<h3 id="configuration">Configuration</h3>
-<p>The configuration of the logserver is in the server folder\
-<img src="https://github.com/QGEEKS/Q-ETL/blob/ressources/images/server/server.png" > \
-<br/><br/>
-To set up the server, make a compy of the template file, and call it server.cmd\</p>
-<p><img src="https://github.com/QGEEKS/Q-ETL/blob/ressources/images/server/server_template.png" > 
-<br/><br/>
-It requires two elements: The path to python.exe - located in the QGIS install folder and the full path to the server.py file.\
-When this file is created, you are ready to install the server. 
-<br/><br/>
-Navigate to the server\bin folder:
-<br/><br/>
-<img src="https://github.com/QGEEKS/Q-ETL/blob/ressources/images/server/server_bin.png" > 
-<br/><br/>
-Run install_service.cmd to install the windows service:
-<br/><br/>
-<img src="https://github.com/QGEEKS/Q-ETL/blob/ressources/images/server/install.png" > 
-<br/><br/>
-The system will prompt for elevation, the install needs administrative privileges to run. If all goes well, the message will tell you that the service is installed. Now you can open Windows services, to locate the new service:
- <br/><br/>
-<img src="https://github.com/QGEEKS/Q-ETL/blob/ressources/images/server/service.png" > 
- <br/><br/>
-The first time, the service must be started manually. Set startup to automatic, and it will start up with Windows after restart. 
-It is preferred to have a service account for running the service. It must have 'log on as service' privileges. 
-<br/><br/>
-When the server is running, the server can be accessed on localhost:3000. There you will see the contents of the log directory. If you click on a log file, it will be displayed for you.
-<br/><br/>
-<img src="https://github.com/QGEEKS/Q-ETL/blob/ressources/images/server/url.png" > 
-<br/><br/>
-<img src="https://github.com/QGEEKS/Q-ETL/blob/ressources/images/server/logfile.png" > </p>
-<h3 id="troubleshooting">Troubleshooting</h3>
-<p>If you have problems starting the service, the configuration is wrong.
-It is a cmd file that runs the service - if you have spaces in your paths, put "" around the elements. </p>
 
 
 
