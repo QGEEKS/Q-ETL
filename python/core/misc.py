@@ -1,6 +1,7 @@
 from core.logger import *
 from core.db import *
 import sys
+import os
 import subprocess
 import platform,socket,re,uuid,json
 import pip._internal as pip
@@ -14,6 +15,7 @@ from email.mime.text import MIMEText
 from qgis.core import QgsVectorFileWriter, QgsProject, QgsVectorLayer
 from random import randrange
 import tracemalloc
+from core.communication import PushoverClient
 
 
 
@@ -134,6 +136,10 @@ def createJobRun(id):
         'id' : str(id),
         'logfile' : logfile
     }
+
+    if config["pushoverConfiguration"]["pushoverOnError"].lower() == "true":
+        element['pushover'] = True
+
 
     with open(jobrun_path, 'w') as f:
         json.dump(element, f)
@@ -389,6 +395,28 @@ def script_failed():
     jobrun = read_jobrun()
     update_job(jobrun['id'], 'Failed', now)
 
+    
+    ## Pushover notification on error
+    if config["pushoverConfiguration"]["pushoverOnError"].lower() == "true":
+        logger.info('Pushover notifications on error is active')
+        try:
+            pushover = PushoverClient(
+                app_token=config["pushoverConfiguration"]["pushover_app_token"],
+                user_key=config["pushoverConfiguration"]["pushover_user_key"]
+            )
+
+            pushover.send(
+                message=f'The Q-ETL job {argv[0]} has failed. Timestamp: {now}',
+                title='Q-ETL job FAILED',
+                priority=0,
+                sound='siren'
+            )
+            logger.info('Pushover notification sent')
+        except Exception as e:
+            logger.info('An error occured sending pushover notification')
+            logger.error(e)
+
+    ## Email notification on error
     email = bool(config["emailConfiguration"]["emailOnError"])
 
     if email == "True":
@@ -433,7 +461,7 @@ def script_failed():
     logger.info('JOB: ' + argv[0] + ' FAILED')
     logger.info('ENDTIME: ' + now.strftime("%d/%m/%Y, %H:%M"))
     logger.info('##################################################')
-    sys.exit()
+    os._exit(1)
     
 
 
