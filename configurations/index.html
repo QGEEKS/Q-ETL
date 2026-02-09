@@ -9,10 +9,6 @@
       
       
       
-        <link rel="prev" href="..">
-      
-      
-        <link rel="next" href="../basic_tutorial/">
       
       
         
@@ -23,7 +19,7 @@
     
     
       
-        <title>Getting Started - Q-ETL Documentation</title>
+        <title>Configurations - Q-ETL Documentation</title>
       
     
     
@@ -66,7 +62,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#setup" class="md-skip">
+        <a href="#configurations" class="md-skip">
           Skip to content
         </a>
       
@@ -102,7 +98,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Getting Started
+              Configurations
             
           </span>
         </div>
@@ -222,37 +218,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Getting Started
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../getting_started/" class="md-nav__link">
         
   
   
@@ -268,70 +237,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#step-1-unzip" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Step 1 - Unzip
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#step-2-settingsjson" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Step 2 - settings.json
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#step-3-the-python-project-file" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Step 3 - The python project file.
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#step-4-the-project-cmd-file" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Step 4 - The project cmd file.
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -722,10 +627,104 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#step-1-unzip" class="md-nav__link">
+  <a href="#configuring-the-settingsjson-file" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 1 - Unzip
+        Configuring the settings.json file
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuring the settings.json file">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#qgs_prefixpath-required" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Qgs_PrefixPath (Required)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#qgis_ini_path-required" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        QGIS_ini_Path (Required)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#qgis_bin_folder-required" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        QGIS_bin_folder (Required)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logdir-required" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        logdir (Required)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempfolder-required" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TempFolder (Required)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#databaseconnections-optional" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DatabaseConnections (Optional)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#emailconfiguration-optional" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        emailConfiguration (Optional)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setting-env-for-datafordelerendk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Setting .env for Datafordeleren.dk
       
     </span>
   </a>
@@ -733,35 +732,41 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-2-settingsjson" class="md-nav__link">
+  <a href="#setting-up-the-log-server" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 2 - settings.json
+        Setting up the log server
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Setting up the log server">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#step-3-the-python-project-file" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 3 - The python project file.
+        Troubleshooting
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#step-4-the-project-cmd-file" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Step 4 - The project cmd file.
-      
-    </span>
-  </a>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -782,34 +787,16 @@
 
 
 
-<p>This guide will show you how to set up and configure QGIS ETL to run jobs.
-At the end, the system will be configured to run a simple job, performing an ETL task - loading, manipulating, and writing data.</p>
-<h1 id="setup">Setup</h1>
-<h2 id="step-1-unzip">Step 1 - Unzip</h2>
-<p>Fetch latest relase <a href="https://github.com/QGEEKS/Q-ETL/releases">here</a>. This will download a zip file containing the application. Unzip this archive. </p>
-<p>This example will unzip the application in <strong>C:/Apps</strong></p>
-<p>When it is unzipped, you will have a folder like this:</p>
-<p><img alt="Folder Structure Example" src="https://github.com/QGEEKS/Q-ETL/raw/ressources/images/quickstart/unpack.png" /></p>
-<p>When it is unzipped, you will have a folder like this: </p>
-<h2 id="step-2-settingsjson">Step 2 - settings.json</h2>
-<p>The first step we need to do is to go through the process of creating the settings.json file in the root.
-Make a copy of the file <em>settings_template.json</em>, and rename it to <em>settings.json</em>. </p>
-<p>The relevant parts of the settings.json is: </p>
-<pre><code class="language-json">&quot;Qgs_PrefixPath&quot; : &quot;&quot;,
+<h1 id="configurations">Configurations</h1>
+<h2 id="configuring-the-settingsjson-file">Configuring the settings.json file</h2>
+<p>The settings json has required elements, and optional elements.</p>
+<pre><code class="language-json">{
+    &quot;Qgs_PrefixPath&quot; : &quot;&quot;,
     &quot;QGIS_ini_Path&quot; : &quot;&quot;,
     &quot;QGIS_bin_folder&quot;: &quot;&quot;,
     &quot;logdir&quot; : &quot;&quot;,
     &quot;TempFolder&quot; : &quot;&quot;,
-</code></pre>
-<ul>
-<li><strong>Qgs_PrefixPath</strong> : Path to your QGIS folder - for example : 'C:/OSGeo4W/apps/qgis'</li>
-<li><strong>QGIS_ini_Path</strong> : Path to your QGIS ini - for example in : "C:/Users/xxx/AppData/Roaming/QGIS/QGIS3/profiles/default/QGIS/QGIS3.ini"</li>
-<li><strong>QGIS_bin_folder</strong> : Path to your QGIS bin folder - for example : 'C:/OSGeo4W/bin'</li>
-<li><strong>Logdir</strong> : Folder where QETL vil write logs files</li>
-<li><strong>TempFolder</strong> : A folder for temporary files</li>
-</ul>
-<p>Furhtermore, you can configure named database commections in settings.json:</p>
-<pre><code class="language-json">    &quot;DatabaseConnections&quot;: {
+    &quot;DatabaseConnections&quot;: {
         &quot;MyPostGIS&quot; : {
             &quot;host&quot; : &quot;&quot;,
             &quot;port&quot; : &quot;&quot;,
@@ -826,10 +813,7 @@ Make a copy of the file <em>settings_template.json</em>, and rename it to <em>se
         }
 
     },
-</code></pre>
-<p>The name of the connections ("MyPostGIS", or "MyMSSQL") can be used as pointers to the connection in your scripts.</p>
-<p>Email configuration can also be set, which enables QETL to send Emails on errors :</p>
-<pre><code class="language-json">    &quot;emailConfiguration&quot; : {
+    &quot;emailConfiguration&quot; : {
         &quot;emailOnError&quot; : &quot;False&quot;,
         &quot;smtp_server&quot; : &quot;&quot;,
         &quot;smtp_port&quot; : &quot;&quot;,
@@ -838,118 +822,72 @@ Make a copy of the file <em>settings_template.json</em>, and rename it to <em>se
         &quot;message_from&quot; : &quot;&quot;,
         &quot;message_to&quot; : []
     } 
+
+}
 </code></pre>
-<p>You can send error messages with the Pushover service to Android and Iphone devices, by creating a Pushover account, and setting up the configuration:</p>
-<pre><code class="language-json">    &quot;pushoverConfiguration&quot;: {
-        &quot;pushoverOnError&quot; : &quot;True&quot;,
-        &quot;pushover_user_key&quot; : &quot;&quot;,
-        &quot;pushover_app_token&quot; : &quot;&quot;
-    } 
-</code></pre>
-<h2 id="step-3-the-python-project-file">Step 3 - The python project file.</h2>
-<p>Navigate to the python folder and locate the <em>boilerplate.py</em> file. Make a copy of this file and rename it to <em>MyProject.py</em>.</p>
-<p>Open and examine the content of the file - there is not much in it yet:</p>
-<pre><code class="language-python">from core import *
-from engine import *
-
-## Code goes here
-</code></pre>
-<p>Let's keep the file open, we will use it in a short while, we just have one more file to modify before we can start to code the ETL job.</p>
-<h2 id="step-4-the-project-cmd-file">Step 4 - The project cmd file.</h2>
-<p>Go to the root folder of the application, and locate the file <em>boilerplate.cmd</em>. Make a copy of this file, and rename it to <em>MyProject.cmd</em>.</p>
-<p>Open this new .cmd file:</p>
-<pre><code class="language-cmd">&lt;PATH-TO&gt;\python-qgis.bat &lt;FULL-PATH-TO-PYTHON-SCRIPT&gt;
-</code></pre>
-<p>You need to insert the full path to the <em>python-qgis.bat</em> and the full path to <em>MyProject.py</em> file we created in the previous step. Depending on how you have made your QGIS installation, the path to python-qgis.bat is different. In a OSGEO4W installation, it is in the OSGEO4W\bin folder. In a standalone QGIS installation, it is in QGIS\bin. The path to the MyProject.py depends on where you have placed your project.</p>
-<p>An example <em>cmd</em> file could look like this:</p>
-<pre><code class="language-cmd">C:\App\OSGeo4W\bin\python-qgis.bat C:\App\Q-ETL\python\MyProject.py
-</code></pre>
-<p>Now, the project is configured to run the project file MyProject.py - and we will now turn our focus on developing our ETL model</p>
-<h1 id="development">Development</h1>
-<p>For this tutorial, we will load data from a WFS service, reproject it, and store it on disk in a Geopackage.
-The WFS service that we are going to use, contains bus routes and stops - and we are interested in getting the bus stops out.
-The service comes in EPSG:25832.</p>
-<p>The service:</p>
-<pre><code class="language-python">=======
-</code></pre>
-<pre><code>
-The typename we are looking for is _Fynbus:stops_
-
-For it to work in our code, we need to turn it into a QGIS URI string. the simplest way to do that is to let QGIS load the layer for you and extract the information.
-When the layer is loaded, go to the properties of the layer, and select 'Information'- here the URI string can be copied:
-
-
-![Folder Structure Example](https://github.com/QGEEKS/Q-ETL/raw/ressources/images/quickstart/wfs_source.png)
-
-
-```python
-&quot;srsname='EPSG:25832' typename='fynbus:stops' url='https://geofyn.admin.gc2.io/wfs/geofyn/fynbus/25832'&quot;
-</code></pre>
-<p>Now, it is time to go to our project and start to code the operations. </p>
-<p>We can try and run the code as it is, verify that all configurations are correct, and see how that program executes.
-Go to the root folder of your project, and run the MyProject.cmd file. This will open a terminal window, which reports the execution progress.
-When it finishes, go to the folder that was specified as LogPath in the config, and locate the new log file from this run. It has the project name and timestamp in the filename.</p>
-<p>This is the basic format of the log file generated on each run. It validates the configuration, examines the environment and operating system, and finally, it starts to execute the script - which in this case is empty.
-Now we have confirmed that the boilerplates and configuration of our project are valid, and we can build the code to manage the data.</p>
-<p>The process has three steps: Load, reproject and write.</p>
-<ol>
-<li>Load data
-The code is structured in classes - the three main ones are going to be used her. First we create a reader, by invoking the Input_Reader class:
-Then, we construct our input layer, by calling the 'wfs' method on our reader. By calling this method, we are going to give it just one parameter - the URI that we constructed in QGIS. we assign the output layer to a variable, in this case we call it wfslayer, for easy readability of this example. </li>
-</ol>
-<pre><code class="language-python">reader = Input_Reader
-wfslayer = reader.wfs(&quot;srsname='EPSG:25832' typename='fynbus:stops' url='https://geofyn.admin.gc2.io/wfs/geofyn/fynbus/25832'&quot;)
-</code></pre>
-<ol>
-<li>Next, we must do the reprojection of the data from EPSG:25832 to EPSG:4326. for this, we will create a worker, which will be able to perform operations on layers. This is based on the Worker class. QGIS knows the ESPSG code of the layer, so all we need to specify is the target code (we omit the 'EPSG:', so it is only an input integer here...)</li>
-</ol>
-<pre><code class="language-python">worker = Worker
-reprojectedlayer = worker.Vector.reproject(wfslayer, 4326)
-</code></pre>
-<ol>
-<li>Finally, we will write our reprojected layer to a Geopackage file. For this, we will use our Output_writer class.
-On the writer, we will call the 'geopackage' method, which takes four arguments: Layer to write, layername in the geopackage, the geopackage file to write to, and an option to overwrite the Geopackage.</li>
-</ol>
-<pre><code class="language-python">writer = Output_Writer
-writer.geopackage(reprojectedlayer,'Busstops','c:/temp/fynbus.gpkg',True)
-</code></pre>
-<p>Now, the code looks like this:</p>
-<pre><code class="language-python">
-from engine import *
-from core import *
-from python.engine.outputs import Output_Writer
-from python.engine.workers import Worker
-
-## Reading from WFS into a QGIS layer
-input_reader = Input_Reader
-wfslayer = input_reader.wfs('https://geofyn.admin.gc2.io/wfs/geofyn/fynbus/25832?SERVICE=WFS&amp;REQUEST=GetFeature&amp;VERSION=1.1.0&amp;TYPENAME=fynbus:routes_25832_v&amp;SRSNAME=urn:ogc:def:crs:EPSG::25832')
-
-worker = Worker()
-reprojectedlayer = worker.Vector.reproject(wfslayer, 4326)
-
-## Writing the QGIS layer to a Geojson file
-output_writer = Output_Writer()
-output_writer.file(wfslayer, 'c:/temp/wfs.geojson', 'GeoJson')
-=======
-from core import *
-from engine import *
-
-reader = Input_Reader
-wfslayer = reader.wfs(&quot;srsname='EPSG:25832' typename='fynbus:stops' url='https://geofyn.admin.gc2.io/wfs/geofyn/fynbus/25832'&quot;)
-
-worker = Worker
-reprojectedlayer = worker.Vector.reproject(wfslayer, 4326)
-
-writer = Output_Writer
-writer.geopackage(reprojectedlayer,'Busstops','c:/temp/fynbus.gpkg',True)
-
+<h3 id="qgs_prefixpath-required">Qgs_PrefixPath (Required)</h3>
+<p>The root folder of your QGIS application of our installation
+For instance: C:/Program Files/QGIS x.xx.x/apps/qgis</p>
+<h3 id="qgis_ini_path-required">QGIS_ini_Path (Required)</h3>
+<p>QGIS_ini_Path is a little more tricky. it is found in the root of your default user-profile in QGIS. To fetch it the easiest way, open QGIS, open the Python prompt and type: print(QSettings().fileName())</p>
+<h3 id="qgis_bin_folder-required">QGIS_bin_folder (Required)</h3>
+<p>The path to the QGIS bin forlder of you installation.
+For instance: C:/Program Files/QGIS x.xx.x/bin</p>
+<h3 id="logdir-required">logdir (Required)</h3>
+<p>A folder for the generated log files. </p>
+<h3 id="tempfolder-required">TempFolder (Required)</h3>
+<p>A folder for temporary data.</p>
+<h3 id="databaseconnections-optional">DatabaseConnections (Optional)</h3>
+<p>If you need to configure databases, this is donw in this part of settings.json. 
+You can create named configurations to multiple databases.</p>
+<h3 id="emailconfiguration-optional">emailConfiguration (Optional)</h3>
+<p>Jobs can send email on errors. This is be default dsiabled. If you have an SMTP server, you can configure Q-ETL to uses it, sending email notifications if scheduled jobs fail.</p>
+<h2 id="setting-env-for-datafordelerendk">Setting .env for Datafordeleren.dk</h2>
+<p>In order to use datafordeleren, you need to configure your user and password for your tjenestebruger.
+Make a copy of the root file '.evv_template, and rename it to '.env'
+Edit the file and fill ind the username and password for datafordeleren, and you can use the integrations to datafordeleren.</p>
+<pre><code>DATAFORDELER_TJENESTEBRUGER=
+DATAFORDELER_PASSWORD=
+# Hosts, not to be edited
+DATAFORDELER_DOWNLOAD_HOST=https://api.datafordeler.dk/FileDownloads/GetFile?
 
 </code></pre>
-<p>Now, let's call our MyProject.cmd file, and wait for it to finish. It won't take long, the QGIS engine is super fast.
-When the job finishes, let go and inspect the log file that is created. The start parts are the same as all other runs, but the script part at the bottom is now different:</p>
-<p>As the log states, it reads a total of 4706 features from the source with the wfs reader. it channels these features through the reprojector worker - also returning the same 4706 features (which indicates no geometry problems). Finally, it writes the features to the Geopackage, and the job ends with success ❤️ </p>
-<p>This concludes this quickstart tutorial. The next step is to try the 'Basic Tutorial' or browse the API documentation to find out which methods are available in <em>Input_reader</em>, <em>Worker</em>, and <em>Output_Writer</em> classes. </p>
-<p>On behalf of the QGIS ETL team, Enjoy 😃</p>
+<h2 id="setting-up-the-log-server">Setting up the log server</h2>
+<p>To enable remote access to logs, it is possible to configure a logfile server from Q-ETL.
+This makes it possible to access job logs from remote locations, to verify that jobs have run and completed without logging onto the server.</p>
+<h3 id="configuration">Configuration</h3>
+<p>The configuration of the logserver is in the server folder\
+<img src="https://github.com/QGEEKS/Q-ETL/blob/ressources/images/server/server.png" > \
+<br/><br/>
+To set up the server, make a compy of the template file, and call it server.cmd\</p>
+<p><img src="https://github.com/QGEEKS/Q-ETL/blob/ressources/images/server/server_template.png" > 
+<br/><br/>
+It requires two elements: The path to python.exe - located in the QGIS install folder and the full path to the server.py file.\
+When this file is created, you are ready to install the server. 
+<br/><br/>
+Navigate to the server\bin folder:
+<br/><br/>
+<img src="https://github.com/QGEEKS/Q-ETL/blob/ressources/images/server/server_bin.png" > 
+<br/><br/>
+Run install_service.cmd to install the windows service:
+<br/><br/>
+<img src="https://github.com/QGEEKS/Q-ETL/blob/ressources/images/server/install.png" > 
+<br/><br/>
+The system will prompt for elevation, the install needs administrative privileges to run. If all goes well, the message will tell you that the service is installed. Now you can open Windows services, to locate the new service:
+ <br/><br/>
+<img src="https://github.com/QGEEKS/Q-ETL/blob/ressources/images/server/service.png" > 
+ <br/><br/>
+The first time, the service must be started manually. Set startup to automatic, and it will start up with Windows after restart. 
+It is preferred to have a service account for running the service. It must have 'log on as service' privileges. 
+<br/><br/>
+When the server is running, the server can be accessed on localhost:3000. There you will see the contents of the log directory. If you click on a log file, it will be displayed for you.
+<br/><br/>
+<img src="https://github.com/QGEEKS/Q-ETL/blob/ressources/images/server/url.png" > 
+<br/><br/>
+<img src="https://github.com/QGEEKS/Q-ETL/blob/ressources/images/server/logfile.png" > </p>
+<h3 id="troubleshooting">Troubleshooting</h3>
+<p>If you have problems starting the service, the configuration is wrong.
+It is a cmd file that runs the service - if you have spaces in your paths, put "" around the elements. </p>
 
 
 
