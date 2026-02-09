@@ -2,6 +2,7 @@ site_name: Q-ETL Documentation
 theme: material
 nav:
   - Home: index.md
+  - Getting Started: getting_started.md
   - Basic Tutorial: basic_tutorial.md
   - API:
     - Inputs: Inputs.md
@@ -9,6 +10,7 @@ nav:
     - Constructors: constructors.md
     - Outputs: outputs.md
     - Integrations: integrations.md
+    - Examples: examples.md
   - Help:
     - FAQ: faq.md
     - Troubleshooting: troubleshooting.md

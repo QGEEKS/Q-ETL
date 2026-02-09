@@ -18,7 +18,56 @@ When it is unzipped, you will have a folder like this:
 The first step we need to do is to go through the process of creating the settings.json file in the root.
 Make a copy of the file _settings\_template.json_, and rename it to _settings.json_. 
 
-TODO: ADD EXPLANATION OF SETTINGS.JSON
+The relevant parts of the settings.json is: 
+
+```json
+"Qgs_PrefixPath" : "",
+    "QGIS_ini_Path" : "",
+    "QGIS_bin_folder": "",
+    "logdir" : "",
+    "TempFolder" : "",
+```
+
+* **Qgs_PrefixPath** : Path to your QGIS folder - for example : 'C:/OSGeo4W/apps/qgis'
+* **QGIS_ini_Path** : Path to your QGIS ini - for example in : "C:/Users/xxx/AppData/Roaming/QGIS/QGIS3/profiles/default/QGIS/QGIS3.ini"
+* **QGIS_bin_folder** : Path to your QGIS bin folder - for example : 'C:/OSGeo4W/bin'
+* **Logdir** : Folder where QETL vil write logs files
+* **TempFolder** : A folder for temporary files
+
+Furhtermore, you can configure named database commections in settings.json:
+```json
+    "DatabaseConnections": {
+        "MyPostGIS" : {
+            "host" : "",
+            "port" : "",
+            "databasename":"",
+            "user" : "",
+            "password": ""
+        },
+        "MyMSSQL" : {
+            "host" : "",
+            "port" : "",
+            "databasename":"",
+            "user" : "",
+            "password": ""
+        }
+
+    },
+```
+The name of the connections ("MyPostGIS", or "MyMSSQL") can be used as pointers to the connection in your scripts.
+
+Email configuration can also be set, which enables QETL to send Emails on errors :
+```json
+    "emailConfiguration" : {
+        "emailOnError" : "False",
+        "smtp_server" : "",
+        "smtp_port" : "",
+        "smtp_username" : "",
+        "smtp_password" : "",
+        "message_from" : "",
+        "message_to" : []
+    } 
+```
 
 ## Step 3 - The python project file.
 
@@ -69,8 +118,6 @@ The typename we are looking for is _Fynbus:stops_
 
 For it to work in our code, we need to turn it into a QGIS URI string. the simplest way to do that is to let QGIS load the layer for you and extract the information.
 When the layer is loaded, go to the properties of the layer, and select 'Information'- here the URI string can be copied:
-
-TODO: ADD SCREENSHOT FROM QGIS
 
 ![Folder Structure Example](https://github.com/QGEEKS/Q-ETL/raw/ressources/images/quickstart/wfs_source.png)
 
@@ -137,6 +184,6 @@ When the job finishes, let go and inspect the log file that is created. The star
 
 As the log states, it reads a total of 4706 features from the source with the wfs reader. it channels these features through the reprojector worker - also returning the same 4706 features (which indicates no geometry problems). Finally, it writes the features to the Geopackage, and the job ends with success ❤️ 
 
-This concludes this quickstart tutorial. The next step is to browse the API documentation to find out which methods are available in _Input\_reader_, _Worker_, and _Output\_Writer_ classes. 
+This concludes this quickstart tutorial. The next step is to try the 'Basic Tutorial' or browse the API documentation to find out which methods are available in _Input\_reader_, _Worker_, and _Output\_Writer_ classes. 
 
 On behalf of the QGIS ETL team, Enjoy 😃
