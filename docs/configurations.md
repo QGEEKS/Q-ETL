@@ -36,7 +36,12 @@ The settings json has required elements, and optional elements.
         "smtp_password" : "",
         "message_from" : "",
         "message_to" : []
-    } 
+    } ,
+    "pushoverConfiguration": {
+        "pushoverOnError" : "False",
+        "pushover_user_key" : "",
+        "pushover_app_token" : ""
+    }  
 
 }
 ```
@@ -63,6 +68,9 @@ You can create named configurations to multiple databases.
 
 ### emailConfiguration (Optional)
 Jobs can send email on errors. This is be default dsiabled. If you have an SMTP server, you can configure Q-ETL to uses it, sending email notifications if scheduled jobs fail.
+
+### pushoverConfiguration (Optional)
+Jobs can send error messages to Android and Iphone devices using the Pushover service
 
 ## Setting .env for Datafordeleren.dk
 In order to use datafordeleren, you need to configure your user and password for your tjenestebruger.

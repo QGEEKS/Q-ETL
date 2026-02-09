@@ -76,6 +76,16 @@ Email configuration can also be set, which enables QETL to send Emails on errors
     } 
 ```
 
+You can send error messages with the Pushover service to Android and Iphone devices, by creating a Pushover account, and setting up the configuration:
+
+```json
+    "pushoverConfiguration": {
+        "pushoverOnError" : "True",
+        "pushover_user_key" : "",
+        "pushover_app_token" : ""
+    } 
+```
+For more information, see the Configuration section.
 
 ## Step 3 - The python project file.
 

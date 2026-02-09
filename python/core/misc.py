@@ -199,6 +199,30 @@ def install_dependencies():
             logger.info(f'Unable to install dependencies - run the editor in admin mode on first run')
             script_failed()
 
+    try:
+        from dotenv import load_dotenv
+    except:
+        logger.info(f'Missing dependency found: python-dotenv')
+        try:
+            subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'python-dotenv'])
+            from dotenv import load_dotenv
+            logger.info(f'Dependency: python-dotenv - installed')
+        except:
+            logger.info(f'Unable to install dependencies - run the editor in admin mode on first run')
+            script_failed()
+
+    try:
+        import ijson
+    except:
+        logger.info(f'Missing dependency found: ijson')
+        try:
+            subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'ijson'])
+            import ijson    
+            logger.info(f'Dependency: ijson - installed')
+        except:
+            logger.info(f'Unable to install dependencies - run the editor in admin mode on first run')
+            script_failed()
+
 
 def get_version():
     with open('version.json') as f:
