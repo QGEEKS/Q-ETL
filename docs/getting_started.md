@@ -9,14 +9,21 @@ Fetch latest relase [here](https://github.com/QGEEKS/Q-ETL/releases). This will 
 
 This example will unzip the application in **C:/Apps**
 
+
 When it is unzipped, you will have a folder like this:
 
 ![Folder Structure Example](https://github.com/QGEEKS/Q-ETL/raw/ressources/images/quickstart/unpack.png)
+
+When it is unzipped, you will have a folder like this: 
+
+
+
 
 ## Step 2 - settings.json
 
 The first step we need to do is to go through the process of creating the settings.json file in the root.
 Make a copy of the file _settings\_template.json_, and rename it to _settings.json_. 
+
 
 The relevant parts of the settings.json is: 
 
@@ -69,6 +76,7 @@ Email configuration can also be set, which enables QETL to send Emails on errors
     } 
 ```
 
+
 ## Step 3 - The python project file.
 
 Navigate to the python folder and locate the _boilerplate.py_ file. Make a copy of this file and rename it to _MyProject.py_.
@@ -110,8 +118,11 @@ The WFS service that we are going to use, contains bus routes and stops - and we
 The service comes in EPSG:25832.
 
 The service:
+
 ```python
-https://geofyn.admin.gc2.io/wfs/geofyn/fynbus/25832?
+=======
+```
+
 ```
 
 The typename we are looking for is _Fynbus:stops_
@@ -119,7 +130,9 @@ The typename we are looking for is _Fynbus:stops_
 For it to work in our code, we need to turn it into a QGIS URI string. the simplest way to do that is to let QGIS load the layer for you and extract the information.
 When the layer is loaded, go to the properties of the layer, and select 'Information'- here the URI string can be copied:
 
+
 ![Folder Structure Example](https://github.com/QGEEKS/Q-ETL/raw/ressources/images/quickstart/wfs_source.png)
+
 
 ```python
 "srsname='EPSG:25832' typename='fynbus:stops' url='https://geofyn.admin.gc2.io/wfs/geofyn/fynbus/25832'"
@@ -153,6 +166,7 @@ reprojectedlayer = worker.Vector.reproject(wfslayer, 4326)
 
 3. Finally, we will write our reprojected layer to a Geopackage file. For this, we will use our Output_writer class.
 On the writer, we will call the 'geopackage' method, which takes four arguments: Layer to write, layername in the geopackage, the geopackage file to write to, and an option to overwrite the Geopackage.
+
 ```python
 writer = Output_Writer
 writer.geopackage(reprojectedlayer,'Busstops','c:/temp/fynbus.gpkg',True)
@@ -161,6 +175,7 @@ writer.geopackage(reprojectedlayer,'Busstops','c:/temp/fynbus.gpkg',True)
 Now, the code looks like this:
 
 ```python
+
 from engine import *
 from core import *
 from python.engine.outputs import Output_Writer
@@ -176,6 +191,19 @@ reprojectedlayer = worker.Vector.reproject(wfslayer, 4326)
 ## Writing the QGIS layer to a Geojson file
 output_writer = Output_Writer()
 output_writer.file(wfslayer, 'c:/temp/wfs.geojson', 'GeoJson')
+=======
+from core import *
+from engine import *
+
+reader = Input_Reader
+wfslayer = reader.wfs("srsname='EPSG:25832' typename='fynbus:stops' url='https://geofyn.admin.gc2.io/wfs/geofyn/fynbus/25832'")
+
+worker = Worker
+reprojectedlayer = worker.Vector.reproject(wfslayer, 4326)
+
+writer = Output_Writer
+writer.geopackage(reprojectedlayer,'Busstops','c:/temp/fynbus.gpkg',True)
+
 
 ```
 

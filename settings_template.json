@@ -29,6 +29,11 @@
         "smtp_password" : "",
         "message_from" : "",
         "message_to" : []
-    } 
+    },
+    "pushoverConfiguration": {
+        "pushoverOnError" : "False",
+        "pushover_user_key" : "",
+        "pushover_app_token" : ""
+    }  
 
 }

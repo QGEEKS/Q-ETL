@@ -9,10 +9,156 @@ import os.path as path
 import json
 from PyQt5.QtCore import QSettings
 import smtplib
+import requests
 from email.mime.text import MIMEText
-from qgis.core import QgsVectorFileWriter, QgsProject
+from qgis.core import QgsVectorFileWriter, QgsProject, QgsVectorLayer
 from random import randrange
 import tracemalloc
+from core.communication import PushoverClient
+
+
+
+
+def install_dependencies():
+    logger = get_logger() 
+    try:
+        import psutil
+    except:
+        logger.info(f'Missing dependency found: psutil')
+        try:
+            subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'psutil'])
+            import psutil
+        except:
+            logger.info(f'Unable to install dependencies - run the editor in admin mode on first run')
+            script_failed()
+        logger.info(f'Dependency: psutil - installed')
+
+    try:
+        import geopandas
+    except:
+        logger.info(f'Missing dependency found: geopandas')
+        try:
+            subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'geopandas'])
+            import geopandas
+        except:
+            logger.info(f'Unable to install dependencies - run the editor in admin mode on first run')
+            script_failed()
+        logger.info(f'Dependency: geopandas - installed')
+
+    try:
+        import dotenv
+    except:
+        logger.info(f'Missing dependency found: dotenv')
+        try:
+            subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'python-dotenv'])
+            import dotenv
+        except:
+            logger.info(f'Unable to install dependencies - run the editor in admin mode on first run')
+            script_failed()
+        logger.info(f'Dependency: dotenv - installed')
+
+    try:
+        import ijson
+    except:
+        logger.info(f'Missing dependency found: ijson')
+        try:
+            subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'ijson'])
+            import ijson
+        except:
+            logger.info(f'Unable to install dependencies - run the editor in admin mode on first run')
+            script_failed()
+        logger.info(f'Dependency: ijson - installed')
+
+def get_version():
+    with open('version.json') as f:
+        data = json.load(f)
+    return  data['version']
+
+def kommunekodeToLokalId(kommunekoder: list):
+    logger = get_logger() 
+    logger.info(f'Translating kommunekoder to DAGI lokalid for codes {kommunekoder}')
+    lokal_id = []
+    try:
+        with open('core_data/dagi_kommune_kodetabel.json') as json_file:
+            data = json.load(json_file)
+    except:
+        logger.info(f'Unable to open dagi_kommune_kodetabel from core_data')
+        script_failed()
+
+    for kode in kommunekoder:
+        try:
+            lokal_id.append(data[kode])
+        except:
+            logger.info(f'unable to map {kode} to key in dagi_kommune_kodetabel')
+            script_failed()   
+    logger.info(f'Finished translating kommunekoder, returning {lokal_id}')
+    return lokal_id
+
+def getCurrentFile(registry: str, layer: str):   
+    url = f'https://api.datafordeler.dk/FileDownloads/GetAvailableFileDownloads?Register={registry}&username={os.environ.get("DATAFORDELER_TJENESTEBRUGER")}&password={os.environ.get("DATAFORDELER_PASSWORD")}'
+    resp = requests.get(url=url)
+    data = resp.json() 
+    for elm in data:
+        if elm['typeOfDownload'] == 'TotalDownload' and elm['entityName'] == layer and elm['typeOfData'] == 'Current':
+            return elm['fileName'].split('.')[0]
+
+"""
+    dagi_lokailid = []
+    try:
+        for kode in kommunekoder:
+            lokalid = coredata[kode]['id.lokalid']
+            dagi_lokailid.append(lokalid)
+        return dagi_lokailid
+    except Exception as error:
+        logger.info(f'An error occured translating kommunekoder to DAGI lokalid')
+        logger.error(f'{type(error).__name__}  –  {str(error)}')
+        logger.critical("Program terminated")
+        script_failed()
+        """
+def cmdName():
+    path = argv[0]
+    fileName = path.split('\\')[-1].split('.')[0]
+    return fileName
+
+def createJobRun(id):
+    config = get_config()
+    logger = get_logger()
+
+    jobrun_path = config['TempFolder']  + f'job_run_{cmdName()}.json'
+    logger.info(f'Creating jobrun file {jobrun_path}')
+    try:
+        os.remove(jobrun_path)
+    except OSError:
+        pass
+
+    element = {
+        'id' : str(id),
+        'logfile' : logfile
+    }
+
+    if config["pushoverConfiguration"]["pushoverOnError"].lower() == "true":
+        element['pushover'] = True
+
+
+    with open(jobrun_path, 'w') as f:
+        json.dump(element, f)
+
+def remove_jobrun():
+    config = get_config()
+    
+    jobrun_path = config['TempFolder'] + f'job_run_{cmdName()}.json'
+    try:
+        os.remove(jobrun_path)
+    except OSError:
+        pass
+
+def read_jobrun():
+    config = get_config()
+    jobrun_path = config['TempFolder'] + f'job_run_{cmdName()}.json'
+    with open(jobrun_path) as f:
+        data = json.load(f)
+    return data
+
 
 
 def install_dependencies():
@@ -327,9 +473,31 @@ def script_failed():
     jobrun = read_jobrun()
     update_job(jobrun['id'], 'Failed', now)
 
+    
+    ## Pushover notification on error
+    if config["pushoverConfiguration"]["pushoverOnError"].lower() == "true":
+        logger.info('Pushover notifications on error is active')
+        try:
+            pushover = PushoverClient(
+                app_token=config["pushoverConfiguration"]["pushover_app_token"],
+                user_key=config["pushoverConfiguration"]["pushover_user_key"]
+            )
+
+            pushover.send(
+                message=f'The Q-ETL job {argv[0]} has failed. Timestamp: {now}',
+                title='Q-ETL job FAILED',
+                priority=0,
+                sound='siren'
+            )
+            logger.info('Pushover notification sent')
+        except Exception as e:
+            logger.info('An error occured sending pushover notification')
+            logger.error(e)
+
+    ## Email notification on error
     email = bool(config["emailConfiguration"]["emailOnError"])
 
-    if email == True:
+    if email == "True":
         try:
             logger.info('')
 
