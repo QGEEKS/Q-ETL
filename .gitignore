@@ -10,7 +10,9 @@ settings.json
 /server/app/server.cmd
 /server/logs/*.log
 /db/internal.db
+
 .env
 /site/
 /venv/
 .env
+

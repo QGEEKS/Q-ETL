@@ -21,17 +21,12 @@ writer = Output_writer
 writer.file(reprojectedLayer, "C:/temp/kommuner_4326.geojson", "GeoJson")
 ```
 
-To run the job, simply call the <YourProject>.cmd file (as described in Step 3 and 4 
-in the [_Getting started_](https://qgeeks.github.io/Q-ETL/getting_started) guide), and the job will execute. The translation log is placed in the log directory as specified in the configuration
 
 ## Quickstart
-Checkout the _Getting started_ guide on the Wiki page [here](https://qgeeks.github.io/Q-ETL/getting_started/).
-
-
+Checkout the _Basic tutorial_ guide on qgeeks.github.io [here](https://qgeeks.github.io/Q-ETL/basic_tutorial/).
 
 ## Download
 Download the latest release [here](https://github.com/QGEEKS/Q-ETL/releases).
-
 
 
 

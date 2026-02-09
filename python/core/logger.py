@@ -3,6 +3,7 @@ from datetime import datetime
 import os
 from sys import argv
 import sys, traceback
+import coloredlogs
 
 logfile = None
 
@@ -17,17 +18,27 @@ def initialize_logger(settings):
     logger.setLevel(logging.DEBUG)
     fh = logging.FileHandler(logfile)
     fh.setLevel(logging.DEBUG)
-    logFormatter = logging.Formatter('%(asctime)s - %(levelname)s : %(message)s ')
+
+    # Updated log format to exclude thread ID
+    logFormatter = logging.Formatter('%(asctime)s - %(levelname)s - %(funcName)s : %(message)s ')
     fh.setFormatter(logFormatter)
     consoleHandler = logging.StreamHandler()
     consoleHandler.setFormatter(logFormatter)
     consoleHandler.setLevel(logging.DEBUG)
     logger.addHandler(consoleHandler)
     logger.addHandler(fh)
+
+    # Integrate coloredlogs with updated format and custom field styles
+    field_styles = {
+        'asctime': {'color': 'green'},
+        'levelname': {'color': 'yellow', 'bold': True},
+        'funcName': {'color': 'blue'},
+        'thread': {'color': 'magenta'},
+    }
+    coloredlogs.install(level='DEBUG', logger=logger, fmt='%(asctime)s - %(levelname)s - %(funcName)s : %(message)s ', field_styles=field_styles)
+
     sys.excepthook = exc_handler
 
-    
-    
     return logger
     
 def exc_handler(exctype, value, tb):

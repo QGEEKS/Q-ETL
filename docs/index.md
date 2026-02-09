@@ -18,10 +18,7 @@ writer.file(reprojectedLayer, "C:/temp/kommuner_4326.geojson", "GeoJson")
 
 To run the job, simply call the _.cmd_ file, and the job will execute. The translation log os placed in the log directory as specified in the configuration.
 
-See more in the [Getting started](https://qgeeks.github.io/Q-ETL/getting_started/) section.
-
-## Configuration
-To get explanations of how to configure Q-ETL see [configurations](https://github.com/QGEEKS/Q-ETL/configurations).
+See more in the [Getting started](getting_started.md) section.
 
 ## Download
 Download the latest release [here](https://github.com/QGEEKS/Q-ETL/releases).

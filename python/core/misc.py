@@ -1,7 +1,6 @@
 from core.logger import *
 from core.db import *
 import sys
-import os
 import subprocess
 import platform,socket,re,uuid,json
 import pip._internal as pip
@@ -156,6 +155,85 @@ def remove_jobrun():
 def read_jobrun():
     config = get_config()
     jobrun_path = config['TempFolder'] + f'job_run_{cmdName()}.json'
+    with open(jobrun_path) as f:
+        data = json.load(f)
+    return data
+
+
+
+def install_dependencies():
+    logger = get_logger()
+    try:
+        import psutil
+    except:
+        logger.info(f'Missing dependency found: psutil')
+        try:
+            subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'psutil'])
+            import psutil
+            logger.info(f'Dependency: psutil - installed')
+        except:
+            logger.info(f'Unable to install dependencies - run the editor in admin mode on first run')
+            script_failed()
+
+    try:
+        import geopandas
+    except:
+        logger.info(f'Missing dependency found: geopandas')
+        try:
+            subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'geopandas'])
+            import geopandas
+            logger.info(f'Dependency: geopandas - installed')
+        except:
+            logger.info(f'Unable to install dependencies - run the editor in admin mode on first run')
+            script_failed()
+
+    try:
+        import coloredlogs
+    except:
+        logger.info(f'Missing dependency found: coloredlogs')
+        try:
+            subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'coloredlogs'])
+            import coloredlogs
+            logger.info(f'Dependency: coloredlogs - installed')
+        except:
+            logger.info(f'Unable to install dependencies - run the editor in admin mode on first run')
+            script_failed()
+
+
+def get_version():
+    with open('version.json') as f:
+        data = json.load(f)
+    return  data['version']
+
+
+def createJobRun(id):
+    config = get_config()
+    logfile = get_logfile()
+    jobrun_path = config['TempFolder'] + 'job_run.json'
+    try:
+        os.remove(jobrun_path)
+    except OSError:
+        pass
+
+    element = {
+        'id' : str(id),
+        'logfile' : logfile
+    }
+
+    with open(jobrun_path, 'w') as f:
+        json.dump(element, f)
+
+def remove_jobrun():
+    config = get_config()
+    jobrun_path = config['TempFolder'] + 'job_run.json'
+    try:
+        os.remove(jobrun_path)
+    except OSError:
+        pass
+
+def read_jobrun():
+    config = get_config()
+    jobrun_path = config['TempFolder'] + 'job_run.json'
     with open(jobrun_path) as f:
         data = json.load(f)
     return data
@@ -461,8 +539,8 @@ def script_failed():
     logger.info('JOB: ' + argv[0] + ' FAILED')
     logger.info('ENDTIME: ' + now.strftime("%d/%m/%Y, %H:%M"))
     logger.info('##################################################')
-    os._exit(1)
-    
+    sys.exit()
+
 
 
 

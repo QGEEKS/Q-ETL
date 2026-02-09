@@ -534,9 +534,7 @@ class Integrations:
             dataframe (dataframe): The dataframe to be converted to QGIS layer
 
         Returns
-        -------
-        QgsVectorLayer
-            The QGIS layer from the input dataframe
+            dataframe (dataframe): The QGIS layer from the input dataframe
         """
 
         logger.info(f'Creating layer from Geopandas dataframe ')
