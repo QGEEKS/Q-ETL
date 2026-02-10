@@ -2,9 +2,11 @@ site_name: Q-ETL Documentation
 theme: material
 nav:
   - Home: index.md
-  - Getting Started: getting_started.md
-  - Basic Tutorial: basic_tutorial.md
-  - Configuration: configurations.md
+  - Introduction and setup:
+    - Getting Started: getting_started.md
+    - Basic Tutorial: basic_tutorial.md
+    - Configuration: configurations.md
+  - Examples: examples.md
   - API:
     - Inputs: Inputs.md
     - Workers: workers.md
