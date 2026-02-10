@@ -224,6 +224,53 @@
   
   
   
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction and setup
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Introduction and setup
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
     <li class="md-nav__item">
       <a href="../getting_started/" class="md-nav__link">
         
@@ -244,9 +291,10 @@
     </li>
   
 
-    
-      
-      
+              
+            
+              
+                
   
   
   
@@ -271,9 +319,10 @@
     </li>
   
 
-    
-      
-      
+              
+            
+              
+                
   
   
   
@@ -287,6 +336,41 @@
     
   
     Configuration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Examples
   
 
     
@@ -316,10 +400,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
         
           
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
             
   
   
@@ -337,8 +421,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_5">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -635,10 +719,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
         
           
-          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
             
   
   
@@ -656,8 +740,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1426,12 +1510,12 @@
 <span class="normal">570</span>
 <span class="normal">571</span>
 <span class="normal">572</span>
-<span class="normal">573</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Integrations</span><span class="p">:</span>
+<span class="normal">573</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Integrations</span><span class="p">:</span>
     <span class="n">logger</span> <span class="o">=</span> <span class="n">get_logger</span><span class="p">()</span> 
     <span class="n">load_dotenv</span><span class="p">(</span><span class="n">find_dotenv</span><span class="p">())</span>
 
-    <span class="k">class</span><span class="w"> </span><span class="nc">Datafordeler</span><span class="p">:</span>
-        <span class="k">def</span><span class="w"> </span><span class="nf">getDarNavngivenVej</span><span class="p">(</span><span class="n">kommunekoder</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">Datafordeler</span><span class="p">:</span>
+        <span class="k">def</span> <span class="nf">getDarNavngivenVej</span><span class="p">(</span><span class="n">kommunekoder</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
             <span class="n">config</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">()</span>
             <span class="n">df_host</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;DATAFORDELER_DOWNLOAD_HOST&quot;</span><span class="p">)</span>
             <span class="n">fileToDownload</span> <span class="o">=</span> <span class="n">getCurrentFile</span><span class="p">(</span><span class="s1">&#39;DAR&#39;</span><span class="p">,</span> <span class="s1">&#39;NavngivenVej&#39;</span><span class="p">)</span>
@@ -1528,10 +1612,10 @@
                 <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
             <span class="k">return</span> <span class="n">layer</span>
 
-        <span class="k">def</span><span class="w"> </span><span class="nf">Test</span><span class="p">(</span><span class="n">reg</span><span class="p">,</span> <span class="n">layer</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">Test</span><span class="p">(</span><span class="n">reg</span><span class="p">,</span> <span class="n">layer</span><span class="p">):</span>
             <span class="n">getCurrentFile</span><span class="p">(</span><span class="n">reg</span><span class="p">,</span> <span class="n">layer</span><span class="p">)</span>
 
-        <span class="k">def</span><span class="w"> </span><span class="nf">getDarAdresse</span><span class="p">(</span><span class="n">kommunekoder</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">getDarAdresse</span><span class="p">(</span><span class="n">kommunekoder</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
             <span class="n">processedKommunekoder</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;0&#39;</span> <span class="o">+</span> <span class="n">kommunekode</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">kommunekode</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span> <span class="k">else</span> <span class="n">kommunekode</span> <span class="k">for</span> <span class="n">kommunekode</span> <span class="ow">in</span> <span class="n">kommunekoder</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">kommunekode</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]]</span>
             <span class="n">dagilokailid</span> <span class="o">=</span> <span class="n">kommunekodeToLokalId</span><span class="p">(</span><span class="n">processedKommunekoder</span><span class="p">)</span>
             <span class="n">config</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">()</span>
@@ -1743,7 +1827,7 @@
             <span class="k">return</span> <span class="n">layer</span>
 
 
-        <span class="k">def</span><span class="w"> </span><span class="nf">getDarHusnummer</span><span class="p">(</span><span class="n">kommunekoder</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">getDarHusnummer</span><span class="p">(</span><span class="n">kommunekoder</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
             <span class="n">processedKommunekoder</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;0&#39;</span> <span class="o">+</span> <span class="n">kommunekode</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">kommunekode</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span> <span class="k">else</span> <span class="n">kommunekode</span> <span class="k">for</span> <span class="n">kommunekode</span> <span class="ow">in</span> <span class="n">kommunekoder</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">kommunekode</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]]</span>
             <span class="n">dagilokailid</span> <span class="o">=</span> <span class="n">kommunekodeToLokalId</span><span class="p">(</span><span class="n">processedKommunekoder</span><span class="p">)</span>
             <span class="n">config</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">()</span>
@@ -1904,7 +1988,7 @@
     <span class="c1">## Geopandas import / export</span>
     <span class="c1">## ##################################</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">to_geopandas_df</span><span class="p">(</span><span class="n">layer</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">to_geopandas_df</span><span class="p">(</span><span class="n">layer</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Convert a QGIS layer to a Geopandas dataframe for further processing</span>
 
@@ -1931,7 +2015,7 @@
             <span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="s2">&quot;Program terminated&quot;</span><span class="p">)</span>
             <span class="n">script_failed</span><span class="p">()</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">from_geopandas_df</span><span class="p">(</span><span class="n">dataframe</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">from_geopandas_df</span><span class="p">(</span><span class="n">dataframe</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Convert a  a Geopandas dataframe ton QGIS layer</span>
 
@@ -2085,7 +2169,7 @@
 <span class="normal">570</span>
 <span class="normal">571</span>
 <span class="normal">572</span>
-<span class="normal">573</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">from_geopandas_df</span><span class="p">(</span><span class="n">dataframe</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="normal">573</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">from_geopandas_df</span><span class="p">(</span><span class="n">dataframe</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Convert a  a Geopandas dataframe ton QGIS layer</span>
 
@@ -2231,7 +2315,7 @@
 <span class="normal">524</span>
 <span class="normal">525</span>
 <span class="normal">526</span>
-<span class="normal">527</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">to_geopandas_df</span><span class="p">(</span><span class="n">layer</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="normal">527</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">to_geopandas_df</span><span class="p">(</span><span class="n">layer</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Convert a QGIS layer to a Geopandas dataframe for further processing</span>
 
