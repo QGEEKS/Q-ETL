@@ -118,16 +118,13 @@ echo [5/5] Updating notebook template...
 set PROJECT_ROOT=%CD%
 set PROJECT_ROOT_ESCAPED=%PROJECT_ROOT:\=\\%
 
-powershell -NoProfile -Command "$content = @'^
-# In your notebook initialization cell, use these paths:
-import os
-project_root = r'%PROJECT_ROOT%'
-os.environ['OSGEO4W_ROOT'] = r'%OSGEO4W_ROOT%'
-# ... rest of initialization
-'@; Write-Output $content" > "%KERNEL_DIR%\notebook_template.txt"
-
-echo    Created notebook path template in: %KERNEL_DIR%\notebook_template.txt
-echo.
+(
+echo # In your notebook initialization cell, use these paths:
+echo import os
+echo project_root = r'%PROJECT_ROOT%'
+echo os.environ['OSGEO4W_ROOT'] = r'%OSGEO4W_ROOT%'
+echo # ... rest of initialization
+) > "%KERNEL_DIR%\notebook_template.txt"
 
 REM Verify installation
 echo ============================================================================
@@ -143,21 +140,21 @@ if %ERRORLEVEL% NEQ 0 (
 )
 
 echo.
-echo ============================================================================
-echo Installation complete!
-echo ============================================================================
+echo ============================================================================ 
+echo Installation complete! 
+echo ============================================================================ 
 echo.
 echo Detected paths from settings.json:
-echo   OSGeo4W Root: %OSGEO4W_ROOT%
-echo   Project Root: %PROJECT_ROOT%
+echo   OSGeo4W Root: [%OSGEO4W_ROOT%]
+echo   Project Root: [%PROJECT_ROOT%]
 echo.
 echo Next steps:
 echo   1. Restart VS Code
 echo   2. Open a .ipynb file in the demos/ folder
 echo   3. Select "QGIS Python" kernel from the kernel selector
 echo   4. In the initialization cell, update paths:
-echo      - project_root = r'%PROJECT_ROOT%'
-echo      - os.environ['OSGEO4W_ROOT'] = r'%OSGEO4W_ROOT%'
+echo      - project_root = r^'%PROJECT_ROOT%^'
+echo      - os.environ['OSGEO4W_ROOT'] = r^'%OSGEO4W_ROOT%^'
 echo.
 echo See docs\jupyter_setup.md for full documentation.
 echo.
