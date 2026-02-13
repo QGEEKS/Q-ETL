@@ -9,10 +9,8 @@
       
       
       
-        <link rel="prev" href="../basic_tutorial/">
+        <link rel="prev" href="../jupyter_setup/">
       
-      
-        <link rel="next" href="../Inputs/">
       
       
         
@@ -23,7 +21,7 @@
     
     
       
-        <title>Configuration - Q-ETL Documentation</title>
+        <title>The genereic worker - Q-ETL Documentation</title>
       
     
     
@@ -66,7 +64,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#configurations" class="md-skip">
+        <a href="#guide-using-processingrunner" class="md-skip">
           Skip to content
         </a>
       
@@ -102,7 +100,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Configuration
+              The genereic worker
             
           </span>
         </div>
@@ -276,37 +274,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Configuration
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../configurations/" class="md-nav__link">
         
   
   
@@ -322,181 +293,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#configuring-the-settingsjson-file" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Configuring the settings.json file
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Configuring the settings.json file">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#qgs_prefixpath-required" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Qgs_PrefixPath (Required)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#qgis_ini_path-required" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        QGIS_ini_Path (Required)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#qgis_bin_folder-required" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        QGIS_bin_folder (Required)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#logdir-required" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        logdir (Required)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#tempfolder-required" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        TempFolder (Required)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#databaseconnections-optional" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        DatabaseConnections (Optional)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#emailconfiguration-optional" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        emailConfiguration (Optional)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#pushoverconfiguration-optional" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        pushoverConfiguration (Optional)
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#setting-env-for-datafordelerendk" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Setting .env for Datafordeleren.dk
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#setting-up-the-log-server" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Setting up the log server
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Setting up the log server">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Configuration
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#troubleshooting" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Troubleshooting
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -837,18 +633,20 @@
       
   
   
+    
   
   
+  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
         
           
           <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
@@ -869,7 +667,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_7">
             <span class="md-nav__icon md-icon"></span>
             
@@ -912,10 +710,35 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../generic_worker/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The genereic worker
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -931,6 +754,74 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#guide-using-processingrunner" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Guide: Using ProcessingRunner
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Guide: Using ProcessingRunner">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-to-use" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How to Use
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Notes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#typical-use-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Typical Use Cases
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -960,8 +851,6 @@
   
   
   
-    
-  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -970,22 +859,22 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#configuring-the-settingsjson-file" class="md-nav__link">
+  <a href="#guide-using-processingrunner" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Configuring the settings.json file
+        Guide: Using ProcessingRunner
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Configuring the settings.json file">
+    <nav class="md-nav" aria-label="Guide: Using ProcessingRunner">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#qgs_prefixpath-required" class="md-nav__link">
+  <a href="#how-to-use" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Qgs_PrefixPath (Required)
+        How to Use
       
     </span>
   </a>
@@ -993,10 +882,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#qgis_ini_path-required" class="md-nav__link">
+  <a href="#notes" class="md-nav__link">
     <span class="md-ellipsis">
       
-        QGIS_ini_Path (Required)
+        Notes
       
     </span>
   </a>
@@ -1004,115 +893,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#qgis_bin_folder-required" class="md-nav__link">
+  <a href="#typical-use-cases" class="md-nav__link">
     <span class="md-ellipsis">
       
-        QGIS_bin_folder (Required)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#logdir-required" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        logdir (Required)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#tempfolder-required" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        TempFolder (Required)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#databaseconnections-optional" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        DatabaseConnections (Optional)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#emailconfiguration-optional" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        emailConfiguration (Optional)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#pushoverconfiguration-optional" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        pushoverConfiguration (Optional)
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#setting-env-for-datafordelerendk" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Setting .env for Datafordeleren.dk
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#setting-up-the-log-server" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Setting up the log server
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Setting up the log server">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Configuration
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#troubleshooting" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Troubleshooting
+        Typical Use Cases
       
     </span>
   </a>
@@ -1141,114 +925,51 @@
 
 
 
-<h1 id="configurations">Configurations</h1>
-<h2 id="configuring-the-settingsjson-file">Configuring the settings.json file</h2>
-<p>The settings json has required elements, and optional elements.</p>
-<pre><code class="language-json">{
-    &quot;Qgs_PrefixPath&quot; : &quot;&quot;,
-    &quot;QGIS_ini_Path&quot; : &quot;&quot;,
-    &quot;QGIS_bin_folder&quot;: &quot;&quot;,
-    &quot;logdir&quot; : &quot;&quot;,
-    &quot;TempFolder&quot; : &quot;&quot;,
-    &quot;DatabaseConnections&quot;: {
-        &quot;MyPostGIS&quot; : {
-            &quot;host&quot; : &quot;&quot;,
-            &quot;port&quot; : &quot;&quot;,
-            &quot;databasename&quot;:&quot;&quot;,
-            &quot;user&quot; : &quot;&quot;,
-            &quot;password&quot;: &quot;&quot;
-        },
-        &quot;MyMSSQL&quot; : {
-            &quot;host&quot; : &quot;&quot;,
-            &quot;port&quot; : &quot;&quot;,
-            &quot;databasename&quot;:&quot;&quot;,
-            &quot;user&quot; : &quot;&quot;,
-            &quot;password&quot;: &quot;&quot;
-        }
+  <h1>The genereic worker</h1>
 
-    },
-    &quot;emailConfiguration&quot; : {
-        &quot;emailOnError&quot; : &quot;False&quot;,
-        &quot;smtp_server&quot; : &quot;&quot;,
-        &quot;smtp_port&quot; : &quot;&quot;,
-        &quot;smtp_username&quot; : &quot;&quot;,
-        &quot;smtp_password&quot; : &quot;&quot;,
-        &quot;message_from&quot; : &quot;&quot;,
-        &quot;message_to&quot; : []
-    } ,
-    &quot;pushoverConfiguration&quot;: {
-        &quot;pushoverOnError&quot; : &quot;False&quot;,
-        &quot;pushover_user_key&quot; : &quot;&quot;,
-        &quot;pushover_app_token&quot; : &quot;&quot;
-    }  
-
-}
-</code></pre>
-<h3 id="qgs_prefixpath-required">Qgs_PrefixPath (Required)</h3>
-<p>The root folder of your QGIS application of our installation
-For instance: C:/Program Files/QGIS x.xx.x/apps/qgis</p>
-<h3 id="qgis_ini_path-required">QGIS_ini_Path (Required)</h3>
-<p>QGIS_ini_Path is a little more tricky. it is found in the root of your default user-profile in QGIS. To fetch it the easiest way, open QGIS, open the Python prompt and type: print(QSettings().fileName())</p>
-<h3 id="qgis_bin_folder-required">QGIS_bin_folder (Required)</h3>
-<p>The path to the QGIS bin forlder of you installation.
-For instance: C:/Program Files/QGIS x.xx.x/bin</p>
-<h3 id="logdir-required">logdir (Required)</h3>
-<p>A folder for the generated log files. </p>
-<h3 id="tempfolder-required">TempFolder (Required)</h3>
-<p>A folder for temporary data.</p>
-<h3 id="databaseconnections-optional">DatabaseConnections (Optional)</h3>
-<p>If you need to configure databases, this is donw in this part of settings.json. 
-You can create named configurations to multiple databases.</p>
-<h3 id="emailconfiguration-optional">emailConfiguration (Optional)</h3>
-<p>Jobs can send email on errors. This is be default dsiabled. If you have an SMTP server, you can configure Q-ETL to uses it, sending email notifications if scheduled jobs fail.</p>
-<h3 id="pushoverconfiguration-optional">pushoverConfiguration (Optional)</h3>
-<p>Jobs can send error messages to Android and Iphone devices using the Pushover service</p>
-<h2 id="setting-env-for-datafordelerendk">Setting .env for Datafordeleren.dk</h2>
-<p>In order to use datafordeleren, you need to configure your user and password for your tjenestebruger.
-Make a copy of the root file '.evv_template, and rename it to '.env'
-Edit the file and fill ind the username and password for datafordeleren, and you can use the integrations to datafordeleren.</p>
-<pre><code>DATAFORDELER_TJENESTEBRUGER=
-DATAFORDELER_PASSWORD=
-# Hosts, not to be edited
-DATAFORDELER_DOWNLOAD_HOST=https://api.datafordeler.dk/FileDownloads/GetFile?
-
-</code></pre>
-<h2 id="setting-up-the-log-server">Setting up the log server</h2>
-<p>To enable remote access to logs, it is possible to configure a logfile server from Q-ETL.
-This makes it possible to access job logs from remote locations, to verify that jobs have run and completed without logging onto the server.</p>
-<h3 id="configuration">Configuration</h3>
-<p>The configuration of the logserver is in the server folder\
-<img src="https://github.com/QGEEKS/Q-ETL/blob/ressources/images/server/server.png" > \
-<br/><br/>
-To set up the server, make a compy of the template file, and call it server.cmd\</p>
-<p><img src="https://github.com/QGEEKS/Q-ETL/blob/ressources/images/server/server_template.png" > 
-<br/><br/>
-It requires two elements: The path to python.exe - located in the QGIS install folder and the full path to the server.py file.\
-When this file is created, you are ready to install the server. 
-<br/><br/>
-Navigate to the server\bin folder:
-<br/><br/>
-<img src="https://github.com/QGEEKS/Q-ETL/blob/ressources/images/server/server_bin.png" > 
-<br/><br/>
-Run install_service.cmd to install the windows service:
-<br/><br/>
-<img src="https://github.com/QGEEKS/Q-ETL/blob/ressources/images/server/install.png" > 
-<br/><br/>
-The system will prompt for elevation, the install needs administrative privileges to run. If all goes well, the message will tell you that the service is installed. Now you can open Windows services, to locate the new service:
- <br/><br/>
-<img src="https://github.com/QGEEKS/Q-ETL/blob/ressources/images/server/service.png" > 
- <br/><br/>
-The first time, the service must be started manually. Set startup to automatic, and it will start up with Windows after restart. 
-It is preferred to have a service account for running the service. It must have 'log on as service' privileges. 
-<br/><br/>
-When the server is running, the server can be accessed on localhost:3000. There you will see the contents of the log directory. If you click on a log file, it will be displayed for you.
-<br/><br/>
-<img src="https://github.com/QGEEKS/Q-ETL/blob/ressources/images/server/url.png" > 
-<br/><br/>
-<img src="https://github.com/QGEEKS/Q-ETL/blob/ressources/images/server/logfile.png" > </p>
-<h3 id="troubleshooting">Troubleshooting</h3>
-<p>If you have problems starting the service, the configuration is wrong.
-It is a cmd file that runs the service - if you have spaces in your paths, put "" around the elements. </p>
+<h2 id="guide-using-processingrunner">Guide: Using ProcessingRunner</h2>
+<p>The <code>ProcessingRunner</code> method is a generic utility for running QGIS processing algorithms in Q-ETL worflows. It is part of the <code>Worker.Generic</code> class and is designed to simplify the execution of QGIS algorithms by handling progress feedback and logging automatically.</p>
+<h3 id="how-to-use">How to Use</h3>
+<ol>
+<li>
+<p><strong>Import the Worker class:</strong>
+    Ensure you have imported the <code>Worker</code> class from your project.</p>
+</li>
+<li>
+<p><strong>Get the code from QGIS</strong>
+    When you want to use a tool from the QGIS Processing toolbox, that has not been ported to Q-ETL, you can fill in the dialog en QGIS, and have the code that you need be generated for you.</p>
+<p>Open the tool you want, and fill in the dialog:</p>
+<p><img src="https://github.com/QGEEKS/Q-ETL/raw/ressources/images/quickstart/generic_dialog.png" width="75%" height="50%"> </p>
+<p>When you have choosen your parameters, select <strong>Export to Python Script</strong></p>
+<p><img src="https://github.com/QGEEKS/Q-ETL/raw/ressources/images/quickstart/generic_copy.png" width="75%" height="50%"> </p>
+<p>If you paste the code into a text editor, you can see the parameters you have selected :</p>
+<p><img src="https://github.com/QGEEKS/Q-ETL/raw/ressources/images/quickstart/generic_code.png" width="75%" height="50%"> </p>
+</li>
+<li>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>algName</code> (str): The QGIS algorithm ID (e.g., 'native:buffer').</li>
+<li><code>parameters</code> (dict): The parameters required by the algorithm. Refer to QGIS documentation for details.</li>
+</ul>
+</li>
+<li>
+<p><strong>Call ProcessingRunner:</strong>
+    Use the method by specifying the algorithm name and a dictionary of parameters.</p>
+<p>You call the worker, at put in your python script - adjusting for input layers to amatch your Q-ETL variables:</p>
+<p><img src="https://github.com/QGEEKS/Q-ETL/raw/ressources/images/quickstart/generic_usage.png" width="75%" height="50%"> </p>
+</li>
+<li>
+<p><strong>Output:</strong>
+    The method returns the output layer produced by the algorithm.</p>
+</li>
+</ol>
+<h3 id="notes">Notes</h3>
+<ul>
+<li>The method handles progress bar updates and logging automatically.</li>
+<li>Errors are logged and will terminate the script if encountered.</li>
+</ul>
+<h3 id="typical-use-cases">Typical Use Cases</h3>
+<p>This is used, if a tool has not been portet to Q-ETL. Then you can use this tool, to run it anyways. </p>
 
 
 
