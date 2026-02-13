@@ -25,6 +25,24 @@ writer.file(reprojectedLayer, "C:/temp/kommuner_4326.geojson", "GeoJson")
 ## Quickstart
 Checkout the _Basic tutorial_ guide on qgeeks.github.io [here](https://qgeeks.github.io/Q-ETL/basic_tutorial/).
 
+## Jupyter Notebooks Support
+
+Q-ETL can be used interactively in Jupyter Notebooks within VS Code. This is great for:
+- Interactive development and testing
+- Step-by-step debugging of ETL workflows
+- Data exploration and visualization
+- Creating tutorials and documentation
+
+**Quick Setup:**
+```cmd
+setup_jupyter.cmd
+```
+
+For detailed setup instructions, see:
+- 📘 [Full Setup Guide](docs/jupyter_setup.md)
+- 🚀 [Quick Reference](JUPYTER_QUICKREF.md)
+- 📓 [Example Notebook](demos/development_notebook.ipynb)
+
 ## Download
 Download the latest release [here](https://github.com/QGEEKS/Q-ETL/releases).
 

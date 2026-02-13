@@ -1,0 +1,14 @@
+{
+ "argv": [
+  "cmd.exe",
+  "/c",
+  "C:\\OSGeo4W\\bin\\qgis-kernel.bat",
+  "{connection_file}"
+ ],
+ "display_name": "QGIS Python",
+ "language": "python",
+ "metadata": {
+  "debugger": true
+ },
+ "kernel_protocol_version": "5.5"
+}
