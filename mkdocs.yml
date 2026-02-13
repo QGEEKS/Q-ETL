@@ -17,7 +17,7 @@ nav:
     - Troubleshooting: troubleshooting.md
   - Advanced topics:
     - Jupyter Notebook supprt: jupyter_setup.md
-    - The genereic worker: generic_worker.md
+    - The generic worker: generic_worker.md
 plugins:
   - search
   - mkdocstrings:
