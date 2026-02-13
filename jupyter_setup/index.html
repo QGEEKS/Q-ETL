@@ -9,10 +9,8 @@
       
       
       
-        <link rel="prev" href="../basic_tutorial/">
+        <link rel="prev" href="../troubleshooting/">
       
-      
-        <link rel="next" href="../Inputs/">
       
       
         
@@ -23,7 +21,7 @@
     
     
       
-        <title>Configuration - Q-ETL Documentation</title>
+        <title>Jupyter Notebook supprt - Q-ETL Documentation</title>
       
     
     
@@ -66,7 +64,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#configurations" class="md-skip">
+        <a href="#qgis-etl-jupyter-notebook-setup-guide" class="md-skip">
           Skip to content
         </a>
       
@@ -102,7 +100,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Configuration
+              Jupyter Notebook supprt
             
           </span>
         </div>
@@ -276,37 +274,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Configuration
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../configurations/" class="md-nav__link">
         
   
   
@@ -322,181 +293,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#configuring-the-settingsjson-file" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Configuring the settings.json file
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Configuring the settings.json file">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#qgs_prefixpath-required" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Qgs_PrefixPath (Required)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#qgis_ini_path-required" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        QGIS_ini_Path (Required)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#qgis_bin_folder-required" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        QGIS_bin_folder (Required)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#logdir-required" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        logdir (Required)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#tempfolder-required" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        TempFolder (Required)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#databaseconnections-optional" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        DatabaseConnections (Optional)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#emailconfiguration-optional" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        emailConfiguration (Optional)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#pushoverconfiguration-optional" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        pushoverConfiguration (Optional)
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#setting-env-for-datafordelerendk" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Setting .env for Datafordeleren.dk
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#setting-up-the-log-server" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Setting up the log server
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Setting up the log server">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Configuration
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#troubleshooting" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Troubleshooting
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -837,18 +633,20 @@
       
   
   
+    
   
   
+  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
         
           
           <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
@@ -869,7 +667,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_7">
             <span class="md-nav__icon md-icon"></span>
             
@@ -884,10 +682,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../jupyter_setup/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Jupyter Notebook supprt
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -903,6 +728,253 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prerequisites
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-start-automatic-installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick Start - Automatic Installation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#manual-installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Manual Installation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Manual Installation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-install-python-packages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: Install Python Packages
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-create-qgis-kernel-batch-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: Create QGIS Kernel Batch File
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-register-the-kernel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3: Register the Kernel
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-restart-vs-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4: Restart VS Code
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-jupyter-notebooks-with-q-etl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using Jupyter Notebooks with Q-ETL
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Using Jupyter Notebooks with Q-ETL">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#open-a-notebook" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Open a Notebook
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#initialize-qgis-in-notebook" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Initialize QGIS in Notebook
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#import-q-etl-modules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Import Q-ETL Modules
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Troubleshooting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#problem-modulenotfounderror-no-module-named-ipykernel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Problem: "ModuleNotFoundError: No module named 'ipykernel'"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#problem-kernel-keeps-spinning-and-never-starts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Problem: Kernel keeps "spinning" and never starts
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#problem-filenotfounderror-settingsjson" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Problem: "FileNotFoundError: settings.json"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#problem-qgis-python-kernel-not-found-in-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Problem: QGIS Python kernel not found in list
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#customization-for-other-installations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Customization for Other Installations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-notebooks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example Notebooks
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#support" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Support
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -942,22 +1014,44 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#configuring-the-settingsjson-file" class="md-nav__link">
+  <a href="#prerequisites" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Configuring the settings.json file
+        Prerequisites
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Configuring the settings.json file">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-start-automatic-installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick Start - Automatic Installation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#manual-installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Manual Installation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Manual Installation">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#qgs_prefixpath-required" class="md-nav__link">
+  <a href="#step-1-install-python-packages" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Qgs_PrefixPath (Required)
+        Step 1: Install Python Packages
       
     </span>
   </a>
@@ -965,10 +1059,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#qgis_ini_path-required" class="md-nav__link">
+  <a href="#step-2-create-qgis-kernel-batch-file" class="md-nav__link">
     <span class="md-ellipsis">
       
-        QGIS_ini_Path (Required)
+        Step 2: Create QGIS Kernel Batch File
       
     </span>
   </a>
@@ -976,10 +1070,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#qgis_bin_folder-required" class="md-nav__link">
+  <a href="#step-3-register-the-kernel" class="md-nav__link">
     <span class="md-ellipsis">
       
-        QGIS_bin_folder (Required)
+        Step 3: Register the Kernel
       
     </span>
   </a>
@@ -987,54 +1081,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#logdir-required" class="md-nav__link">
+  <a href="#step-4-restart-vs-code" class="md-nav__link">
     <span class="md-ellipsis">
       
-        logdir (Required)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#tempfolder-required" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        TempFolder (Required)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#databaseconnections-optional" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        DatabaseConnections (Optional)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#emailconfiguration-optional" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        emailConfiguration (Optional)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#pushoverconfiguration-optional" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        pushoverConfiguration (Optional)
+        Step 4: Restart VS Code
       
     </span>
   </a>
@@ -1047,40 +1097,56 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#setting-env-for-datafordelerendk" class="md-nav__link">
+  <a href="#using-jupyter-notebooks-with-q-etl" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Setting .env for Datafordeleren.dk
+        Using Jupyter Notebooks with Q-ETL
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Using Jupyter Notebooks with Q-ETL">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#open-a-notebook" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Open a Notebook
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#initialize-qgis-in-notebook" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Initialize QGIS in Notebook
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#import-q-etl-modules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Import Q-ETL Modules
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#setting-up-the-log-server" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Setting up the log server
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Setting up the log server">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Configuration
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#troubleshooting" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1089,10 +1155,88 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Troubleshooting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#problem-modulenotfounderror-no-module-named-ipykernel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Problem: "ModuleNotFoundError: No module named 'ipykernel'"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#problem-kernel-keeps-spinning-and-never-starts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Problem: Kernel keeps "spinning" and never starts
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#problem-filenotfounderror-settingsjson" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Problem: "FileNotFoundError: settings.json"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#problem-qgis-python-kernel-not-found-in-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Problem: QGIS Python kernel not found in list
+      
+    </span>
+  </a>
+  
 </li>
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#customization-for-other-installations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Customization for Other Installations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-notebooks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example Notebooks
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#support" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Support
+      
+    </span>
+  </a>
   
 </li>
       
@@ -1113,114 +1257,148 @@
 
 
 
-<h1 id="configurations">Configurations</h1>
-<h2 id="configuring-the-settingsjson-file">Configuring the settings.json file</h2>
-<p>The settings json has required elements, and optional elements.</p>
+<h1 id="qgis-etl-jupyter-notebook-setup-guide">QGIS ETL Jupyter Notebook Setup Guide</h1>
+<p>This guide shows how to set up Jupyter Notebook support for the Q-ETL project in VS Code.</p>
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li>OSGeo4W installation with QGIS (default: <code>C:\OSGeo4W</code>)</li>
+<li>VS Code with Jupyter extension installed</li>
+<li>Q-ETL project cloned</li>
+</ul>
+<h2 id="quick-start-automatic-installation">Quick Start - Automatic Installation</h2>
+<p>Run the following command in a PowerShell terminal from the project root:</p>
+<pre><code class="language-powershell">.\setup_jupyter.cmd
+</code></pre>
+<p>This script will:
+1. <strong>Read QGIS paths from <code>settings.json</code></strong> - No manual path editing needed!
+2. Install required Python packages (ipykernel, jupyter, coloredlogs)
+3. Create QGIS Jupyter kernel batch file with correct paths
+4. Register the kernel in Jupyter
+5. Generate a notebook template with your specific paths
+6. Verify the installation</p>
+<p><strong>After the script completes:</strong>
+- Restart VS Code to detect the new kernel
+- Open a notebook (e.g., <code>demos/development_notebook.ipynb</code>)
+- Select "QGIS Python" kernel from the kernel selector
+- Check the paths shown at the end of the script output and update your initialization cell if needed
+- The script creates <code>%APPDATA%\jupyter\kernels\qgis-python\notebook_template.txt</code> with your specific paths</p>
+<h2 id="manual-installation">Manual Installation</h2>
+<p>If you prefer to set it up manually, follow these steps:</p>
+<h3 id="step-1-install-python-packages">Step 1: Install Python Packages</h3>
+<p>Open a terminal and run:</p>
+<pre><code class="language-cmd">C:\OSGeo4W\bin\python-qgis.bat -m pip install ipykernel jupyter coloredlogs
+</code></pre>
+<h3 id="step-2-create-qgis-kernel-batch-file">Step 2: Create QGIS Kernel Batch File</h3>
+<p>Create the file <code>C:\OSGeo4W\bin\qgis-kernel.bat</code> with the following content:</p>
+<pre><code class="language-bat">@echo off
+call &quot;%~dp0o4w_env.bat&quot;
+@echo off
+path %OSGEO4W_ROOT%\apps\qgis\bin;%PATH%
+set QGIS_PREFIX_PATH=%OSGEO4W_ROOT:\=/%/apps/qgis
+set GDAL_FILENAME_IS_UTF8=YES
+set VSI_CACHE=TRUE
+set VSI_CACHE_SIZE=1000000
+set QT_PLUGIN_PATH=%OSGEO4W_ROOT%\apps\qgis\qtplugins;%OSGEO4W_ROOT%\apps\qt5\plugins
+set PYTHONPATH=%OSGEO4W_ROOT%\apps\qgis\python;%PYTHONPATH%
+python -m ipykernel_launcher -f %1
+</code></pre>
+<h3 id="step-3-register-the-kernel">Step 3: Register the Kernel</h3>
+<p>Create the folder and kernel.json:</p>
+<pre><code class="language-cmd">mkdir &quot;%APPDATA%\jupyter\kernels\qgis-python&quot;
+</code></pre>
+<p>Create the file <code>%APPDATA%\jupyter\kernels\qgis-python\kernel.json</code> with:</p>
 <pre><code class="language-json">{
-    &quot;Qgs_PrefixPath&quot; : &quot;&quot;,
-    &quot;QGIS_ini_Path&quot; : &quot;&quot;,
-    &quot;QGIS_bin_folder&quot;: &quot;&quot;,
-    &quot;logdir&quot; : &quot;&quot;,
-    &quot;TempFolder&quot; : &quot;&quot;,
-    &quot;DatabaseConnections&quot;: {
-        &quot;MyPostGIS&quot; : {
-            &quot;host&quot; : &quot;&quot;,
-            &quot;port&quot; : &quot;&quot;,
-            &quot;databasename&quot;:&quot;&quot;,
-            &quot;user&quot; : &quot;&quot;,
-            &quot;password&quot;: &quot;&quot;
-        },
-        &quot;MyMSSQL&quot; : {
-            &quot;host&quot; : &quot;&quot;,
-            &quot;port&quot; : &quot;&quot;,
-            &quot;databasename&quot;:&quot;&quot;,
-            &quot;user&quot; : &quot;&quot;,
-            &quot;password&quot;: &quot;&quot;
-        }
-
-    },
-    &quot;emailConfiguration&quot; : {
-        &quot;emailOnError&quot; : &quot;False&quot;,
-        &quot;smtp_server&quot; : &quot;&quot;,
-        &quot;smtp_port&quot; : &quot;&quot;,
-        &quot;smtp_username&quot; : &quot;&quot;,
-        &quot;smtp_password&quot; : &quot;&quot;,
-        &quot;message_from&quot; : &quot;&quot;,
-        &quot;message_to&quot; : []
-    } ,
-    &quot;pushoverConfiguration&quot;: {
-        &quot;pushoverOnError&quot; : &quot;False&quot;,
-        &quot;pushover_user_key&quot; : &quot;&quot;,
-        &quot;pushover_app_token&quot; : &quot;&quot;
-    }  
-
+ &quot;argv&quot;: [
+  &quot;cmd.exe&quot;,
+  &quot;/c&quot;,
+  &quot;C:\\OSGeo4W\\bin\\qgis-kernel.bat&quot;,
+  &quot;{connection_file}&quot;
+ ],
+ &quot;display_name&quot;: &quot;QGIS Python&quot;,
+ &quot;language&quot;: &quot;python&quot;,
+ &quot;metadata&quot;: {
+  &quot;debugger&quot;: true
+ },
+ &quot;kernel_protocol_version&quot;: &quot;5.5&quot;
 }
 </code></pre>
-<h3 id="qgs_prefixpath-required">Qgs_PrefixPath (Required)</h3>
-<p>The root folder of your QGIS application of our installation
-For instance: C:/Program Files/QGIS x.xx.x/apps/qgis</p>
-<h3 id="qgis_ini_path-required">QGIS_ini_Path (Required)</h3>
-<p>QGIS_ini_Path is a little more tricky. it is found in the root of your default user-profile in QGIS. To fetch it the easiest way, open QGIS, open the Python prompt and type: print(QSettings().fileName())</p>
-<h3 id="qgis_bin_folder-required">QGIS_bin_folder (Required)</h3>
-<p>The path to the QGIS bin forlder of you installation.
-For instance: C:/Program Files/QGIS x.xx.x/bin</p>
-<h3 id="logdir-required">logdir (Required)</h3>
-<p>A folder for the generated log files. </p>
-<h3 id="tempfolder-required">TempFolder (Required)</h3>
-<p>A folder for temporary data.</p>
-<h3 id="databaseconnections-optional">DatabaseConnections (Optional)</h3>
-<p>If you need to configure databases, this is donw in this part of settings.json. 
-You can create named configurations to multiple databases.</p>
-<h3 id="emailconfiguration-optional">emailConfiguration (Optional)</h3>
-<p>Jobs can send email on errors. This is be default dsiabled. If you have an SMTP server, you can configure Q-ETL to uses it, sending email notifications if scheduled jobs fail.</p>
-<h3 id="pushoverconfiguration-optional">pushoverConfiguration (Optional)</h3>
-<p>Jobs can send error messages to Android and Iphone devices using the Pushover service</p>
-<h2 id="setting-env-for-datafordelerendk">Setting .env for Datafordeleren.dk</h2>
-<p>In order to use datafordeleren, you need to configure your user and password for your tjenestebruger.
-Make a copy of the root file '.evv_template, and rename it to '.env'
-Edit the file and fill ind the username and password for datafordeleren, and you can use the integrations to datafordeleren.</p>
-<pre><code>DATAFORDELER_TJENESTEBRUGER=
-DATAFORDELER_PASSWORD=
-# Hosts, not to be edited
-DATAFORDELER_DOWNLOAD_HOST=https://api.datafordeler.dk/FileDownloads/GetFile?
+<h3 id="step-4-restart-vs-code">Step 4: Restart VS Code</h3>
+<p>Close and restart VS Code to load the new kernel.</p>
+<h2 id="using-jupyter-notebooks-with-q-etl">Using Jupyter Notebooks with Q-ETL</h2>
+<h3 id="open-a-notebook">Open a Notebook</h3>
+<ol>
+<li>Open VS Code in the project folder</li>
+<li>Open or create a <code>.ipynb</code> file (e.g., <code>demos/development_notebook.ipynb</code>)</li>
+<li>Click the kernel selector at the top right</li>
+<li>Select <strong>"QGIS Python"</strong> from the list</li>
+</ol>
+<h3 id="initialize-qgis-in-notebook">Initialize QGIS in Notebook</h3>
+<p>In the first code cell, initialize the QGIS environment:</p>
+<pre><code class="language-python">import os
+import sys
 
+# Change to project root directory
+project_root = r'C:\App\Github\QGIS_ETL'  # Adjust to your path
+os.chdir(project_root)
+
+# Set sys.argv[0] (so get_config() finds settings.json)
+sys.argv[0] = os.path.join(project_root, 'python', 'dummy.py')
+
+# Add project Python folder to sys.path
+sys.path.insert(0, os.path.join(project_root, 'python'))
+
+# Import Q-ETL (QGIS initializes automatically in core/__init__.py)
+from core import *
+from engine import *
+
+print(f&quot;✓ QGIS initialized (version {qgs.applicationVersion()})&quot;)
+print(f&quot;✓ Working directory: {os.getcwd()}&quot;)
 </code></pre>
-<h2 id="setting-up-the-log-server">Setting up the log server</h2>
-<p>To enable remote access to logs, it is possible to configure a logfile server from Q-ETL.
-This makes it possible to access job logs from remote locations, to verify that jobs have run and completed without logging onto the server.</p>
-<h3 id="configuration">Configuration</h3>
-<p>The configuration of the logserver is in the server folder\
-<img src="https://github.com/QGEEKS/Q-ETL/blob/ressources/images/server/server.png" > \
-<br/><br/>
-To set up the server, make a compy of the template file, and call it server.cmd\</p>
-<p><img src="https://github.com/QGEEKS/Q-ETL/blob/ressources/images/server/server_template.png" > 
-<br/><br/>
-It requires two elements: The path to python.exe - located in the QGIS install folder and the full path to the server.py file.\
-When this file is created, you are ready to install the server. 
-<br/><br/>
-Navigate to the server\bin folder:
-<br/><br/>
-<img src="https://github.com/QGEEKS/Q-ETL/blob/ressources/images/server/server_bin.png" > 
-<br/><br/>
-Run install_service.cmd to install the windows service:
-<br/><br/>
-<img src="https://github.com/QGEEKS/Q-ETL/blob/ressources/images/server/install.png" > 
-<br/><br/>
-The system will prompt for elevation, the install needs administrative privileges to run. If all goes well, the message will tell you that the service is installed. Now you can open Windows services, to locate the new service:
- <br/><br/>
-<img src="https://github.com/QGEEKS/Q-ETL/blob/ressources/images/server/service.png" > 
- <br/><br/>
-The first time, the service must be started manually. Set startup to automatic, and it will start up with Windows after restart. 
-It is preferred to have a service account for running the service. It must have 'log on as service' privileges. 
-<br/><br/>
-When the server is running, the server can be accessed on localhost:3000. There you will see the contents of the log directory. If you click on a log file, it will be displayed for you.
-<br/><br/>
-<img src="https://github.com/QGEEKS/Q-ETL/blob/ressources/images/server/url.png" > 
-<br/><br/>
-<img src="https://github.com/QGEEKS/Q-ETL/blob/ressources/images/server/logfile.png" > </p>
-<h3 id="troubleshooting">Troubleshooting</h3>
-<p>If you have problems starting the service, the configuration is wrong.
-It is a cmd file that runs the service - if you have spaces in your paths, put "" around the elements. </p>
+<p><strong>Important:</strong> 
+- QGIS initialization happens automatically when importing <code>core</code> (see <code>python/core/__init__.py</code>)
+- Environment variables are already set by <code>qgis-kernel.bat</code>
+- You only need to set up paths and import the modules!</p>
+<h3 id="import-q-etl-modules">Import Q-ETL Modules</h3>
+<p>After initialization, you can import Q-ETL modules:</p>
+<pre><code class="language-python">from core import *
+from engine import *
+
+# Create aliases for ETL components
+reader = Input_Reader
+worker = Worker
+output = Output_Writer
+constructor = Constructor
+</code></pre>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="problem-modulenotfounderror-no-module-named-ipykernel">Problem: "ModuleNotFoundError: No module named 'ipykernel'"</h3>
+<p><strong>Solution:</strong> Install ipykernel in the QGIS Python environment:</p>
+<pre><code class="language-cmd">C:\OSGeo4W\bin\python-qgis.bat -m pip install ipykernel jupyter
+</code></pre>
+<h3 id="problem-kernel-keeps-spinning-and-never-starts">Problem: Kernel keeps "spinning" and never starts</h3>
+<p><strong>Solution:</strong> 
+1. Check that you have selected the <strong>"QGIS Python"</strong> kernel (not "Python 3")
+2. Check the VS Code Output panel (Ctrl+Shift+U) under "Jupyter" for error messages
+3. Try reloading the VS Code window (<code>Ctrl+Shift+P</code> &gt; "Developer: Reload Window")</p>
+<h3 id="problem-filenotfounderror-settingsjson">Problem: "FileNotFoundError: settings.json"</h3>
+<p><strong>Solution:</strong> Make sure to run the initialization cell that sets <code>os.chdir()</code> and <code>sys.argv[0]</code> correctly.</p>
+<h3 id="problem-qgis-python-kernel-not-found-in-list">Problem: QGIS Python kernel not found in list</h3>
+<p><strong>Solution:</strong>
+1. Verify that <code>kernel.json</code> exists: <code>%APPDATA%\jupyter\kernels\qgis-python\kernel.json</code>
+2. Run: <code>jupyter kernelspec list</code> to see all registered kernels
+3. Restart VS Code</p>
+<h2 id="customization-for-other-installations">Customization for Other Installations</h2>
+<p>If your QGIS/OSGeo4W installation is in a different location than <code>C:\OSGeo4W</code>, you need to edit:</p>
+<ol>
+<li>In <code>qgis-kernel.bat</code>: First line should point to the correct <code>o4w_env.bat</code></li>
+<li>In <code>kernel.json</code>: Fix the path to <code>qgis-kernel.bat</code></li>
+<li>In notebook initialization cell: Fix <code>OSGEO4W_ROOT</code> and related paths</li>
+</ol>
+<h2 id="example-notebooks">Example Notebooks</h2>
+<p>See <code>demos/development_notebook.ipynb</code> for a complete example of how to use Q-ETL in Jupyter.</p>
+<h2 id="support">Support</h2>
+<p>For issues, also see:
+- Q-ETL main documentation: <code>README.md</code>
+- QGIS installation guide: <code>docs/getting_started.md</code></p>
 
 
 
