@@ -56,7 +56,7 @@ See `docs/jupyter_setup.md` for detailed manual installation guide.
 ```python
 import os, sys
 
-project_root = r'C:\App\Github\QGIS_ETL'
+project_root = r'C:\PATH\TO\QGIS_ETL' ## Change your path here
 os.chdir(project_root)
 sys.argv[0] = os.path.join(project_root, 'python', 'dummy.py')
 sys.path.insert(0, os.path.join(project_root, 'python'))
@@ -92,7 +92,7 @@ C:\OSGeo4W\bin\python-qgis.bat -m pip list | findstr "ipykernel jupyter coloredl
 
 ### Kernel doesn't start
 1. Check VS Code Output > Jupyter for errors
-2. Verify batch file exists: `C:\OSGeo4W\bin\qgis-kernel.bat`
+2. Verify batch file exists: `OSGeo4W\bin\qgis-kernel.bat` 
 3. Verify kernel.json exists in `%APPDATA%\jupyter\kernels\qgis-python\`
 4. Restart VS Code
 
