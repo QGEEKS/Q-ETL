@@ -26,11 +26,10 @@ echo [1/5] Reading QGIS paths from settings.json...
 for /f "usebackq delims=" %%i in (`powershell -NoProfile -Command "$json = Get-Content 'settings.json' -Raw | ConvertFrom-Json; $binFolder = $json.QGIS_bin_folder -replace '/', '\'; Write-Output $binFolder"`) do set QGIS_BIN_FOLDER=%%i
 for /f "usebackq delims=" %%i in (`powershell -NoProfile -Command "$json = Get-Content 'settings.json' -Raw | ConvertFrom-Json; $prefixPath = $json.Qgs_PrefixPath -replace '/', '\'; Write-Output $prefixPath"`) do set QGIS_PREFIX_PATH=%%i
 
-REM Extract OSGEO4W_ROOT from bin folder (remove \bin\ from end)
-for %%i in ("%QGIS_BIN_FOLDER:~0,-1%") do set OSGEO4W_ROOT=%%~dpi
-set OSGEO4W_ROOT=%OSGEO4W_ROOT:~0,-1%
+REM Derive OSGEO4W_ROOT by removing \apps\qgis\bin from QGIS_bin_folder
+for /f "usebackq delims=" %%i in (`powershell -NoProfile -Command "$json = Get-Content 'settings.json' -Raw | ConvertFrom-Json; $binFolder = $json.QGIS_bin_folder -replace '/', '\'; $root = $binFolder -replace '\\apps\\qgis\\bin$', ''; Write-Output $root"`) do set OSGEO4W_ROOT=%%i
 
-REM Verify paths
+REM Verify paths (adjusted to ensure correct path resolution)
 if not exist "%OSGEO4W_ROOT%\bin\python-qgis.bat" (
     echo ERROR: Could not find python-qgis.bat at: %OSGEO4W_ROOT%\bin\python-qgis.bat
     echo.
@@ -40,6 +39,8 @@ if not exist "%OSGEO4W_ROOT%\bin\python-qgis.bat" (
     echo.
     pause
     exit /b 1
+) else (
+    echo Successfully found python-qgis.bat at: %OSGEO4W_ROOT%\bin\python-qgis.bat
 )
 
 echo    Detected OSGeo4W: %OSGEO4W_ROOT%
