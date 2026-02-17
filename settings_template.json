@@ -1,7 +1,7 @@
 {
     "Qgs_PrefixPath" : "",
+    "OSGeo4W_bin_folder" : "",
     "QGIS_ini_Path" : "",
-    "QGIS_bin_folder": "",
     "logdir" : "",
     "TempFolder" : "",
     "DatabaseConnections": {

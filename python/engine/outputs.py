@@ -67,7 +67,7 @@ class Output_Writer:
             # ogr2ogr parameters
             table = f'-nln "{schema}.{tablename}"'
             ogrconnection = f'PG:"host={dbConnection["host"]} port={dbConnection["port"]} dbname={dbname} schemas={schema} user={dbConnection["user"]} password={dbConnection["password"]}"'
-            ogr2ogrstring = f'{config["QGIS_bin_folder"]}/ogr2ogr.exe -f "PostgreSQL" {ogrconnection} {tempfile} {table}'
+            ogr2ogrstring = f'{config["OSGeo4W_bin_folder"]}/ogr2ogr.exe -f "PostgreSQL" {ogrconnection} {tempfile} {table}'
             if overwrite:
                 ogr2ogrstring = f'{ogr2ogrstring} -overwrite'
             logger.info(f'Writing to PostGIS database {dbname}')
@@ -132,7 +132,7 @@ class Output_Writer:
                 config = get_config()
                 ## ogr2ogr parameters
                 table = f'-nln "{layername}"'
-                ogr2ogrstring = f'{config["QGIS_bin_folder"]}/ogr2ogr.exe -f "GPKG" {geopackage} {tempfile} -nln {layername} -update -append'
+                ogr2ogrstring = f'{config["OSGeo4W_bin_folder"]}/ogr2ogr.exe -f "GPKG" {geopackage} {tempfile} -nln {layername} -update -append'
                 logger.info(f'Writing new layer {layername} to: {geopackage}')
                 logger.info(f'Ogr2ogr command {ogr2ogrstring}')
                 ogr2ogrstring.join(' -progress')
@@ -252,7 +252,7 @@ class Output_Writer:
             else:
                 ep = ''
             
-            ogr2ogrstring = f'{config["QGIS_bin_folder"]}/ogr2ogr.exe --config MSSQLSPATIAL_USE_BCP FALSE -f "MSSQLSpatial" "{ogrconnection}" "{tmp_path}" {geometry} {table} -lco UPLOAD_GEOM_FORMAT=wkt {ep}  {ow}'
+            ogr2ogrstring = f'{config["OSGeo4W_bin_folder"]}/ogr2ogr.exe --config MSSQLSPATIAL_USE_BCP FALSE -f "MSSQLSpatial" "{ogrconnection}" "{tmp_path}" {geometry} {table} -lco UPLOAD_GEOM_FORMAT=wkt {ep}  {ow}'
             logger.info(f'Writing to MSSQL database {dbconnection["databasename"]}, {table}')
             ogr2ogrstring.join(' -progress')
             run = subprocess.run(ogr2ogrstring, stderr=subprocess.STDOUT)
