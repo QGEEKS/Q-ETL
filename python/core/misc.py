@@ -313,7 +313,7 @@ def validateEnvironment(settings):
         script_failed()
 
     try:
-        isExist = os.path.exists(settings['QGIS_bin_folder'])
+        isExist = os.path.exists(f'{settings["Qgs_PrefixPath"]}' + '/bin')
         if not isExist:
             
             logger.error('QGIS_Bin_Folder not found')
